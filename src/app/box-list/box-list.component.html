@@ -1,0 +1,13 @@
+
+    <mat-card *ngFor="let box of boxes"appearance="outlined" [routerLink]=" ['/box',box?.id]">
+        <mat-card-header>
+            <mat-card-title>{{box?.id}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            
+              <p> <span *ngFor="let item of box?.items, let islast=last">{{ item.name }}<span *ngIf="!islast">, </span></span></p>
+        </mat-card-content>
+        
+    
+      </mat-card>
+
