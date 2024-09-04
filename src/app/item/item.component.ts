@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -7,11 +7,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { Box, Item } from '../app';
 import { DbService } from '../db.service';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-item',
   standalone: true,
-  imports: [NgFor, MatCardModule, MatListModule, MatButtonModule, MatChipsModule, RouterModule],
+  imports: [
+    NgFor, NgIf, 
+    MatCardModule, 
+    MatListModule, 
+    MatButtonModule, 
+    MatChipsModule, 
+    MatFormFieldModule,
+    RouterModule, 
+  ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.css'
 })
