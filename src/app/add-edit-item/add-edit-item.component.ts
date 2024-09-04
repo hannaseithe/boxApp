@@ -6,8 +6,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { Box, Cat } from '../app';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-add-edit-item',
@@ -19,6 +21,8 @@ import { Box, Cat } from '../app';
     MatInputModule,
     MatListModule,
     MatSelectModule,
+    MatChipsModule,
+    MatIconModule,
   ],
   templateUrl: './add-edit-item.component.html',
   styleUrl: './add-edit-item.component.css'
@@ -43,7 +47,7 @@ export class AddEditItemComponent {
       tags: new FormControl([]),
       catID: new FormControl(''),
     });
-    this.form.controls
+
 
   }
 
@@ -63,4 +67,28 @@ export class AddEditItemComponent {
     }
   }
 
+  remove(tag: string) {
+    let tags = this.form.get("tags")?.value
+    const index = tags.indexOf(tag);
+    if (index < 0) {
+      return tags;
+    }
+
+    tags.splice(index, 1);
+    return [...tags];
+  }
+
+  add(event: MatChipInputEvent) {
+
+    const value = (event.value || '').trim();
+    let tags = this.form.get("tags")?.value
+    // Add our keyword
+    if (value) {
+      this.form.patchValue({ tags: [...tags, value]})
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+  }
 }
