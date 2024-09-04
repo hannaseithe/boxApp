@@ -42,7 +42,7 @@ export class ItemComponent {
   }
   ngOnInit(): void {
     if ( this.id ) {this.item = this.data.getItem(this.id) };
-    if (this.item) {this.box = this.data.getBox(this.item.boxId) }
+    if (this.item) {this.box = this.data.getBox(this.item.boxID) }
   }
 
 }

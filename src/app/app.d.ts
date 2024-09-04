@@ -2,14 +2,20 @@
 export type Item = {
   id: number,
   name: string,
-  cat: string,
+  catID: number,
+  catName?: string,
   description: string,
   tags: string[],
-  boxId: number,
+  boxID: number,
 }
 
 export type Box = {
   id: number,
   description: string,
   items: item[]
+}
+
+export type Cat = {
+  id: number,
+  name: string,
 }

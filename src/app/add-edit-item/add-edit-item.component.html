@@ -6,15 +6,64 @@
                 <input matInput formControlName="name">
             </mat-form-field>
         </mat-card-title>
-        <!-- <mat-card-subtitle>{{item?.cat}}</mat-card-subtitle> -->
+        <mat-card-subtitle>
+            <mat-form-field>
+                <mat-label>Item category</mat-label>
+                <mat-select formControlName="catID">
+                    @for (cat of cats; track cat) {
+                      <mat-option [value]="cat.id">{{cat.name}}</mat-option>
+                    }
+                  </mat-select>
+            </mat-form-field>
+        </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <!-- <mat-list role="list">
-            <mat-list-item *ngIf="item?.description" role="listitem">{{ item?.description }}</mat-list-item>
-            <mat-list-item role="listitem">Box #{{ box?.id }}</mat-list-item>
-            <mat-list-item *ngIf="item?.tags?.length" role="listitem"><mat-chip-set aria-label="Fish selection">
-                <mat-chip *ngFor="let tag of item?.tags" [routerLink]=" ['/item-list', tag]">{{tag}}</mat-chip>
-              </mat-chip-set></mat-list-item>
-          </mat-list> -->
+        <div id="container">
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="description">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Box</mat-label>
+                <mat-select formControlName="boxID">
+                    @for (box of boxes; track box) {
+                      <mat-option [value]="box.id">#{{box.id}}</mat-option>
+                    }
+                  </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="example-chip-list">
+                <mat-label>Tags</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Enter fruits" formControlName="tags" #tags>
+                  @for (tag of tags.value; track tag) {
+                    <mat-chip-row
+                      (removed)="remove(tag)"
+                      [editable]="true"
+                      (edited)="edit(fruit, $event)"
+                      [aria-description]="'press enter to edit ' + tag"
+                    >
+                      {{tag}}
+                      <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                  }
+                  <input
+                    placeholder="New tag..."
+                    [matChipInputFor]="chipGrid"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)"
+                  />
+                </mat-chip-grid>
+              </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Tags</mat-label>
+                <input matInput formControlName="tags">
+            </mat-form-field>
+        </div>
+
     </mat-card-content>
 </mat-card>
