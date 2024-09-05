@@ -1,21 +1,25 @@
 
 export type Item = {
-  id: number,
+  id: uniqueId,
   name: string,
-  catID: number,
+  catID: uniqueId,
   catName?: string,
   description: string,
   tags: string[],
-  boxID: number,
+  boxID: uniqueId,
+  boxName?: string
 }
 
 export type Box = {
-  id: number,
+  id: uniqueId,
+  name: string,
   description: string,
-  items: item[]
+  items?: item[]
 }
 
 export type Cat = {
-  id: number,
+  id: uniqueId,
   name: string,
 }
+
+export type uniqueId = `${string}-${string}-${string}-${string}-${string}`

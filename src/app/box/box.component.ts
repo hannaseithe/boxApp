@@ -3,7 +3,7 @@ import { DbService } from '../db.service';
 import { NgFor, NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card'
 import { MatListModule} from '@angular/material/list'
-import { Box } from '../app';
+import { Box, uniqueId } from '../app';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -16,7 +16,7 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrl: './box.component.css'
 })
 export class BoxComponent {
-  @Input() id: number | undefined = undefined;
+  @Input() id: uniqueId | undefined = undefined;
   @Input() simple: boolean = true;
 
   route: ActivatedRoute = inject(ActivatedRoute);
@@ -27,7 +27,7 @@ export class BoxComponent {
 
   constructor(private data:DbService){
    if (this.route.snapshot.params['id']) { 
-    this.id = Number(this.route.snapshot.params['id']);
+    this.id = this.route.snapshot.params['id'];
     this.simple = false;
    }
   }

@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbService } from '../db.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { Box, Cat } from '../app';
+import { Box, Cat, uniqueId } from '../app';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-add-edit-item',
@@ -23,13 +24,14 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatChipsModule,
     MatIconModule,
+    MatButtonModule,
   ],
   templateUrl: './add-edit-item.component.html',
   styleUrl: './add-edit-item.component.css'
 })
 export class AddEditItemComponent {
 
-  id: number | undefined = undefined;
+  id: uniqueId | undefined = undefined;
   isAddMode: boolean = true;
   form: FormGroup;
   boxes: Box[] = [];
@@ -37,7 +39,8 @@ export class AddEditItemComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private data: DbService
+    private data: DbService,
+    private router: Router
   ) {
 
     this.form = new FormGroup({
@@ -52,7 +55,7 @@ export class AddEditItemComponent {
   }
 
   ngOnInit(): void {
-    this.id = Number(this.route.snapshot.params['id']);
+    this.id = this.route.snapshot.params['id'];
     this.boxes = this.data.getBoxes()
     this.cats = this.data.getCategories()
     this.isAddMode = !this.id;
@@ -91,4 +94,13 @@ export class AddEditItemComponent {
     event.chipInput!.clear();
 
   }
+
+  onSubmit() {
+    let formItem = this.form.value
+    formItem.id = this.id ? this.id : undefined
+    let editedItem = this.data.updateItem(formItem);
+    console.log(editedItem)
+    this.router.navigateByUrl('/item/'+ editedItem?.id )
+  }
+
 }
