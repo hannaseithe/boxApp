@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,6 +26,7 @@ import { filter } from 'rxjs';
     MatChipsModule,
     MatIconModule,
     MatButtonModule,
+    RouterModule,
   ],
   templateUrl: './add-edit-item.component.html',
   styleUrl: './add-edit-item.component.css'

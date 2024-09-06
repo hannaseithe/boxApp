@@ -22,7 +22,7 @@ export class BoxListComponent {
     this.boxes = this.data.Boxes
   }
   ngOnInit(): void {
-   
+
   }
 
   public clearStorage(event: Event) {
