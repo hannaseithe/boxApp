@@ -1,7 +1,7 @@
 
 <div class="example-button-row">
     <button mat-button [routerLink]=" ['/']">List</button>
-    <button mat-button [routerLink]=" ['/add-edit-item']">Add New Item</button>
+    <button mat-button [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: box?.id}">Add New Item</button>
 </div>
 <mat-card appearance="outlined">
     <mat-card-header>

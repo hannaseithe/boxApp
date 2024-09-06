@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { DbService } from '../db.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,7 @@ import { Box, Cat, uniqueId } from '../app';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-item',
@@ -56,11 +57,14 @@ export class AddEditItemComponent {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    let boxID = this.route.snapshot.queryParams['boxId'];
     this.boxes = this.data.getBoxes()
     this.cats = this.data.getCategories()
     this.isAddMode = !this.id;
 
-
+    if (boxID) {
+      this.form.patchValue({ boxID: boxID })
+    }
 
     if (!this.isAddMode && this.id) {
       let x = this.data.getItem(this.id)
