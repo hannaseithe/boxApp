@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { DbService } from '../db.service';
 import { Box } from '../app';
 import { NgFor, NgIf } from '@angular/common';
@@ -17,10 +17,12 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './box-list.component.css'
 })
 export class BoxListComponent {
-  public boxes:Box[] = [];
-  constructor(private data:DbService){}
+  public boxes: Signal<Box[]>;
+  constructor(private data:DbService){
+    this.boxes = this.data.Boxes
+  }
   ngOnInit(): void {
-   this.boxes = this.data.getBoxes()
+   
   }
 
   public clearStorage(event: Event) {

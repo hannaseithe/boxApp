@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { Box, Cat, Item, uniqueId } from './app';
 
 
@@ -6,15 +6,16 @@ import { Box, Cat, Item, uniqueId } from './app';
   providedIn: 'root'
 })
 export class DbService {
-  private boxes: Box[]
-  private items: Item[]
-  private cats: Cat[]
+
+  public Boxes: WritableSignal<Box[]>
+  public Cats: WritableSignal<Cat[]>
+  public Items: WritableSignal<Item[]>
 
 
   constructor() {
-    this.boxes = []
-    this.items = []
-    this.cats = []
+    this.Boxes = signal([])
+    this.Items = signal([])
+    this.Cats = signal([])
   }
   init() {
     let boxes = localStorage.getItem('boxes')
@@ -98,9 +99,26 @@ export class DbService {
       item.boxName = box?.name
     })
 
-    this.boxes = boxesArray
-    this.items = itemsArray
-    this.cats = catsArray
+    //this.boxes = boxesArray
+    this.Boxes.set(boxesArray)
+    this.Items.set(itemsArray)
+    this.Cats.set(catsArray)
+  }
+
+  updateFK() {
+    let itemsArray = JSON.parse(localStorage.getItem('items') as string) as Item[]
+    let boxesArray = JSON.parse(localStorage.getItem('boxes') as string) as Box[]
+    let catsArray = JSON.parse(localStorage.getItem('cats') as string) as Cat[]
+
+    itemsArray.forEach(item => {
+      let box = boxesArray.find(box => item.boxID == box.id)
+      box?.items?.push(item)
+      item.boxName = box?.name
+    })
+    this.Boxes.set(boxesArray)
+    this.Cats.set(catsArray)
+    this.Items.set(itemsArray)
+
   }
 
   clearStorage() {
@@ -108,22 +126,22 @@ export class DbService {
   }
 
   getBoxes() {
-    return this.boxes
+    return this.Boxes()
   }
   getBox(id: uniqueId) {
-    return this.boxes.find(box => box.id == id)
+    return this.Boxes().find(box => box.id == id)
   }
 
   getCategories() {
-    return this.cats
+    return this.Cats()
   }
 
   getCategoryName(id: uniqueId) {
-    return this.cats.find(cat => cat.id == id)?.name
+    return this.Cats().find(cat => cat.id == id)?.name
   }
 
   getItem(id: uniqueId) {
-    let result = this.items.find(item => item.id == id)
+    let result = this.Items().find(item => item.id == id)
     if (result) {
       result.catName = this.getCategoryName(result.catID)
     }
@@ -131,36 +149,38 @@ export class DbService {
   }
 
   updateItem(edItem: Item) {
-    if (!edItem.id)  {
+    if (!edItem.id) {
       edItem.id = crypto.randomUUID();
     }
-    let i = this.items.findIndex((item) => item.id == edItem.id)
+    let i = this.Items().findIndex((item) => item.id == edItem.id)
     if (i > -1) {
-      this.items.splice(i,1,edItem);
+      this.Items().splice(i, 1, edItem);
     } else {
-      this.items.push(edItem)
+      this.Items().push(edItem)
     }
-    localStorage.setItem('items', JSON.stringify(this.items))
+    localStorage.setItem('items', JSON.stringify(this.Items()))
+    this.updateFK()
     return this.getItem(edItem.id)
   }
 
-  deleteItem(id:uniqueId){
-    let i = this.items.findIndex((item) => item.id == id)
+  deleteItem(id: uniqueId) {
+    let i = this.Items().findIndex((item) => item.id == id)
     if (i > -1) {
-      this.items.splice(i,1);
+      this.Items().splice(i, 1);
     } else {
       return
     }
-    localStorage.setItem('items', JSON.stringify(this.items))
+    localStorage.setItem('items', JSON.stringify(this.Items()))
+    this.updateFK()
   }
 
   getItemsByCat(id: uniqueId) {
-    return this.items.filter(item => {
+    return this.Items().filter(item => {
       return item.catID == id
     })
   }
   getItemsByTag(tag: string) {
-    return this.items.filter(item => {
+    return this.Items().filter(item => {
       return item.tags.includes(tag)
     })
   }
