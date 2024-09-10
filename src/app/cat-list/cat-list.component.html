@@ -1,19 +1,48 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title>Item Categories</mat-card-title>
+        <mat-card-subtitle>
+            @if (!addNew) {
+
+            <button mat-button (click)="add()">
+                Add new category
+            </button>
+            }
+            @if (addNew) {
+
+            <mat-form-field>
+                <input matInput [formControl]="catFC" id="catName" type="text" required />
+
+            </mat-form-field>
+            <button mat-button (click)="updateCat()" [disabled]="!catFC.valid">Save</button>
+
+            }
+
+        </mat-card-subtitle>
+
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
             @for (cat of cats(); track cat) {
-            <mat-list-item role="listitem">{{ cat?.name }}</mat-list-item>
-            <button (click)="edit(cat)">
-                Edit category
-              </button>
+            @if (!isCatEdited(cat.id)) {
+            <mat-list-item role="listitem">
+                {{ cat?.name }}
+                <button mat-button (click)="edit(cat)">
+                    Edit category
+                </button>
+                <button mat-button (click)="delete(cat)">
+                    Delete category
+                </button>
+            </mat-list-item>
+            }
             @if (isCatEdited(cat.id)) {
-                <div>
-                    <input matInput [formControl]="cat.name" id="catName" type="text" required>
-                    <button mat-button (click)="updateCat()" [disabled]="!form.valid">Save</button>
-                </div>
+
+            <mat-form-field>
+                <input matInput [formControl]="catFC" id="catName" type="text" required />
+
+            </mat-form-field>
+            <button mat-button (click)="updateCat(cat)" [disabled]="!catFC.valid">Save</button>
+
             }
             }
         </mat-list>

@@ -136,8 +136,40 @@ export class DbService {
     return this.Cats()
   }
 
+  getCategory(id:uniqueId) {
+    let result = this.Cats().find(cat => cat.id == id)
+    return result
+  }
+
   getCategoryName(id: uniqueId) {
     return this.Cats().find(cat => cat.id == id)?.name
+  }
+
+  updateCat(edCat:Cat) {
+    if (!edCat.id) {
+      edCat.id = crypto.randomUUID();
+      this.Cats().push(edCat)
+    } else {
+      let i = this.Cats().findIndex(cat => cat.id == edCat.id)
+      if (i > -1) {
+        this.Cats().splice(i, 1, edCat);
+      } 
+    }
+    localStorage.setItem('cats', JSON.stringify(this.Cats()))
+    this.updateFK()
+    return this.getCategory(edCat.id)
+
+  }
+
+  deleteCat(id: uniqueId) {
+    let i = this.Cats().findIndex((cat) => cat.id == id)
+    if (i > -1) {
+      this.Cats().splice(i, 1);
+    } else {
+      return
+    }
+    localStorage.setItem('cats', JSON.stringify(this.Cats()))
+    this.updateFK()
   }
 
   getItem(id: uniqueId) {
