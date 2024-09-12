@@ -106,9 +106,13 @@ export class DbService {
   }
 
   updateFK() {
-    let itemsArray = JSON.parse(localStorage.getItem('items') as string) as Item[]
-    let boxesArray = JSON.parse(localStorage.getItem('boxes') as string) as Box[]
-    let catsArray = JSON.parse(localStorage.getItem('cats') as string) as Cat[]
+    let itemRes = JSON.parse(localStorage.getItem('items') as string) as Item[]
+    let boxRes = JSON.parse(localStorage.getItem('boxes') as string) as Box[]
+    let catRes = JSON.parse(localStorage.getItem('cats') as string) as Cat[]
+    let itemsArray = itemRes ? itemRes : []
+    let boxesArray = boxRes ? boxRes : []
+    let catsArray = catRes ? catRes : []
+
 
     itemsArray.forEach(item => {
       let box = boxesArray.find(box => item.boxID == box.id)
@@ -123,6 +127,7 @@ export class DbService {
 
   clearStorage() {
     localStorage.clear()
+    this.updateFK()
   }
 
   getBoxes() {
