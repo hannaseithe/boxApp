@@ -1,0 +1,83 @@
+{
+  "configVersion": 1,
+  "timestamp": 1726163677747,
+  "index": "/boxApp/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/boxApp/chunk-FHGEA3XE.js",
+        "/boxApp/chunk-HSCRXHSR.js",
+        "/boxApp/favicon.ico",
+        "/boxApp/index.html",
+        "/boxApp/main-PBBYQQMI.js",
+        "/boxApp/manifest.webmanifest",
+        "/boxApp/polyfills-SCHOHYNV.js",
+        "/boxApp/styles-6NCYGVEZ.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/boxApp/icons/icon-128x128.png",
+        "/boxApp/icons/icon-144x144.png",
+        "/boxApp/icons/icon-152x152.png",
+        "/boxApp/icons/icon-192x192.png",
+        "/boxApp/icons/icon-384x384.png",
+        "/boxApp/icons/icon-512x512.png",
+        "/boxApp/icons/icon-72x72.png",
+        "/boxApp/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/boxApp/chunk-FHGEA3XE.js": "abe163745a228d39b22b4f6eaca7e76be0af848e",
+    "/boxApp/chunk-HSCRXHSR.js": "1c91cc4f6d028e99a1d66a1a7d55a7d596e3f8dc",
+    "/boxApp/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/boxApp/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
+    "/boxApp/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
+    "/boxApp/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
+    "/boxApp/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "/boxApp/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
+    "/boxApp/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "/boxApp/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
+    "/boxApp/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/boxApp/index.html": "ca6d12461f31988b2c3e0fc99e2c41694d85ec74",
+    "/boxApp/main-PBBYQQMI.js": "229f3894c43205567a34bc9897f9027c69214948",
+    "/boxApp/manifest.webmanifest": "9bcda8fb135e479b0b34758d004c5129979263b4",
+    "/boxApp/polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
+    "/boxApp/styles-6NCYGVEZ.css": "530a399ea4ef0cdaa973fbf34dfaab7b6a0658e1"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
