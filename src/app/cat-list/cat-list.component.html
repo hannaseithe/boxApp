@@ -1,3 +1,10 @@
+<div class="example-button-row">
+    <button mat-button [routerLink]=" ['/']">List of Boxes</button>
+    @if (itemId) {
+    <button mat-button [routerLink]=" ['/add-edit-item', itemId]">Back to Edit Item</button>
+    }
+</div>
+
 <mat-card>
     <mat-card-header>
         <mat-card-title>Item Categories</mat-card-title>
@@ -11,6 +18,7 @@
             @if (addNew) {
 
             <mat-form-field>
+                <mat-label>New Category</mat-label>
                 <input matInput [formControl]="catFC" id="catName" type="text" required />
 
             </mat-form-field>

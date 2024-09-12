@@ -1,7 +1,7 @@
 import { Component, Signal } from '@angular/core';
 import { DbService } from '../db.service';
 import { Cat, uniqueId } from '../app';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export class CatListComponent {
 
   addNew = false
+  itemId: uniqueId;
 
   catFC: FormControl
 
@@ -34,9 +35,13 @@ export class CatListComponent {
 
   catVisibility: { [id: string]: boolean } = {};
 
-  constructor(private data: DbService) {
+  constructor(
+    private route: ActivatedRoute,
+    private data: DbService) {
     this.cats = this.data.Cats
     this.catFC = new FormControl("")
+    this.addNew = this.route.snapshot.queryParams['addNew'];
+    this.itemId = this.route.snapshot.queryParams['itemId'];
   }
 
   edit(cat: Cat) {
