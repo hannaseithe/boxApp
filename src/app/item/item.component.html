@@ -9,7 +9,7 @@
 <mat-card appearance="outlined">
     <mat-card-header>
         <mat-card-title>{{item?.name}}</mat-card-title>
-        <mat-card-subtitle>{{item?.catName}}</mat-card-subtitle>
+        <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item?.catID, name: item?.catName}">{{item?.catName}}</button></mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">

@@ -48,6 +48,11 @@ export const routes: Routes = [
       component: AddEditItemComponent,
       title: 'Item new form',
     },
+    {
+      path: 'item-list',
+      component: ItemListComponent,
+      title: 'List of Items',
+    },
       {
         path: 'item-list/:tag',
         component: ItemListComponent,
