@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1726163677747,
+  "timestamp": 1726491601772,
   "index": "/boxApp/index.html",
   "assetGroups": [
     {
@@ -11,11 +11,11 @@
         "ignoreVary": true
       },
       "urls": [
-        "/boxApp/chunk-FHGEA3XE.js",
-        "/boxApp/chunk-HSCRXHSR.js",
+        "/boxApp/chunk-FE6SVNIN.js",
+        "/boxApp/chunk-XLXEKKQG.js",
         "/boxApp/favicon.ico",
         "/boxApp/index.html",
-        "/boxApp/main-PBBYQQMI.js",
+        "/boxApp/main-RVI7HFCV.js",
         "/boxApp/manifest.webmanifest",
         "/boxApp/polyfills-SCHOHYNV.js",
         "/boxApp/styles-6NCYGVEZ.css"
@@ -44,8 +44,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/boxApp/chunk-FHGEA3XE.js": "abe163745a228d39b22b4f6eaca7e76be0af848e",
-    "/boxApp/chunk-HSCRXHSR.js": "1c91cc4f6d028e99a1d66a1a7d55a7d596e3f8dc",
+    "/boxApp/chunk-FE6SVNIN.js": "cf77c255faa6a552c8ce89c741156d2de4fc5569",
+    "/boxApp/chunk-XLXEKKQG.js": "114b4fba73e6647eb1109c77ef2e4b52477d50ba",
     "/boxApp/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
     "/boxApp/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
     "/boxApp/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
@@ -55,8 +55,8 @@
     "/boxApp/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/boxApp/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/boxApp/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/boxApp/index.html": "ca6d12461f31988b2c3e0fc99e2c41694d85ec74",
-    "/boxApp/main-PBBYQQMI.js": "229f3894c43205567a34bc9897f9027c69214948",
+    "/boxApp/index.html": "fcc6de3a83d677d5658b96ffdd48ba3e3b086175",
+    "/boxApp/main-RVI7HFCV.js": "7b027c2fd175ca2ecd6a9e028a9509266b3b82f8",
     "/boxApp/manifest.webmanifest": "9bcda8fb135e479b0b34758d004c5129979263b4",
     "/boxApp/polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
     "/boxApp/styles-6NCYGVEZ.css": "530a399ea4ef0cdaa973fbf34dfaab7b6a0658e1"
