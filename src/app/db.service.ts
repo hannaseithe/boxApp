@@ -10,12 +10,14 @@ export class DbService {
   public Boxes: WritableSignal<Box[]>
   public Cats: WritableSignal<Cat[]>
   public Items: WritableSignal<Item[]>
+  public UnassignedItems: WritableSignal<Item[]>
 
 
   constructor() {
     this.Boxes = signal([])
     this.Items = signal([])
     this.Cats = signal([])
+    this.UnassignedItems = signal([])
   }
   init() {
     let boxes = localStorage.getItem('boxes')
@@ -112,19 +114,26 @@ export class DbService {
     let itemsArray = itemRes ? itemRes : []
     let boxesArray = boxRes ? boxRes : []
     let catsArray = catRes ? catRes : []
+    let uaItemsArray:Item[] = []
 
 
     itemsArray.forEach(item => {
       let box = boxesArray.find(box => item.boxID == box.id)
-      if (box && !box?.items) {
-        box.items = []
+      if (box) {
+        if (!box?.items) {
+          box.items = []
+        }
+        box?.items?.push(item)
+        item.boxName = box?.name
+      } else {
+        uaItemsArray.push(item)
       }
-      box?.items?.push(item)
-      item.boxName = box?.name
+      
     })
     this.Boxes.set(boxesArray)
     this.Cats.set(catsArray)
     this.Items.set(itemsArray)
+    this.UnassignedItems.set(uaItemsArray)
 
   }
 
