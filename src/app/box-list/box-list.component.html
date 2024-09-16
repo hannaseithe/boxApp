@@ -1,6 +1,10 @@
 <div class="example-button-row">
+    <button mat-button [matMenuTriggerFor]="menu">Developer Options</button>
+<mat-menu #menu="matMenu">
     <button mat-button (click)="clearStorage($event)">Clear Storage</button>
     <button mat-button (click)="initStorage($event)">Init Storage</button>
+</mat-menu>
+    
 </div>
 
     <mat-card *ngFor="let box of boxes()"appearance="outlined" [routerLink]=" ['/box',box?.id]">

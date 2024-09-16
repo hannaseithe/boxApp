@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Box, Item, uniqueId } from '../app';
 import { DbService } from '../db.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-item',
@@ -19,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatButtonModule, 
     MatChipsModule, 
     MatFormFieldModule,
+    MatIconModule,
     RouterModule, 
   ],
   templateUrl: './item.component.html',

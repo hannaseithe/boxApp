@@ -1,6 +1,8 @@
 
 <div class="example-button-row">
-    <button mat-button [routerLink]=" ['/']">List</button>
+    <button mat-button [routerLink]=" ['/']">
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+    </button>
     <button mat-button [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: box?.id}">Add New Item</button>
 </div>
 <mat-card appearance="outlined">

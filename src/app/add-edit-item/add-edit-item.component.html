@@ -11,6 +11,7 @@
             <mat-form-field>
                 <mat-label>Item category</mat-label>
                 <mat-select formControlName="catID">
+                  <mat-option [value]="">- No Category -</mat-option>
                     @for (cat of cats; track cat) {
                       <mat-option [value]="cat.id">{{cat.name}}</mat-option>
                     }

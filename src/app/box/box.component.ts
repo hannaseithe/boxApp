@@ -7,11 +7,12 @@ import { Box, uniqueId } from '../app';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-box',
   standalone: true,
-  imports: [NgFor, NgIf, MatCardModule, MatListModule, MatButtonModule, RouterModule],
+  imports: [NgFor, NgIf, MatCardModule, MatListModule, MatButtonModule, MatIconModule, RouterModule],
   templateUrl: './box.component.html',
   styleUrl: './box.component.css'
 })

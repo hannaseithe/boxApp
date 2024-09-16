@@ -8,6 +8,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-cat-list',
@@ -19,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
+    MatIconModule,
     ReactiveFormsModule,
   ],
   templateUrl: './cat-list.component.html',
@@ -40,7 +42,7 @@ export class CatListComponent {
     private data: DbService) {
     this.cats = this.data.Cats
     this.catFC = new FormControl("")
-    this.addNew = this.route.snapshot.queryParams['addNew'];
+    this.addNew = Boolean(this.route.snapshot.queryParams['addNew']);
     this.itemId = this.route.snapshot.queryParams['itemId'];
   }
 
