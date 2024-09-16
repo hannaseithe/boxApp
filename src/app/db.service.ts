@@ -116,6 +116,9 @@ export class DbService {
 
     itemsArray.forEach(item => {
       let box = boxesArray.find(box => item.boxID == box.id)
+      if (box && !box?.items) {
+        box.items = []
+      }
       box?.items?.push(item)
       item.boxName = box?.name
     })
@@ -123,6 +126,26 @@ export class DbService {
     this.Cats.set(catsArray)
     this.Items.set(itemsArray)
 
+  }
+
+  purifyBoxes(boxes:Box[]):Box[] {
+    return boxes.map(box => {return {id:box.id, name:box.name, description: box.description}})
+  }
+
+  purifyItems(items:Item[]):Item[] {
+    return items.map(item => {
+      return {
+        id:item.id, 
+        name:item.name,
+        description: item.description,
+        tags: item.tags,
+        boxID: item.boxID,
+        catID: item.catID
+      }})
+  }
+
+  purifyCats(cats:Cat[]):Cat[] {
+    return cats.map(cat => {return {id:cat.id, name:cat.name}})
   }
 
   clearStorage() {
@@ -135,6 +158,21 @@ export class DbService {
   }
   getBox(id: uniqueId) {
     return this.Boxes().find(box => box.id == id)
+  }
+
+  updateBox(edBox:Box) {
+    if (!edBox.id) {
+      edBox.id = crypto.randomUUID();
+      this.Boxes().push(edBox)
+    } else {
+      let i = this.Boxes().findIndex(box => box.id == edBox.id)
+      if (i > -1) {
+        this.Boxes().splice(i, 1, edBox);
+      } 
+    }
+    localStorage.setItem('boxes', JSON.stringify(this.purifyBoxes(this.Boxes())))
+    this.updateFK()
+    return this.getBox(edBox.id)
   }
 
   getCategories() {
@@ -160,7 +198,7 @@ export class DbService {
         this.Cats().splice(i, 1, edCat);
       } 
     }
-    localStorage.setItem('cats', JSON.stringify(this.Cats()))
+    localStorage.setItem('cats', JSON.stringify(this.purifyCats(this.Cats())))
     this.updateFK()
     return this.getCategory(edCat.id)
 
@@ -173,7 +211,7 @@ export class DbService {
     } else {
       return
     }
-    localStorage.setItem('cats', JSON.stringify(this.Cats()))
+    localStorage.setItem('cats', JSON.stringify(this.purifyCats(this.Cats())))
     this.updateFK()
   }
 
@@ -195,7 +233,7 @@ export class DbService {
     } else {
       this.Items().push(edItem)
     }
-    localStorage.setItem('items', JSON.stringify(this.Items()))
+    localStorage.setItem('items', JSON.stringify(this.purifyItems(this.Items())))
     this.updateFK()
     return this.getItem(edItem.id)
   }
@@ -207,7 +245,7 @@ export class DbService {
     } else {
       return
     }
-    localStorage.setItem('items', JSON.stringify(this.Items()))
+    localStorage.setItem('items', JSON.stringify(this.purifyItems(this.Items())))
     this.updateFK()
   }
 

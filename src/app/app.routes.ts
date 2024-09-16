@@ -5,6 +5,7 @@ import { ItemComponent } from './item/item.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { AddEditItemComponent } from './add-edit-item/add-edit-item.component';
 import { CatListComponent } from './cat-list/cat-list.component';
+import { AddEditBoxComponent } from './add-edit-box/add-edit-box.component';
 
 export const routes: Routes = [
     {
@@ -16,6 +17,16 @@ export const routes: Routes = [
         path: 'box/:id',
         component: BoxComponent,
         title: 'Box details',
+      },
+      {
+        path: 'add-edit-box/:id',
+        component: AddEditBoxComponent,
+        title: 'Edit Box',
+      },
+      {
+        path: 'add-edit-box',
+        component: AddEditBoxComponent,
+        title: 'Add Box',
       },
       {
         path: 'cat-list',
