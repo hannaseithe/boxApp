@@ -184,6 +184,17 @@ export class DbService {
     return this.getBox(edBox.id)
   }
 
+  deleteBox(id: uniqueId | undefined) {
+    let i = this.Boxes().findIndex((box) => box.id == id)
+    if (i > -1) {
+      this.Boxes().splice(i, 1);
+    } else {
+      return
+    }
+    localStorage.setItem('boxes', JSON.stringify(this.purifyBoxes(this.Boxes())))
+    this.updateFK()
+  }
+
   getCategories() {
     return this.Cats()
   }

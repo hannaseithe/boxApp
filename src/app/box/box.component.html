@@ -4,6 +4,7 @@
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
     </button>
     <button mat-button [routerLink]=" ['/add-edit-box',box?.id]" >Edit Box</button>
+    <button mat-button (click) ="deleteBox(id)" >Delete Box</button>
     <button mat-button [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: box?.id}">Add New Item</button>
 </div>
 <mat-card appearance="outlined">

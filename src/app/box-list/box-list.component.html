@@ -1,22 +1,30 @@
 <div class="example-button-row">
-    <button mat-button [routerLink]=" ['/add-edit-box']" >Add new Box</button>
+    <button mat-button [routerLink]=" ['/add-edit-box']">Add new Box</button>
     <button mat-button [matMenuTriggerFor]="menu">Developer Options</button>
-<mat-menu #menu="matMenu">
-    <button mat-button (click)="clearStorage($event)">Clear Storage</button>
-    <button mat-button (click)="initStorage($event)">Init Storage</button>
-</mat-menu>
-    
+    <mat-menu #menu="matMenu">
+        <button mat-button (click)="clearStorage($event)">Clear Storage</button>
+        <button mat-button (click)="initStorage($event)">Init Storage</button>
+    </mat-menu>
+
 </div>
-
-    <mat-card *ngFor="let box of boxes()"appearance="outlined" [routerLink]=" ['/box',box?.id]">
+@if (uaItems().length > 0) {
+    <mat-card>
         <mat-card-header>
-            <mat-card-title>{{box?.name}}</mat-card-title>
+            <mat-card-title>You have items that are unassigned to any box. Please delete or assign those items here</mat-card-title>
         </mat-card-header>
-        <mat-card-content>
-            
-              <p> <span *ngFor="let item of box?.items, let islast=last">{{ item.name }}<span *ngIf="!islast">, </span></span></p>
-        </mat-card-content>
-        
-    
-      </mat-card>
+    </mat-card>
+}
 
+
+<mat-card *ngFor="let box of boxes()" appearance="outlined" [routerLink]=" ['/box',box?.id]">
+    <mat-card-header>
+        <mat-card-title>{{box?.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+        <p> <span *ngFor="let item of box?.items, let islast=last">{{ item.name }}<span *ngIf="!islast">, </span></span>
+        </p>
+    </mat-card-content>
+
+
+</mat-card>

@@ -1,6 +1,6 @@
 import { Component, Signal } from '@angular/core';
 import { DbService } from '../db.service';
-import { Box } from '../app';
+import { Box, Item } from '../app';
 import { NgFor, NgIf } from '@angular/common';
 import { BoxComponent } from '../box/box.component';
 import { MatCardModule } from '@angular/material/card';
@@ -20,8 +20,10 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class BoxListComponent {
   public boxes: Signal<Box[]>;
+  public uaItems: Signal<Item[]>;
   constructor(private data: DbService) {
     this.boxes = this.data.Boxes
+    this.uaItems = this.data.UnassignedItems
   }
   ngOnInit(): void {
 
