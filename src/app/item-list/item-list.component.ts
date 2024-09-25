@@ -18,7 +18,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ItemListComponent {
   tag: string | undefined = undefined
-  cat: Cat | undefined = undefined
+  catID: uniqueId | undefined = undefined
+  catName: string | undefined = undefined
   items: Item[] = []
 
   route: ActivatedRoute = inject(ActivatedRoute);
@@ -26,14 +27,16 @@ export class ItemListComponent {
   constructor(private data: DbService) {
     if (this.route.snapshot.params['tag']) {
       this.tag = this.route.snapshot.params['tag'];
-    } else {
-      this.cat = this.route.snapshot.queryParams as Cat;
-    }
+    } else if (this.route.snapshot.queryParams) {
+      this.catID = this.route.snapshot.queryParams['id'];
+      this.catName = this.route.snapshot.queryParams['name'];
+    } 
 
   }
   ngOnInit(): void {
     if (this.tag) { this.items = this.data.getItemsByTag(this.tag) }
-    else if (this.cat) { this.items = this.data.getItemsByCat(this.cat.id) }
+    else if (this.catID) { this.items = this.data.getItemsByCat(this.catID) }
+    else { this.items = this.data.UnassignedItems()}
 
   }
 }

@@ -6,6 +6,7 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { AddEditItemComponent } from './add-edit-item/add-edit-item.component';
 import { CatListComponent } from './cat-list/cat-list.component';
 import { AddEditBoxComponent } from './add-edit-box/add-edit-box.component';
+import { UnassignedItemListComponent } from './unassigned-item-list/unassigned-item-list.component';
 
 export const routes: Routes = [
     {
@@ -57,5 +58,10 @@ export const routes: Routes = [
         path: 'item-list/:tag',
         component: ItemListComponent,
         title: 'List of Items',
+      },
+      {
+        path: 'unassigned-item-list',
+        component: UnassignedItemListComponent,
+        title: 'List of Unassigned Items',
       },
 ];

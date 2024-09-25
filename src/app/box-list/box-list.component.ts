@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-box-list',
@@ -14,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
   imports: [NgFor, NgIf, BoxComponent, MatCardModule,
     MatButtonModule,
     MatMenuModule,
+    MatIconModule,
     RouterModule],
   templateUrl: './box-list.component.html',
   styleUrl: './box-list.component.css'

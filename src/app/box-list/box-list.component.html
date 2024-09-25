@@ -8,11 +8,10 @@
 
 </div>
 @if (uaItems().length > 0) {
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>You have items that are unassigned to any box. Please delete or assign those items here</mat-card-title>
-        </mat-card-header>
-    </mat-card>
+<span class="warning"><mat-icon>error_outline</mat-icon> You have items that are unassigned to any box. Please delete or assign those items
+    <button mat-button [routerLink]=" ['/unassigned-item-list']">here</button>
+</span>
+
 }
 
 

@@ -7,8 +7,11 @@
   @if (tag) {
     <mat-chip><mat-icon matChipAvatar aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon> {{ tag }}</mat-chip>
   }
-  @else if (cat) {
-    <span>{{cat.name}}</span>
+  @else if (catID) {
+    <span>{{catName}}</span>
+  }
+  @else {
+    <span>List of Unassigned Items</span>
   }
     
   </mat-toolbar>

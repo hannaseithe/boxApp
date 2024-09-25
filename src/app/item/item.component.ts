@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { Location, NgFor, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -36,7 +36,8 @@ export class ItemComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
 
   constructor(private data:DbService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
     if (this.route.snapshot.params['id']) { 
       this.id = this.route.snapshot.params['id'];
@@ -50,7 +51,8 @@ export class ItemComponent {
 
   deleteItem(): void {
     this.data.deleteItem(this.item?.id as uniqueId)
-    this.router.navigateByUrl('/box/'+this.item?.boxID)
+    this.location.back()
+   
   }
 
 }
