@@ -92,19 +92,8 @@ export class DbService {
       }]))
       items = localStorage.getItem('items') as string
     }
+    this.updateFK()
 
-    let itemsArray = JSON.parse(items) as Item[]
-
-    itemsArray.forEach(item => {
-      let box = boxesArray.find(box => item.boxID == box.id)
-      box?.items?.push(item)
-      item.boxName = box?.name
-    })
-
-    //this.boxes = boxesArray
-    this.Boxes.set(boxesArray)
-    this.Items.set(itemsArray)
-    this.Cats.set(catsArray)
   }
 
   updateFK() {
