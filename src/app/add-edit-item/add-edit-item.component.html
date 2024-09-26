@@ -58,7 +58,8 @@
                 />
               </mat-form-field>
         </div>
-        <button mat-button type="submit" [disabled]="!form.valid">Save</button>
+        <button mat-button type="submit" [disabled]="!form.valid || !form.dirty">Save</button>
+        <button mat-button (click)="cancel()" type="button">Cancel</button>
     </mat-card-content>
   </form>
 </mat-card>

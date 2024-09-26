@@ -12,6 +12,7 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { filter } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-item',
@@ -42,7 +43,8 @@ export class AddEditItemComponent {
   constructor(
     private route: ActivatedRoute,
     private data: DbService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
 
     this.form = new FormGroup({
@@ -106,6 +108,10 @@ export class AddEditItemComponent {
     let editedItem = this.data.updateItem(formItem);
     console.log(editedItem)
     this.router.navigateByUrl('/item/'+ editedItem?.id )
+  }
+
+  cancel() {
+    this.location.back()
   }
 
 }

@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
 import { uniqueId } from '../app';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-box',
@@ -30,7 +31,9 @@ export class AddEditBoxComponent {
 
   constructor(private route: ActivatedRoute,
     private data: DbService,
-    private router: Router) {
+    private router: Router,
+    private location:Location  
+  ) {
     this.form = new FormGroup({
       name: new FormControl(''),
       description: new FormControl('')
@@ -54,6 +57,10 @@ export class AddEditBoxComponent {
         this.form.patchValue(x);
       }
     }
+  }
+
+  cancel() {
+    this.location.back()
   }
 
 }
