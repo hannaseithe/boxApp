@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+$theme: mat.define-theme((color: (theme-type: light,
+                primary: mat.$azure-palette,
+                tertiary: mat.$blue-palette ),
+        ));
+
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.warning {
+    color: mat.get-theme-color($theme, error, 40)!important;
+    background-color: mat.get-theme-color($theme,error,90)!important
+}
+.warning button {
+    background-color: mat.get-theme-color($theme,error,20)!important;
+    color: mat.get-theme-color($theme, error, 90)!important;
+}

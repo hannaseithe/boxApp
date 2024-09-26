@@ -9,12 +9,16 @@
 </div>
 <mat-card appearance="outlined">
     <mat-card-header>
+        <div mat-card-avatar><mat-icon>pages</mat-icon></div>
         <mat-card-title>{{box?.name}}</mat-card-title>
         <mat-card-subtitle>{{box?.description}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item *ngFor="let item of box?.items" [routerLink]=" ['/item',item?.id]"role="listitem">{{ item.name }}</mat-list-item>
+            <mat-list-item *ngFor="let item of box?.items" [routerLink]=" ['/item',item?.id]"role="listitem">
+                <mat-icon matListItemIcon>adjust</mat-icon>
+                {{ item.name }}
+            </mat-list-item>
           </mat-list>
     </mat-card-content>
     

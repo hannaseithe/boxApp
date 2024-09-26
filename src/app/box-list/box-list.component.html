@@ -8,16 +8,36 @@
 
 </div>
 @if (uaItems().length > 0) {
-<span class="warning"><mat-icon>error_outline</mat-icon> You have items that are unassigned to any box. Please delete or assign those items
-    <button mat-button [routerLink]=" ['/unassigned-item-list']">here</button>
-</span>
+<mat-card class="warning">
+    <mat-card-header>
+        <div mat-card-avatar>
+            <mat-icon class="warning">error_outline</mat-icon>
+        </div>
+        <mat-card-subtitle>
+            You have items that are unassigned to any box. Please delete or assign those
+            items
+            <button mat-fab [routerLink]=" ['/unassigned-item-list']" class="warning">Here</button>
+    
+    
+    
+        </mat-card-subtitle>
+
+
+    </mat-card-header>
+   
+
+</mat-card>
 
 }
 
 
 <mat-card *ngFor="let box of boxes()" appearance="outlined" [routerLink]=" ['/box',box?.id]">
     <mat-card-header>
-        <mat-card-title>{{box?.name}}</mat-card-title>
+        <div mat-card-avatar><mat-icon>pages</mat-icon></div>
+        <mat-card-title><span>{{box?.name}}</span></mat-card-title>
+        @if (box?.description) {
+        <mat-card-subtitle>{{box?.description}}</mat-card-subtitle>
+        }
     </mat-card-header>
     <mat-card-content>
 
