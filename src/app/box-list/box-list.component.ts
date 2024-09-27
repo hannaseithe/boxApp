@@ -38,4 +38,8 @@ export class BoxListComponent {
   public initStorage(event: Event) {
     this.data.init()
   }
+
+  sortFn(a: Box | Item,b: Box | Item) {
+    return a.name < b.name ? -1: a.name == b.name ? 0:1
+  }
 }

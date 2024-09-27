@@ -33,7 +33,7 @@
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
-            @for (cat of cats(); track cat) {
+            @for (cat of cats().sort(sortFn); track cat) {
             @if (!isCatEdited(cat.id)) {
             <mat-list-item role="listitem">
                 {{ cat?.name }}

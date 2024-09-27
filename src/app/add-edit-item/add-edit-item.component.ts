@@ -61,8 +61,8 @@ export class AddEditItemComponent {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     let boxID = this.route.snapshot.queryParams['boxId'];
-    this.boxes = this.data.getBoxes()
-    this.cats = this.data.getCategories()
+    this.boxes = this.data.getBoxes().sort(this.sortFn)
+    this.cats = this.data.getCategories().sort(this.sortFn)
     this.isAddMode = !this.id;
 
     if (boxID) {
@@ -75,6 +75,10 @@ export class AddEditItemComponent {
         this.form.patchValue(x);
       }
     }
+  }
+
+  sortFn(a: Box | Cat,b: Box | Cat) {
+    return a.name < b.name ? -1: a.name == b.name ? 0:1
   }
 
   remove(tag: string) {

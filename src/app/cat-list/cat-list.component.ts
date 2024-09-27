@@ -29,7 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class CatListComponent {
 
   addNew = false
-  itemId: uniqueId;
+  itemId: uniqueId | undefined = undefined;
 
   catFC: FormControl
 
@@ -42,6 +42,10 @@ export class CatListComponent {
     private data: DbService) {
     this.cats = this.data.Cats
     this.catFC = new FormControl("")
+
+  }
+
+  ngOnInit() {
     this.addNew = Boolean(this.route.snapshot.queryParams['addNew']);
     this.itemId = this.route.snapshot.queryParams['itemId'];
   }
@@ -87,6 +91,10 @@ export class CatListComponent {
 
   delete(cat:Cat) {
     this.data.deleteCat(cat.id)
+  }
+
+  sortFn(a: Cat,b: Cat) {
+    return a.name < b.name ? -1: a.name == b.name ? 0:1
   }
 
 }

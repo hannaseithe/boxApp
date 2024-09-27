@@ -8,7 +8,7 @@
     <span>List of Unassigned Items</span>
 
 </mat-toolbar>
-<mat-card *ngFor="let item of items()" appearance="outlined">
+<mat-card *ngFor="let item of items().sort(sortFn)" appearance="outlined">
     <mat-card-header>
         <mat-card-title>{{item.name}} <button mat-button (click)="delete(item)">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>

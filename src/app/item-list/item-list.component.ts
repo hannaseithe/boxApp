@@ -39,4 +39,7 @@ export class ItemListComponent {
     else { this.items = this.data.UnassignedItems()}
 
   }
+  sortFn(a: Item,b: Item) {
+    return a.name < b.name ? -1: a.name == b.name ? 0:1
+  }
 }
