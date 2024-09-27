@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { DbService } from '../db.service';
 import { Cat, uniqueId } from '../app';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -36,9 +36,9 @@ export class CatListComponent {
   public cats: Signal<Cat[]>
 
   catVisibility: { [id: string]: boolean } = {};
+  route: ActivatedRoute = inject(ActivatedRoute);
 
   constructor(
-    private route: ActivatedRoute,
     private data: DbService) {
     this.cats = this.data.Cats
     this.catFC = new FormControl("")
@@ -46,7 +46,7 @@ export class CatListComponent {
   }
 
   ngOnInit() {
-    this.addNew = Boolean(this.route.snapshot.queryParams['addNew']);
+    this.addNew = "true"== this.route.snapshot.queryParams['addNew'];
     this.itemId = this.route.snapshot.queryParams['itemId'];
   }
 
