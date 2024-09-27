@@ -15,7 +15,7 @@
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item *ngFor="let item of box?.items" [routerLink]=" ['/item',item?.id]"role="listitem">
+            <mat-list-item *ngFor="let item of box?.items?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"role="listitem">
                 <mat-icon matListItemIcon>adjust</mat-icon>
                 {{ item.name }}
             </mat-list-item>

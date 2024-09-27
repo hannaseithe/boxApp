@@ -94,7 +94,7 @@ export class CatListComponent {
   }
 
   sortFn(a: Cat,b: Cat) {
-    return a.name < b.name ? -1: a.name == b.name ? 0:1
+    return a.name.toLowerCase() < b.name.toLowerCase() ? -1: a.name.toLowerCase() == b.name.toLowerCase() ? 0:1
   }
 
 }

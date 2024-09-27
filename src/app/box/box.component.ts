@@ -3,7 +3,7 @@ import { DbService } from '../db.service';
 import { NgFor, NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card'
 import { MatListModule} from '@angular/material/list'
-import { Box, uniqueId } from '../app';
+import { Box, Item, uniqueId } from '../app';
 import { Router, RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -42,5 +42,9 @@ export class BoxComponent {
   deleteBox(id:uniqueId | undefined) {
     this.data.deleteBox(id)
     this.router.navigateByUrl("/")
+  }
+
+  sortFn(a: Item,b: Item) {
+    return a.name.toLowerCase() < b.name.toLowerCase() ? -1: a.name.toLowerCase() == b.name.toLowerCase() ? 0:1
   }
 }

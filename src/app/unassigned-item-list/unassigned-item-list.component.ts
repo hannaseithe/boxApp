@@ -58,6 +58,6 @@ export class UnassignedItemListComponent {
   }
 
   sortFn(a: Item,b: Item) {
-    return a.name < b.name ? -1: a.name == b.name ? 0:1
+    return a.name.toLowerCase() < b.name.toLowerCase() ? -1: a.name.toLowerCase() == b.name.toLowerCase() ? 0:1
   }
 }
