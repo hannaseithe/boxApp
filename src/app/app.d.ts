@@ -13,7 +13,7 @@ export type Item = {
 export type Box = {
   id: uniqueId,
   name: string,
-  description: string,
+  description?: string,
   items?: item[]
 }
 

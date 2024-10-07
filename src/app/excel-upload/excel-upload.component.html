@@ -1,0 +1,15 @@
+<span>
+    <button type="button" mat-raised-button (click)="fileInput.click()">Import Excel File</button>
+    <input hidden type="file" (change)="onFileChange($event)" #fileInput accept=".xlsx, .xls">
+</span>
+
+<div *ngIf="errorLog">
+    <h3>Error Messages:</h3>
+    <pre>{{ errorLog | json }}</pre>
+  </div>
+  
+  <div *ngIf="excelData">
+    <h3>Uploaded Data:</h3>
+    <pre>{{ excelData | json }}</pre>
+  </div>
+

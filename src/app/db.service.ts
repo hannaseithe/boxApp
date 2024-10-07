@@ -1,5 +1,6 @@
 import { Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { Box, Cat, Item, uniqueId } from './app';
+import { initializeApp } from './app.config';
 
 
 @Injectable({
@@ -19,77 +20,83 @@ export class DbService {
     this.Cats = signal([])
     this.UnassignedItems = signal([])
   }
-  init() {
+
+  private initBoxes = [
+    {
+      id: crypto.randomUUID(),
+      name: "1",
+      description: ""
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "2",
+      description: ""
+    }]
+
+  private initCats = [
+    {
+      id: crypto.randomUUID(),
+      name: "Gartenzeug"
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "Bücher"
+    }]
+
+  private initItems = [{
+    id: crypto.randomUUID(),
+    name: "Kissen",
+    catID: this.initCats[0].id,
+    description: "3 Kissen",
+    tags: ["ausmisten"],
+    boxID: this.initBoxes[0].id
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Decken",
+    catID: this.initCats[0].id,
+    description: "",
+    tags: [],
+    boxID: this.initBoxes[0].id
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Beetschaufel",
+    catID: this.initCats[1].id,
+    description: "",
+    tags: [],
+    boxID: this.initBoxes[1].id
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Gummistiefel",
+    catID: this.initCats[0].id,
+    description: "",
+    tags: [],
+    boxID: this.initBoxes[1].id
+  }]
+
+
+  init(newBoxes? : Box[], newCats?: Cat[], newItems?: Item[]) {
     let boxes = localStorage.getItem('boxes')
     if (!boxes) {
-      localStorage.setItem('boxes', JSON.stringify([
-        {
-          id: crypto.randomUUID(),
-          name: "1",
-          description: "",
-          items: []
-        },
-        {
-          id: crypto.randomUUID(),
-          name: "2",
-          description: "",
-          items: []
-        }]))
+      let initBoxes = newBoxes ? newBoxes : this.initBoxes
+      localStorage.setItem('boxes', JSON.stringify(this.purifyBoxes(initBoxes)))
       boxes = localStorage.getItem('boxes') as string
     }
-    let boxesArray = JSON.parse(boxes) as Box[]
 
     let cats = localStorage.getItem('cats')
     if (!cats) {
+      let initCats = newCats ? newCats : this.initCats
       localStorage.setItem('cats',
-        JSON.stringify([
-          {
-            id: 1,
-            name: "Gartenzeug"
-          },
-          {
-            id: 2,
-            name: "Bücher"
-          }]))
+        JSON.stringify(this.purifyCats(initCats)))
       cats = localStorage.getItem('cats') as string
     }
 
-    let catsArray = JSON.parse(cats) as any[]
-
     let items = localStorage.getItem('items')
     if (!items) {
-      localStorage.setItem('items', JSON.stringify([{
-        id: crypto.randomUUID(),
-        name: "Kissen",
-        catID: catsArray[0].id,
-        description: "3 Kissen",
-        tags: ["ausmisten"],
-        boxID: boxesArray[0].id
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Decken",
-        catID: catsArray[0].id,
-        description: "",
-        tags: [],
-        boxID: boxesArray[0].id
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Beetschaufel",
-        catID: catsArray[1].id,
-        description: "",
-        tags: [],
-        boxID: boxesArray[1].id
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Gummistiefel",
-        catID: catsArray[0].id,
-        description: "",
-        tags: [],
-        boxID: boxesArray[1].id
-      }]))
+      let initItems = newItems ? newItems : this.initItems
+      localStorage.setItem('items', JSON.stringify(this.purifyItems(initItems)))
       items = localStorage.getItem('items') as string
     }
     this.updateFK()
@@ -103,7 +110,7 @@ export class DbService {
     let itemsArray = itemRes ? itemRes : []
     let boxesArray = boxRes ? boxRes : []
     let catsArray = catRes ? catRes : []
-    let uaItemsArray:Item[] = []
+    let uaItemsArray: Item[] = []
 
 
     itemsArray.forEach(item => {
@@ -117,7 +124,7 @@ export class DbService {
       } else {
         uaItemsArray.push(item)
       }
-      
+
     })
     this.Boxes.set(boxesArray)
     this.Cats.set(catsArray)
@@ -126,24 +133,36 @@ export class DbService {
 
   }
 
-  purifyBoxes(boxes:Box[]):Box[] {
-    return boxes.map(box => {return {id:box.id, name:box.name, description: box.description}})
+  generateNewId() {
+    return crypto.randomUUID()
   }
 
-  purifyItems(items:Item[]):Item[] {
+  initializeNewDBfromExcel(boxes: Box[], cats: Cat[], items: Item[]) {
+    this.clearStorage()
+
+    this.init(boxes, cats, items)
+
+  }
+
+  purifyBoxes(boxes: Box[]): Box[] {
+    return boxes.map(box => { return { id: box.id, name: box.name, description: box.description } })
+  }
+
+  purifyItems(items: Item[]): Item[] {
     return items.map(item => {
       return {
-        id:item.id, 
-        name:item.name,
+        id: item.id,
+        name: item.name,
         description: item.description,
         tags: item.tags,
         boxID: item.boxID,
         catID: item.catID
-      }})
+      }
+    })
   }
 
-  purifyCats(cats:Cat[]):Cat[] {
-    return cats.map(cat => {return {id:cat.id, name:cat.name}})
+  purifyCats(cats: Cat[]): Cat[] {
+    return cats.map(cat => { return { id: cat.id, name: cat.name } })
   }
 
   clearStorage() {
@@ -158,7 +177,7 @@ export class DbService {
     return this.Boxes().find(box => box.id == id)
   }
 
-  updateBox(edBox:Box) {
+  updateBox(edBox: Box) {
     if (!edBox.id) {
       edBox.id = crypto.randomUUID();
       this.Boxes().push(edBox)
@@ -166,7 +185,7 @@ export class DbService {
       let i = this.Boxes().findIndex(box => box.id == edBox.id)
       if (i > -1) {
         this.Boxes().splice(i, 1, edBox);
-      } 
+      }
     }
     localStorage.setItem('boxes', JSON.stringify(this.purifyBoxes(this.Boxes())))
     this.updateFK()
@@ -188,7 +207,7 @@ export class DbService {
     return this.Cats()
   }
 
-  getCategory(id:uniqueId) {
+  getCategory(id: uniqueId) {
     let result = this.Cats().find(cat => cat.id == id)
     return result
   }
@@ -197,7 +216,7 @@ export class DbService {
     return this.Cats().find(cat => cat.id == id)?.name
   }
 
-  updateCat(edCat:Cat) {
+  updateCat(edCat: Cat) {
     if (!edCat.id) {
       edCat.id = crypto.randomUUID();
       this.Cats().push(edCat)
@@ -205,7 +224,7 @@ export class DbService {
       let i = this.Cats().findIndex(cat => cat.id == edCat.id)
       if (i > -1) {
         this.Cats().splice(i, 1, edCat);
-      } 
+      }
     }
     localStorage.setItem('cats', JSON.stringify(this.purifyCats(this.Cats())))
     this.updateFK()
