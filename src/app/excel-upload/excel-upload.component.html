@@ -3,13 +3,10 @@
     <input hidden type="file" (change)="onFileChange($event)" #fileInput accept=".xlsx, .xls">
 </span>
 
-<div *ngIf="errorLog">
+<div *ngIf="errorLog.length > 0">
+    <h2>Upload did not work. Please fix the following parsing errors:</h2>
     <h3>Error Messages:</h3>
     <pre>{{ errorLog | json }}</pre>
   </div>
   
-  <div *ngIf="excelData">
-    <h3>Uploaded Data:</h3>
-    <pre>{{ excelData | json }}</pre>
-  </div>
 
