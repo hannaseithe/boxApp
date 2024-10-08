@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ExcelUploadComponent } from "../excel-upload/excel-upload.component";
+import { ExcelDownloadComponent } from '../excel-download/excel-download.component';
 
 @Component({
   selector: 'app-box-list',
@@ -17,7 +18,10 @@ import { ExcelUploadComponent } from "../excel-upload/excel-upload.component";
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
-    RouterModule, ExcelUploadComponent],
+    RouterModule,
+    ExcelUploadComponent,
+    ExcelDownloadComponent
+  ],
   templateUrl: './box-list.component.html',
   styleUrl: './box-list.component.css'
 })
@@ -40,8 +44,8 @@ export class BoxListComponent {
     this.data.init()
   }
 
-  sortFn(a: Box | Item,b: Box | Item) {
+  sortFn(a: Box | Item, b: Box | Item) {
     //return -1
-    return a.name.toLowerCase() < b.name.toLowerCase() ? -1: a.name.toLowerCase() == b.name.toLowerCase() ? 0:1
+    return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() == b.name.toLowerCase() ? 0 : 1
   }
 }
