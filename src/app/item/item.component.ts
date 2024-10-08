@@ -35,6 +35,8 @@ export class ItemComponent {
 
   route: ActivatedRoute = inject(ActivatedRoute);
 
+  reset: any
+
   constructor(private data:DbService,
     private router: Router,
     private location: Location
@@ -50,9 +52,13 @@ export class ItemComponent {
   }
 
   deleteItem(): void {
-    this.data.deleteItem(this.item?.id as uniqueId)
-    this.location.back()
+    this.reset = this.data.deleteItem(this.item?.id as uniqueId)
+    //this.location.back()
    
+  }
+
+  restoreItem() {
+    this.reset()
   }
 
 }

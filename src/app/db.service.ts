@@ -272,7 +272,27 @@ export class DbService {
     return this.getItem(edItem.id)
   }
 
+  resetOption(data: any, tablename: string) {
+    let THIS = this
+     function reset() {
+      
+      if (reset.active) {
+        switch (tablename){
+          case "items":
+            localStorage.setItem('items', JSON.stringify(THIS.purifyItems(data)))
+            THIS.updateFK() 
+        }
+      }
+    }
+    reset.cancel = () => {reset.active = false}
+    reset.active = true
+    
+    setInterval(() => reset.active = false, 30000)
+    return reset
+  }
+
   deleteItem(id: uniqueId) {
+    let oldItems = [...this.Items()]
     let i = this.Items().findIndex((item) => item.id == id)
     if (i > -1) {
       this.Items().splice(i, 1);
@@ -281,6 +301,7 @@ export class DbService {
     }
     localStorage.setItem('items', JSON.stringify(this.purifyItems(this.Items())))
     this.updateFK()
+    return this.resetOption(oldItems, "items")
   }
 
   getItemsByCat(id: uniqueId) {
