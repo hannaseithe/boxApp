@@ -9,6 +9,7 @@ import { Box, Item, uniqueId } from '../app';
 import { DbService } from '../db.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { UndoService } from '../undo.service';
 
 @Component({
   selector: 'app-item',
@@ -39,7 +40,8 @@ export class ItemComponent {
 
   constructor(private data:DbService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private undo: UndoService
   ) {
     if (this.route.snapshot.params['id']) { 
       this.id = this.route.snapshot.params['id'];
@@ -53,12 +55,9 @@ export class ItemComponent {
 
   deleteItem(): void {
     this.reset = this.data.deleteItem(this.item?.id as uniqueId)
+    this.undo.push(this.reset)
     //this.location.back()
    
-  }
-
-  restoreItem() {
-    this.reset()
   }
 
 }

@@ -272,28 +272,32 @@ export class DbService {
     return this.getItem(edItem.id)
   }
 
-  resetOption(data: any, tablename: string) {
+  resetOption(data: any, tablename: string, message: string) {
     let THIS = this
      function reset() {
       
-      if (reset.active) {
+      if (reset.active()) {
         switch (tablename){
           case "items":
             localStorage.setItem('items', JSON.stringify(THIS.purifyItems(data)))
             THIS.updateFK() 
+            reset.active.set(false)
         }
       }
     }
-    reset.cancel = () => {reset.active = false}
-    reset.active = true
+    reset.cancel = () => {reset.active.set(false)}
+    reset.active = signal(true)
+    reset.message = message
     
-    setInterval(() => reset.active = false, 30000)
+    setTimeout(() => reset.active.set(false), 10000)
     return reset
   }
 
   deleteItem(id: uniqueId) {
     let oldItems = [...this.Items()]
+    
     let i = this.Items().findIndex((item) => item.id == id)
+    let oldItemName = this.Items()[i].name
     if (i > -1) {
       this.Items().splice(i, 1);
     } else {
@@ -301,7 +305,7 @@ export class DbService {
     }
     localStorage.setItem('items', JSON.stringify(this.purifyItems(this.Items())))
     this.updateFK()
-    return this.resetOption(oldItems, "items")
+    return this.resetOption(oldItems, "items", "The item >" + oldItemName + "< has been deleted.")
   }
 
   getItemsByCat(id: uniqueId) {

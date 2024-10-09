@@ -5,9 +5,6 @@
     <button mat-button [routerLink]=" ['/box', box?.id]">Back To Box #{{ box?.name }}</button>
     <button mat-button [routerLink]=" ['/add-edit-item', item?.id]">Edit Item</button>
     <button mat-button (click)="deleteItem()">Delete Item</button>
-    @if (reset?.active) {
-        <button mat-button (click)="restoreItem()">Restore Item</button>
-    }
 </div>
 <mat-card appearance="outlined">
     <mat-card-header>
