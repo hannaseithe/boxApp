@@ -5,6 +5,7 @@ import {
   MatBottomSheetRef,
 } from '@angular/material/bottom-sheet';
 import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
+import { resetFn } from './app';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class UndoService {
 
 
 
-  push(resetFn: Function) {
+  push(resetFn: resetFn) {
     if (this.reset) {
       this.reset.cancel()
       this.reset = null

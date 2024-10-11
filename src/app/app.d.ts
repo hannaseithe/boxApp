@@ -1,3 +1,12 @@
+import { Signal } from "@angular/core"
+
+export type resetFn = {
+  (): void,
+  cancel: () => void,
+  active: Signal<boolean>,
+  message: string
+}
+
 
 export type Item = {
   id: uniqueId,

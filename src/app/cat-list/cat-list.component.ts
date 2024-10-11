@@ -94,7 +94,10 @@ export class CatListComponent {
 
   delete(cat:Cat) {
     let resetFn = this.data.deleteCat(cat.id)
-    this.undo.push(resetFn as Function)
+    if (resetFn) {
+        this.undo.push(resetFn)
+    }
+
   }
 
   sortFn(a: Cat,b: Cat) {

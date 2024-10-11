@@ -1,5 +1,5 @@
 import { Injectable, signal, Signal, WritableSignal } from '@angular/core';
-import { Box, Cat, Item, uniqueId } from './app';
+import { Box, Cat, Item, resetFn, uniqueId } from './app';
 import { initializeApp } from './app.config';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
@@ -231,7 +231,7 @@ export class DbService {
     return this.getBox(edBox.id)
   }
 
-  deleteBox(id: uniqueId | undefined) {
+  deleteBox(id: uniqueId | undefined):resetFn | void {
     let oldBoxes = [...this.Boxes()]
 
     let i = this.Boxes().findIndex((box) => box.id == id)
@@ -275,7 +275,7 @@ export class DbService {
 
   }
 
-  deleteCat(id: uniqueId) {
+  deleteCat(id: uniqueId): resetFn | void {
     let oldCats = [...this.Cats()]
     let i = this.Cats().findIndex((cat) => cat.id == id)
     let oldCatName = this.Cats()[i].name
@@ -314,7 +314,7 @@ export class DbService {
 
 
 
-  deleteItem(id: uniqueId) {
+  deleteItem(id: uniqueId) : resetFn | void{
     let oldItems = [...this.Items()]
     
     let i = this.Items().findIndex((item) => item.id == id)
