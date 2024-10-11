@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, Signal, computed, inject } from '@angular/core';
 import { DbService } from '../db.service';
 import { NgFor, NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card'
@@ -24,19 +24,19 @@ export class BoxComponent {
 
   
 
-  public box:Box | undefined = undefined;
+  public box: Signal<Box | undefined> ;
 
   constructor(private data:DbService,
     private router: Router
   ){
-   if (this.route.snapshot.params['id']) { 
+  
     this.id = this.route.snapshot.params['id'];
+    this.box = computed(() => this.data.Boxes().find(box=> box.id == this.id))
     this.simple = false;
-   }
+   
   }
 
   ngOnInit(): void {
-    if ( this.id ) {this.box = this.data.getBox(this.id) };
   }
 
   deleteBox(id:uniqueId | undefined) {

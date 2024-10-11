@@ -3,19 +3,19 @@
     <button mat-button [routerLink]=" ['/']">
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
     </button>
-    <button mat-button [routerLink]=" ['/add-edit-box',box?.id]" >Edit Box</button>
+    <button mat-button [routerLink]=" ['/add-edit-box',box()?.id]" >Edit Box</button>
     <button mat-button (click) ="deleteBox(id)" >Delete Box</button>
-    <button mat-button [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: box?.id}">Add New Item</button>
+    <button mat-button [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: box()?.id}">Add New Item</button>
 </div>
 <mat-card appearance="outlined">
     <mat-card-header>
         <div mat-card-avatar><mat-icon>pages</mat-icon></div>
-        <mat-card-title>{{box?.name}}</mat-card-title>
-        <mat-card-subtitle>{{box?.description}}</mat-card-subtitle>
+        <mat-card-title>{{box()?.name}}</mat-card-title>
+        <mat-card-subtitle>{{box()?.description}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item *ngFor="let item of box?.items?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"role="listitem">
+            <mat-list-item *ngFor="let item of box()?.items?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"role="listitem">
                 <mat-icon matListItemIcon>adjust</mat-icon>
                 {{ item.name }}
             </mat-list-item>

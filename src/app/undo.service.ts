@@ -17,27 +17,16 @@ export class UndoService {
   private _bottomSheet = inject(MatBottomSheet);
 
   constructor() {
-    let sheetRef;
-    effect(() => {
-     if (this.active) {
-      if (!this.active()) {
-        this._bottomSheet.dismiss()
-        this.reset.cancel()
-        this.reset = null
-      }
-     }
-
-
-
-    });
-
-
   }
 
 
 
 
   push(resetFn: Function) {
+    if (this.reset) {
+      this.reset.cancel()
+      this.reset = null
+    }
 
     this.reset = resetFn
     this.active = computed(()=> {
@@ -52,6 +41,7 @@ export class UndoService {
       if (this.active()) {
         sheetRef = this._bottomSheet.open(BottomSheetComponent, {
           data: { reset: this.reset },
+          closeOnNavigation: false
         });
         sheetRef.afterDismissed().subscribe(() => {
           this.reset.cancel()

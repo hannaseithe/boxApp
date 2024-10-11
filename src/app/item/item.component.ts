@@ -1,5 +1,5 @@
 import { Location, NgFor, NgIf } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -15,49 +15,53 @@ import { UndoService } from '../undo.service';
   selector: 'app-item',
   standalone: true,
   imports: [
-    NgFor, NgIf, 
-    MatCardModule, 
-    MatListModule, 
-    MatButtonModule, 
-    MatChipsModule, 
+    NgFor, NgIf,
+    MatCardModule,
+    MatListModule,
+    MatButtonModule,
+    MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
-    RouterModule, 
+    RouterModule,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.css'
 })
 export class ItemComponent {
 
+  items: Signal<Item[]>
   id: uniqueId | undefined = undefined;
   boxId: number | undefined = undefined;
-  item: Item | undefined = undefined;
+  item: Signal<Item | undefined>;
   box: Box | undefined = undefined;
 
   route: ActivatedRoute = inject(ActivatedRoute);
 
   reset: any
 
-  constructor(private data:DbService,
+  constructor(private data: DbService,
     private router: Router,
     private location: Location,
     private undo: UndoService
   ) {
-    if (this.route.snapshot.params['id']) { 
-      this.id = this.route.snapshot.params['id'];
-     }
-     
+    this.items = this.data.Items
+    this.id = this.route.snapshot.params['id'];
+    this.item = computed(() => {
+      let item = this.items().find(item => item.id == this.id)
+      if (item) { this.box = this.data.getBox(item.boxID) }
+      return item
+    })
+
   }
   ngOnInit(): void {
-    if ( this.id ) {this.item = this.data.getItem(this.id) };
-    if (this.item) {this.box = this.data.getBox(this.item.boxID) }
+
   }
 
   deleteItem(): void {
-    this.reset = this.data.deleteItem(this.item?.id as uniqueId)
+    this.reset = this.data.deleteItem(this.item()?.id as uniqueId)
     this.undo.push(this.reset)
-    //this.location.back()
-   
+    this.location.back()
+
   }
 
 }
