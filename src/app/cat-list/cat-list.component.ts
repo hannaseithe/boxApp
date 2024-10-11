@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { UndoService } from '../undo.service';
 
 @Component({
   selector: 'app-cat-list',
@@ -39,7 +40,9 @@ export class CatListComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
 
   constructor(
-    private data: DbService) {
+    private data: DbService,
+  private undo: UndoService
+  ) {
     this.cats = this.data.Cats
     this.catFC = new FormControl("")
 
@@ -90,7 +93,8 @@ export class CatListComponent {
   }
 
   delete(cat:Cat) {
-    this.data.deleteCat(cat.id)
+    let resetFn = this.data.deleteCat(cat.id)
+    this.undo.push(resetFn as Function)
   }
 
   sortFn(a: Cat,b: Cat) {

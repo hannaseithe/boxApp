@@ -176,6 +176,39 @@ export class DbService {
     this.updateFK()
   }
 
+  resetOption(data: any, tablename: string, message: string) {
+    let THIS = this
+     function reset() {
+      
+      if (reset.active()) {
+        switch (tablename){
+          case "items":
+            localStorage.setItem('items', JSON.stringify(THIS.purifyItems(data)))
+            THIS.updateFK() 
+            reset.active.set(false)
+            break;
+          case "cats":
+            localStorage.setItem('cats', JSON.stringify(THIS.purifyCats(data)))
+            THIS.updateFK() 
+            reset.active.set(false)
+            break;
+          case "boxes":
+            localStorage.setItem('boxes', JSON.stringify(THIS.purifyBoxes(data)))
+            THIS.updateFK() 
+            reset.active.set(false)
+            break;
+        }
+      }
+    }
+    reset.cancel = () => {reset.active.set(false)}
+    reset.active = signal(true)
+    
+    reset.message = message
+    
+    setTimeout(() => reset.active.set(false), 10000)
+    return reset
+  }
+
   getBoxes() {
     return this.Boxes()
   }
@@ -199,7 +232,10 @@ export class DbService {
   }
 
   deleteBox(id: uniqueId | undefined) {
+    let oldBoxes = [...this.Boxes()]
+
     let i = this.Boxes().findIndex((box) => box.id == id)
+    let oldBoxName = this.Boxes()[i].name
     if (i > -1) {
       this.Boxes().splice(i, 1);
     } else {
@@ -207,6 +243,7 @@ export class DbService {
     }
     localStorage.setItem('boxes', JSON.stringify(this.purifyBoxes(this.Boxes())))
     this.updateFK()
+    return this.resetOption(oldBoxes, "boxes", "The box >" + oldBoxName + "< has been deleted.")
   }
 
   getCategories() {
@@ -239,7 +276,9 @@ export class DbService {
   }
 
   deleteCat(id: uniqueId) {
+    let oldCats = [...this.Cats()]
     let i = this.Cats().findIndex((cat) => cat.id == id)
+    let oldCatName = this.Cats()[i].name
     if (i > -1) {
       this.Cats().splice(i, 1);
     } else {
@@ -247,6 +286,7 @@ export class DbService {
     }
     localStorage.setItem('cats', JSON.stringify(this.purifyCats(this.Cats())))
     this.updateFK()
+    return this.resetOption(oldCats, "cats", "The category >" + oldCatName + "< has been deleted.")
   }
 
   getItem(id: uniqueId) {
@@ -272,27 +312,7 @@ export class DbService {
     return this.getItem(edItem.id)
   }
 
-  resetOption(data: any, tablename: string, message: string) {
-    let THIS = this
-     function reset() {
-      
-      if (reset.active()) {
-        switch (tablename){
-          case "items":
-            localStorage.setItem('items', JSON.stringify(THIS.purifyItems(data)))
-            THIS.updateFK() 
-            reset.active.set(false)
-        }
-      }
-    }
-    reset.cancel = () => {reset.active.set(false)}
-    reset.active = signal(true)
-    
-    reset.message = message
-    
-    setTimeout(() => reset.active.set(false), 10000)
-    return reset
-  }
+
 
   deleteItem(id: uniqueId) {
     let oldItems = [...this.Items()]

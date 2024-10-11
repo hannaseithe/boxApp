@@ -8,6 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { UndoService } from '../undo.service';
 
 @Component({
   selector: 'app-box',
@@ -27,7 +28,8 @@ export class BoxComponent {
   public box: Signal<Box | undefined> ;
 
   constructor(private data:DbService,
-    private router: Router
+    private router: Router,
+    private undo: UndoService
   ){
   
     this.id = this.route.snapshot.params['id'];
@@ -40,7 +42,8 @@ export class BoxComponent {
   }
 
   deleteBox(id:uniqueId | undefined) {
-    this.data.deleteBox(id)
+    let resetFn = this.data.deleteBox(id)
+    this.undo.push(resetFn as any)
     this.router.navigateByUrl("/")
   }
 
