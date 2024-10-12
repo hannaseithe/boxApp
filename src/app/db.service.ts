@@ -298,18 +298,29 @@ export class DbService {
   }
 
   updateItem(edItem: Item) {
+    let oldItems, oldItemName;
     if (!edItem.id) {
       edItem.id = crypto.randomUUID();
-    }
+    } 
     let i = this.Items().findIndex((item) => item.id == edItem.id)
+    
     if (i > -1) {
+      oldItems = [...this.Items()]
       this.Items().splice(i, 1, edItem);
+      oldItemName = this.Items()[i].name
     } else {
       this.Items().push(edItem)
     }
     localStorage.setItem('items', JSON.stringify(this.purifyItems(this.Items())))
     this.updateFK()
-    return this.getItem(edItem.id)
+    if (i > -1) {
+        return {
+          resetFn: this.resetOption(oldItems, "items", "The item >" + oldItemName + "< has been edited."),
+          id: edItem.id
+        }
+    } else {
+      return {id: edItem.id}
+    }
   }
 
 

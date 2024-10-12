@@ -33,7 +33,8 @@ export class ItemComponent {
   id: uniqueId | undefined = undefined;
   boxId: number | undefined = undefined;
   item: Signal<Item | undefined>;
-  box: Box | undefined = undefined;
+  box: Signal<Box | undefined>;
+  catName: Signal<string | undefined>;
 
   route: ActivatedRoute = inject(ActivatedRoute);
 
@@ -47,9 +48,19 @@ export class ItemComponent {
     this.items = this.data.Items
     this.id = this.route.snapshot.params['id'];
     this.item = computed(() => {
-      let item = this.items().find(item => item.id == this.id)
-      if (item) { this.box = this.data.getBox(item.boxID) }
-      return item
+      return this.items().find(item => item.id == this.id) 
+      })
+    this.box = computed(() => {
+      let item = this.item()
+      if (item) { 
+        return this.data.getBox(item.boxID)
+      } 
+    })
+    this.catName = computed(() => {
+      let item = this.item()
+      if (item && item.catID) {
+        return this.data.getCategory(item.catID)?.name
+      }
     })
 
   }
