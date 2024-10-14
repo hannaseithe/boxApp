@@ -390,4 +390,14 @@ export class DbService {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
+
+  exportToJson():void {
+    let json = [this.Boxes(),this.Cats(),this.Items()]
+    this.saveAsJsonFile(JSON.stringify(json),"BoxBackUp")
+  }
+
+  saveAsJsonFile(jsonString: string, fileName: string): void {
+    const data: Blob = new Blob([jsonString], { type: 'application/json' });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + ".json");
+  }
 }

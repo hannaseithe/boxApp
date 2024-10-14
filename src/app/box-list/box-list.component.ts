@@ -10,6 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ExcelUploadComponent } from "../excel-upload/excel-upload.component";
 import { ExcelDownloadComponent } from '../excel-download/excel-download.component';
+import { JsonExportComponent } from '../json-export/json-export.component';
 
 @Component({
   selector: 'app-box-list',
@@ -20,7 +21,8 @@ import { ExcelDownloadComponent } from '../excel-download/excel-download.compone
     MatIconModule,
     RouterModule,
     ExcelUploadComponent,
-    ExcelDownloadComponent
+    ExcelDownloadComponent,
+    JsonExportComponent
   ],
   templateUrl: './box-list.component.html',
   styleUrl: './box-list.component.css'
