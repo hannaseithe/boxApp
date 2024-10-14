@@ -45,7 +45,9 @@ export class BoxListComponent {
   }
 
   sortFn(a: Box | Item, b: Box | Item) {
-    //return -1
+    if (typeof Number(a.name) == "number" && typeof Number(b.name) == "number") {
+      return Number(a.name) < Number(b.name) ? -1 : Number(a.name) == Number(b.name) ? 0 : 1
+    }
     return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() == b.name.toLowerCase() ? 0 : 1
   }
 }

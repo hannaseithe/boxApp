@@ -10,7 +10,10 @@
     <mat-card-header>
         <div mat-card-avatar><mat-icon>adjust</mat-icon></div>
         <mat-card-title>{{item()?.name}}</mat-card-title>
-        <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item()?.catID, name: catName()}">{{catName()}}</button></mat-card-subtitle>
+        @if (item()?.catID){
+            <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item()?.catID, name: catName()}">{{catName()}}</button></mat-card-subtitle>
+        }
+       
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
