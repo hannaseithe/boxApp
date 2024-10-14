@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1728635541564,
+  "timestamp": 1728918489864,
   "index": "/boxApp/index.html",
   "assetGroups": [
     {
@@ -15,7 +15,7 @@
         "/boxApp/chunk-ZKVGGOKI.js",
         "/boxApp/favicon.ico",
         "/boxApp/index.html",
-        "/boxApp/main-ZOWMG2OH.js",
+        "/boxApp/main-2MHUG4MB.js",
         "/boxApp/manifest.webmanifest",
         "/boxApp/polyfills-SCHOHYNV.js",
         "/boxApp/styles-7VUMZDML.css"
@@ -55,8 +55,8 @@
     "/boxApp/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/boxApp/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/boxApp/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/boxApp/index.html": "cb235cf25239550aef14a0bbe1901ee01752ed22",
-    "/boxApp/main-ZOWMG2OH.js": "06b95cf5ba9d5fe07779d399f6e3b499b6db53f5",
+    "/boxApp/index.html": "af76045addab5384e927791684d42b8501fb4e13",
+    "/boxApp/main-2MHUG4MB.js": "d0887b1ede1fc5ba8d7408dc403bcc47957e57dc",
     "/boxApp/manifest.webmanifest": "9bcda8fb135e479b0b34758d004c5129979263b4",
     "/boxApp/polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
     "/boxApp/styles-7VUMZDML.css": "5bf58fd05f9c1469e1e35d2f551d68aecfaf5564"
