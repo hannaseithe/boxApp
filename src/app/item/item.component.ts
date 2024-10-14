@@ -54,12 +54,16 @@ export class ItemComponent {
       let item = this.item()
       if (item) { 
         return this.data.getBox(item.boxID)
-      } 
+      } else {
+        return
+      }
     })
     this.catName = computed(() => {
       let item = this.item()
       if (item && item.catID) {
         return this.data.getCategory(item.catID)?.name
+      } else {
+        return
       }
     })
 
