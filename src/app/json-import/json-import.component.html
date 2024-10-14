@@ -1,0 +1,4 @@
+<span>
+    <button type="button" mat-raised-button (click)="fileInput.click()">Import Backup File</button>
+    <input hidden type="file" (change)="onFileChange($event)" #fileInput accept=".xlsx, .xls">
+</span>

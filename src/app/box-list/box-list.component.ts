@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ExcelUploadComponent } from "../excel-upload/excel-upload.component";
 import { ExcelDownloadComponent } from '../excel-download/excel-download.component';
 import { JsonExportComponent } from '../json-export/json-export.component';
+import { JsonImportComponent } from "../json-import/json-import.component";
 
 @Component({
   selector: 'app-box-list',
@@ -22,8 +23,7 @@ import { JsonExportComponent } from '../json-export/json-export.component';
     RouterModule,
     ExcelUploadComponent,
     ExcelDownloadComponent,
-    JsonExportComponent
-  ],
+    JsonExportComponent, JsonImportComponent],
   templateUrl: './box-list.component.html',
   styleUrl: './box-list.component.css'
 })
