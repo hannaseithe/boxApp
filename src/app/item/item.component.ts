@@ -10,6 +10,7 @@ import { DbService } from '../db.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { UndoService } from '../undo.service';
+import { NavbarService } from '../navbar.service';
 
 @Component({
   selector: 'app-item',
@@ -43,7 +44,8 @@ export class ItemComponent {
   constructor(private data: DbService,
     private router: Router,
     private location: Location,
-    private undo: UndoService
+    private undo: UndoService,
+    private navBar: NavbarService
   ) {
     this.items = this.data.Items
     this.id = this.route.snapshot.params['id'];
@@ -66,7 +68,7 @@ export class ItemComponent {
         return
       }
     })
-
+    this.navBar.update(["backToBox"], {itemId: this.id, boxId: this.box()?.id, boxName: this.box()?.name})
   }
   ngOnInit(): void {
 

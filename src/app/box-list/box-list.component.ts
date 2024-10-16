@@ -12,6 +12,8 @@ import { ExcelUploadComponent } from "../excel-upload/excel-upload.component";
 import { ExcelDownloadComponent } from '../excel-download/excel-download.component';
 import { JsonExportComponent } from '../json-export/json-export.component';
 import { JsonImportComponent } from "../json-import/json-import.component";
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NavbarService } from '../navbar.service';
 
 @Component({
   selector: 'app-box-list',
@@ -23,16 +25,21 @@ import { JsonImportComponent } from "../json-import/json-import.component";
     RouterModule,
     ExcelUploadComponent,
     ExcelDownloadComponent,
-    JsonExportComponent, JsonImportComponent],
+    JsonExportComponent, JsonImportComponent,
+  MatToolbarModule],
   templateUrl: './box-list.component.html',
   styleUrl: './box-list.component.css'
 })
 export class BoxListComponent {
   public boxes: Signal<Box[]>;
   public uaItems: Signal<Item[]>;
-  constructor(private data: DbService) {
+
+  constructor(private data: DbService,
+    private navBar: NavbarService
+  ) {
     this.boxes = this.data.Boxes
     this.uaItems = this.data.UnassignedItems
+    this.navBar.update(["boxAdd"])
   }
   ngOnInit(): void {
 

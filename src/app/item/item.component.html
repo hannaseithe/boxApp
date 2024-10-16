@@ -1,19 +1,22 @@
 <div class="example-button-row">
-    <button mat-button [routerLink]=" ['/']">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
-    </button>
-    <button mat-button [routerLink]=" ['/box', box()?.id]">Back To Box #{{ box()?.name }}</button>
-    <button mat-button [routerLink]=" ['/add-edit-item', item()?.id]">Edit Item</button>
-    <button mat-button (click)="deleteItem()">Delete Item</button>
+
+    
 </div>
 <mat-card appearance="outlined">
     <mat-card-header>
         <div mat-card-avatar><mat-icon>adjust</mat-icon></div>
-        <mat-card-title>{{item()?.name}}</mat-card-title>
-        @if (item()?.catID){
-            <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item()?.catID, name: catName()}">{{catName()}}</button></mat-card-subtitle>
-        }
-       
+        <mat-card-title-group>
+            <mat-card-title>{{item()?.name}}</mat-card-title>
+            @if (item()?.catID){
+                <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item()?.catID, name: catName()}">{{catName()}}</button></mat-card-subtitle>
+            }
+           
+        </mat-card-title-group>
+        <div class="spacer"></div>
+        <button  mat-mini-fab [routerLink]=" ['/add-edit-item', this.id]">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteItem()"><mat-icon>delete</mat-icon></button>
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">

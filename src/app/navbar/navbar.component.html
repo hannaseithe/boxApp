@@ -1,0 +1,44 @@
+<mat-toolbar>
+    <button mat-icon-button [routerLink]=" ['/']">
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+    </button>
+    @if(dynButs().backToBox) {
+        <button mat-button [routerLink]=" ['/box', pageData().boxId]">Back To Box #{{ pageData().boxName }}</button>
+    }
+    <span class="spacer"></span>
+
+    @if(dynButs().boxAdd) {
+    <button mat-mini-fab [routerLink]=" ['/add-edit-box']">
+        <mat-icon>add</mat-icon>
+    </button>
+    }
+
+    @if(dynButs().itemAdd) {
+
+    <button mat-mini-fab [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: pageData().boxId}">
+        <mat-icon>add</mat-icon>
+    </button>
+    }
+ 
+
+ 
+    
+
+
+    <button mat-icon-button [matMenuTriggerFor]="devMenu">
+        <mat-icon>data_object</mat-icon>
+    </button>
+
+    <mat-menu #devMenu="matMenu">
+        <button mat-button (click)="clearStorage($event)">Clear Storage</button>
+        <button mat-button (click)="initStorage($event)">Init Storage</button>
+    </mat-menu>
+    <button mat-icon-button [matMenuTriggerFor]="fileMenu"><mat-icon>sync_alt</mat-icon></button>
+    <mat-menu #fileMenu="matMenu">
+        <app-excel-upload></app-excel-upload>
+        <app-excel-download></app-excel-download>
+        <app-json-export></app-json-export>
+        <app-json-import></app-json-import>
+    </mat-menu>
+
+</mat-toolbar>

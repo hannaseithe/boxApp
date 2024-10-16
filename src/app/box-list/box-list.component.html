@@ -1,20 +1,3 @@
-<div class="example-button-row">
-    <button mat-button [routerLink]=" ['/add-edit-box']">Add new Box</button>
-    <button mat-button [matMenuTriggerFor]="devMenu">Developer Options</button>
-    <mat-menu #devMenu="matMenu">
-        <button mat-button (click)="clearStorage($event)">Clear Storage</button>
-        <button mat-button (click)="initStorage($event)">Init Storage</button>
-    </mat-menu>
-    <button mat-button [matMenuTriggerFor]="fileMenu">Export/Import Data</button>
-    <mat-menu #fileMenu="matMenu">
-        <app-excel-upload></app-excel-upload>
-        <app-excel-download></app-excel-download>
-        <app-json-export></app-json-export>
-        <app-json-import></app-json-import>
-    </mat-menu>
-    
-
-</div>
 @if (uaItems().length > 0) {
 <mat-card class="warning">
     <mat-card-header>
@@ -25,33 +8,36 @@
             You have items that are unassigned to any box. Please delete or assign those
             items
             <button mat-fab [routerLink]=" ['/unassigned-item-list']" class="warning">Here</button>
-    
-    
-    
+
+
+
         </mat-card-subtitle>
 
 
     </mat-card-header>
-   
+
 
 </mat-card>
 
 }
 
+<div>
 
-<mat-card *ngFor="let box of boxes().sort(sortFn)" appearance="outlined" [routerLink]=" ['/box',box?.id]">
-    <mat-card-header>
-        <div mat-card-avatar><mat-icon>pages</mat-icon></div>
-        <mat-card-title><span>{{box?.name}}</span></mat-card-title>
-        @if (box?.description) {
-        <mat-card-subtitle>{{box?.description}}</mat-card-subtitle>
-        }
-    </mat-card-header>
-    <mat-card-content>
+    <mat-card *ngFor="let box of boxes().sort(sortFn)" appearance="outlined" [routerLink]=" ['/box',box?.id]">
+        <mat-card-header>
+            <div mat-card-avatar><mat-icon>pages</mat-icon></div>
+            <mat-card-title><span>{{box?.name}}</span></mat-card-title>
+            @if (box?.description) {
+            <mat-card-subtitle>{{box?.description}}</mat-card-subtitle>
+            }
+        </mat-card-header>
+        <mat-card-content>
 
-        <p> <span *ngFor="let item of box?.items?.sort(sortFn), let islast=last">{{ item.name }}<span *ngIf="!islast">, </span></span>
-        </p>
-    </mat-card-content>
+            <p> <span *ngFor="let item of box?.items?.sort(sortFn), let islast=last">{{ item.name }}<span
+                        *ngIf="!islast">, </span></span>
+            </p>
+        </mat-card-content>
 
 
-</mat-card>
+    </mat-card>
+</div>

@@ -9,11 +9,15 @@ import { ActivatedRoute } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UndoService } from '../undo.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NavbarService } from '../navbar.service';
 
 @Component({
   selector: 'app-box',
   standalone: true,
-  imports: [NgFor, NgIf, MatCardModule, MatListModule, MatButtonModule, MatIconModule, RouterModule],
+  imports: [NgFor, NgIf, MatCardModule, MatListModule, MatButtonModule, MatIconModule, 
+    MatToolbarModule,
+    RouterModule],
   templateUrl: './box.component.html',
   styleUrl: './box.component.css'
 })
@@ -29,12 +33,14 @@ export class BoxComponent {
 
   constructor(private data:DbService,
     private router: Router,
-    private undo: UndoService
+    private undo: UndoService,
+    private navbar: NavbarService
   ){
   
     this.id = this.route.snapshot.params['id'];
     this.box = computed(() => this.data.Boxes().find(box=> box.id == this.id))
     this.simple = false;
+    this.navbar.update(["itemAdd"],{boxId: this.id})
    
   }
 
