@@ -1,10 +1,10 @@
 <mat-toolbar>
     <button mat-icon-button [routerLink]=" ['/']">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+        <mat-icon>home</mat-icon>
     </button>
-    @if(dynButs().backToBox) {
-        <button mat-button [routerLink]=" ['/box', pageData().boxId]">Back To Box #{{ pageData().boxName }}</button>
-    }
+    <button mat-icon-button [routerLink]=" ['/']">
+        <mat-icon (click)="goBack()">arrow_back</mat-icon>
+    </button>
     <span class="spacer"></span>
 
     @if(dynButs().boxAdd) {

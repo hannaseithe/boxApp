@@ -11,9 +11,9 @@ import { Box, Cat, uniqueId } from '../app';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { filter } from 'rxjs';
 import { Location } from '@angular/common';
 import { UndoService } from '../undo.service';
+
 
 @Component({
   selector: 'app-add-edit-item',
@@ -46,7 +46,7 @@ export class AddEditItemComponent {
     private data: DbService,
     private router: Router,
     private location: Location,
-    private undo: UndoService
+    private undo: UndoService,
   ) {
 
     this.form = new FormGroup({
@@ -56,7 +56,6 @@ export class AddEditItemComponent {
       tags: new FormControl([]),
       catID: new FormControl(''),
     });
-
 
   }
 

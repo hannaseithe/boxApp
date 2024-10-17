@@ -8,8 +8,9 @@ import { JsonExportComponent } from '../json-export/json-export.component';
 import { JsonImportComponent } from '../json-import/json-import.component';
 import { DbService } from '../db.service';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NavbarService } from '../navbar.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -34,11 +35,20 @@ export class NavbarComponent {
   public pageData:Signal<any>
 
   constructor(private data:DbService,
-    private navBar:NavbarService
+    private navBar:NavbarService,
+    private location:Location,
+    private router:Router
   ) {
     this.dynButs = this.navBar.set
     this.pageData = this.navBar.pageData
+    this.router.events.subscribe((ev) => {
+      if (ev instanceof NavigationEnd) { 
+        this.navBar.update([],{})
+      }
+    });
   }
+
+
 
   public clearStorage(event: Event) {
     this.data.clearStorage()
@@ -46,6 +56,10 @@ export class NavbarComponent {
 
   public initStorage(event: Event) {
     this.data.init()
+  }
+
+  goBack() {
+    this.location.back()
   }
 
 }

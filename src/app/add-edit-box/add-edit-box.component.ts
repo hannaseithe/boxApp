@@ -32,7 +32,7 @@ export class AddEditBoxComponent {
   constructor(private route: ActivatedRoute,
     private data: DbService,
     private router: Router,
-    private location:Location  
+    private location:Location
   ) {
     this.form = new FormGroup({
       name: new FormControl(''),
