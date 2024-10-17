@@ -1,21 +1,32 @@
 <mat-toolbar>
-    <button mat-icon-button [routerLink]=" ['/']">
+    <button mat-icon-button [routerLink]=" ['/']" type="button">
         <mat-icon>home</mat-icon>
     </button>
-    <button mat-icon-button [routerLink]=" ['/']">
+    <button mat-icon-button [routerLink]=" ['/']"  type="button">
         <mat-icon (click)="goBack()">arrow_back</mat-icon>
     </button>
+    @if (!doSearch) {
+        <button mat-icon-button (click)="activateSearch()" type="button">
+            <mat-icon >search</mat-icon>
+        </button>
+    } @else {
+        <app-search (searchActive)="toggleSearch($event)"></app-search>
+    }
     <span class="spacer"></span>
 
+
+
+
+
     @if(dynButs().boxAdd) {
-    <button mat-mini-fab [routerLink]=" ['/add-edit-box']">
+    <button mat-mini-fab [routerLink]=" ['/add-edit-box']" type="button">
         <mat-icon>add</mat-icon>
     </button>
     }
 
     @if(dynButs().itemAdd) {
 
-    <button mat-mini-fab [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: pageData().boxId}">
+    <button mat-mini-fab [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: pageData().boxId}"  type="button">
         <mat-icon>add</mat-icon>
     </button>
     }
@@ -25,15 +36,15 @@
     
 
 
-    <button mat-icon-button [matMenuTriggerFor]="devMenu">
+    <button mat-icon-button [matMenuTriggerFor]="devMenu"  type="button">
         <mat-icon>data_object</mat-icon>
     </button>
 
     <mat-menu #devMenu="matMenu">
-        <button mat-button (click)="clearStorage($event)">Clear Storage</button>
-        <button mat-button (click)="initStorage($event)">Init Storage</button>
+        <button mat-button (click)="clearStorage($event)" type="button">Clear Storage</button>
+        <button mat-button (click)="initStorage($event)" type="button">Init Storage</button>
     </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="fileMenu"><mat-icon>sync_alt</mat-icon></button>
+    <button mat-icon-button [matMenuTriggerFor]="fileMenu" type="button"><mat-icon>sync_alt</mat-icon></button>
     <mat-menu #fileMenu="matMenu">
         <app-excel-upload></app-excel-upload>
         <app-excel-download></app-excel-download>

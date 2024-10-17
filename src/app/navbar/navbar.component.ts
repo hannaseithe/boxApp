@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, signal, Signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,9 +8,10 @@ import { JsonExportComponent } from '../json-export/json-export.component';
 import { JsonImportComponent } from '../json-import/json-import.component';
 import { DbService } from '../db.service';
 import { MatIconModule } from '@angular/material/icon';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, NavigationStart, Route, Router, RouterModule } from '@angular/router';
 import { NavbarService } from '../navbar.service';
 import { Location } from '@angular/common';
+import { SearchComponent } from "../search/search.component";
 
 @Component({
   selector: 'app-navbar',
@@ -24,8 +25,9 @@ import { Location } from '@angular/common';
     JsonExportComponent,
     JsonImportComponent,
     MatIconModule,
-    RouterModule
-  ],
+    RouterModule,
+    SearchComponent
+],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -33,6 +35,7 @@ export class NavbarComponent {
 
   public dynButs:Signal<any>
   public pageData:Signal<any>
+  public doSearch = false
 
   constructor(private data:DbService,
     private navBar:NavbarService,
@@ -42,7 +45,7 @@ export class NavbarComponent {
     this.dynButs = this.navBar.set
     this.pageData = this.navBar.pageData
     this.router.events.subscribe((ev) => {
-      if (ev instanceof NavigationEnd) { 
+      if (ev instanceof NavigationStart) { 
         this.navBar.update([],{})
       }
     });
@@ -60,6 +63,17 @@ export class NavbarComponent {
 
   goBack() {
     this.location.back()
+  }
+
+  activateSearch(){
+    this.doSearch = true
+    //this.router.navigateByUrl('/item-list/')
+    this.router.navigate(['/item-list'], {queryParams: {search:true}});
+  }
+
+  toggleSearch(event:any) {
+   this.doSearch = event
+    
   }
 
 }

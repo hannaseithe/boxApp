@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { Item } from './app';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class NavbarService {
     boxDelete: false,
   })
 
-  pageData = signal({})
+  pageData:WritableSignal<any> = signal({})
+
+  public searchResult:WritableSignal<Item[]> = signal([])
 
 
 
@@ -40,6 +43,10 @@ export class NavbarService {
       this.pageData.set(data)
     }
 
+  }
+
+  updateSearchResult(result:Item[]) {
+    this.searchResult.set(result)
   }
 
 

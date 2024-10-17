@@ -347,14 +347,14 @@ export class DbService {
   }
 
   getItemsByCat(id: uniqueId) {
-    return this.Items().filter(item => {
+    return signal(this.Items().filter(item => {
       return item.catID == id
-    })
+    }))
   }
   getItemsByTag(tag: string) {
-    return this.Items().filter(item => {
+    return signal(this.Items().filter(item => {
       return item.tags?.includes(tag)
-    })
+    }))
   }
 
   prepExcelExport() {

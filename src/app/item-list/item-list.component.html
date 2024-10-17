@@ -6,11 +6,11 @@
     <span>{{catName}}</span>
   }
   @else {
-    <span>List of Unassigned Items</span>
+    <span>Search Results</span>
   }
     
   </mat-toolbar>
-<mat-card *ngFor="let item of items.sort(sortFn)"appearance="outlined" [routerLink]=" ['/item',item?.id]">
+<mat-card *ngFor="let item of items().sort(sortFn)"appearance="outlined" [routerLink]=" ['/item',item?.id]">
     <mat-card-header>
         <mat-card-title>{{item.name}}</mat-card-title>
     </mat-card-header>
