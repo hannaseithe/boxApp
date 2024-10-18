@@ -1,4 +1,4 @@
-import { Component, ElementRef, output, Output, Signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, output, Output, Signal, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,33 +19,39 @@ import { Item } from '../app';
 export class SearchComponent {
 
   items: Signal<Item[]>
-  searchActive = output<boolean>()
+  @Output() searchFinished = new EventEmitter<void>();
   @ViewChild("searchInput") myInputField!: ElementRef;
 
 
 
 
   constructor(private data: DbService,
-    private navBar: NavbarService
+    private navBar: NavbarService,
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) {
     this.items = this.data.Items
     this.navBar.updateSearchResult(this.items())
-    this.searchActive.emit(true)
   }
 
   ngAfterViewInit() {
     this.myInputField.nativeElement.focus();
   }
 
+  ngAfterViewChecked(): void {
+    this.changeDetectorRef.detectChanges();
+  }
+
   onSearchChange(eventTarget: any) {
     if (eventTarget.value.length > 2) {
       this.navBar.updateSearchResult(this.items().filter(item => item.name.includes(eventTarget.value)))
+    } else {
+      this.navBar.updateSearchResult(this.items())
     }
 
   }
 
   deactivateSearch() {
-    this.searchActive.emit(false);
+    this.searchFinished.emit();
   }
 
 }

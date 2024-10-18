@@ -1,4 +1,4 @@
-import { Component, signal, Signal } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,7 +8,7 @@ import { JsonExportComponent } from '../json-export/json-export.component';
 import { JsonImportComponent } from '../json-import/json-import.component';
 import { DbService } from '../db.service';
 import { MatIconModule } from '@angular/material/icon';
-import { NavigationEnd, NavigationStart, Route, Router, RouterModule } from '@angular/router';
+import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { NavbarService } from '../navbar.service';
 import { Location } from '@angular/common';
 import { SearchComponent } from "../search/search.component";
@@ -67,12 +67,11 @@ export class NavbarComponent {
 
   activateSearch(){
     this.doSearch = true
-    //this.router.navigateByUrl('/item-list/')
     this.router.navigate(['/item-list'], {queryParams: {search:true}});
   }
 
-  toggleSearch(event:any) {
-   this.doSearch = event
+  deactivateSearch() {
+   this.doSearch = false
     
   }
 

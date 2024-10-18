@@ -10,7 +10,7 @@
             <mat-icon >search</mat-icon>
         </button>
     } @else {
-        <app-search (searchActive)="toggleSearch($event)"></app-search>
+        <app-search (searchFinished)="deactivateSearch()"></app-search>
     }
     <span class="spacer"></span>
 
