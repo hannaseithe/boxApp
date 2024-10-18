@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1729235200831,
+  "timestamp": 1729244719167,
   "index": "/boxApp/index.html",
   "assetGroups": [
     {
@@ -11,11 +11,11 @@
         "ignoreVary": true
       },
       "urls": [
-        "/boxApp/chunk-54JQH3US.js",
-        "/boxApp/chunk-ZKVGGOKI.js",
+        "/boxApp/chunk-3NO7T255.js",
+        "/boxApp/chunk-NF7CJWF3.js",
         "/boxApp/favicon.ico",
         "/boxApp/index.html",
-        "/boxApp/main-CMPORVPQ.js",
+        "/boxApp/main-HTWVEJTN.js",
         "/boxApp/manifest.webmanifest",
         "/boxApp/polyfills-SCHOHYNV.js",
         "/boxApp/styles-IN5NPYX3.css"
@@ -44,8 +44,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/boxApp/chunk-54JQH3US.js": "77af6c307ef2b7c3620b6d79be5c32a02a58cbcf",
-    "/boxApp/chunk-ZKVGGOKI.js": "16a5810af8ce60911cd03b0a8be33036a8d265ab",
+    "/boxApp/chunk-3NO7T255.js": "687b11874cad9e273a255b6834c5bbc237b28cf7",
+    "/boxApp/chunk-NF7CJWF3.js": "b28cb30926c5903e17fc89adea3cbadb9f10443c",
     "/boxApp/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
     "/boxApp/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
     "/boxApp/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
@@ -55,8 +55,8 @@
     "/boxApp/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/boxApp/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/boxApp/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/boxApp/index.html": "beb493dd67cfb0b796cc43cac59fc1ec3ed92407",
-    "/boxApp/main-CMPORVPQ.js": "e8810f47313be6c63269ea4b76754d5ca614644b",
+    "/boxApp/index.html": "49c6f2d1b582d5ce1183bc765fb7c9bdcfcadfc9",
+    "/boxApp/main-HTWVEJTN.js": "f7b4cb7d5102e116a05f0b00cb6a3343ec50a2b1",
     "/boxApp/manifest.webmanifest": "9bcda8fb135e479b0b34758d004c5129979263b4",
     "/boxApp/polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
     "/boxApp/styles-IN5NPYX3.css": "448611c9b05b0ebdafd86e4422b903eade5f2348"
