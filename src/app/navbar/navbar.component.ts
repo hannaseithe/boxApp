@@ -42,8 +42,8 @@ export class NavbarComponent {
     private location:Location,
     private router:Router
   ) {
-    this.dynButs = this.navBar.set
-    this.pageData = this.navBar.pageData
+    this.dynButs = this.navBar.inputData.buttons
+    this.pageData = this.navBar.inputData.pageData
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationStart) { 
         this.navBar.update([],{})

@@ -6,26 +6,29 @@ import { Item } from './app';
 })
 export class NavbarService {
 
-  set = signal({
-    itemAdd: false,
-    itemEdit: false,
-    itemDelete: false,
-    boxAdd: false,
-    boxEdit: false,
-    boxDelete: false,
-  })
+  inputData = {
+    buttons: signal({
+      itemAdd: false,
+      itemEdit: false,
+      itemDelete: false,
+      boxAdd: false,
+      boxEdit: false,
+      boxDelete: false,
+    }),
+    pageData:signal({})
+  }
 
-  pageData:WritableSignal<any> = signal({})
-
-  public searchResult:WritableSignal<Item[]> = signal([])
+  outputData:{searchResult:WritableSignal<Item[]>} = {
+    searchResult: signal([])
+  }
 
 
 
   constructor() { }
 
   reset() {
-    this.pageData.set({})
-    this.set.update(x => {
+    this.inputData.pageData.set({})
+    this.inputData.buttons.update(x => {
       let result:any = {}
       for (const key in x) {
         result[key] = false
@@ -37,16 +40,16 @@ export class NavbarService {
   update(keys: string[], data?: any) {
     this.reset()
     keys.forEach(key => {
-      this.set.update(x => ({...x, [key]: true}))
+      this.inputData.buttons.update(x => ({...x, [key]: true}))
     })
     if (data) {
-      this.pageData.set(data)
+      this.inputData.pageData.set(data)
     }
 
   }
 
   updateSearchResult(result:Item[]) {
-    this.searchResult.set(result)
+    this.outputData.searchResult.set(result)
   }
 
 
