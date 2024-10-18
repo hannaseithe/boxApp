@@ -12,13 +12,13 @@
                 <mat-label>Item category</mat-label>
                 <mat-select formControlName="catID">
                   <mat-option [value]="">- No Category -</mat-option>
-                    @for (cat of cats; track cat) {
+                    @for (cat of cats(); track cat) {
                       <mat-option [value]="cat.id">{{cat.name}}</mat-option>
                     }
                   </mat-select>
             </mat-form-field>
-            <button mat-button [routerLink]=" ['/cat-list']" [queryParams]="{addNew: true, itemId : id}" type="button">New Category</button>
-            <button mat-button [routerLink]=" ['/cat-list']" [queryParams]="{addNew: false, itemId : id}" type="button">Edit Categories</button>
+            <button mat-button (click)="openDialog({addNew: true})" type="button">New Category</button>
+            <button mat-button (click)="openDialog({addNew: false})" type="button">Edit Category</button>
         </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>

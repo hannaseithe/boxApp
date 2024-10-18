@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Location } from '@angular/common';
 import { UndoService } from '../undo.service';
+import { CatListComponent } from '../cat-list/cat-list.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 
 
 @Component({
@@ -29,6 +31,7 @@ import { UndoService } from '../undo.service';
     MatIconModule,
     MatButtonModule,
     RouterModule,
+    MatDialogModule
   ],
   templateUrl: './add-edit-item.component.html',
   styleUrl: './add-edit-item.component.css'
@@ -39,7 +42,7 @@ export class AddEditItemComponent {
   isAddMode: boolean = true;
   form: FormGroup;
   boxes: Box[] = [];
-  cats: Cat[] = []
+  cats: Signal<Cat[]>
 
   constructor(
     private route: ActivatedRoute,
@@ -47,7 +50,9 @@ export class AddEditItemComponent {
     private router: Router,
     private location: Location,
     private undo: UndoService,
+    private dialog:MatDialog
   ) {
+    this.cats = computed(() => this.data.Cats().sort(this.sortFn))
 
     this.form = new FormGroup({
       name: new FormControl(''),
@@ -63,7 +68,6 @@ export class AddEditItemComponent {
     this.id = this.route.snapshot.params['id'];
     let boxID = this.route.snapshot.queryParams['boxId'];
     this.boxes = this.data.getBoxes().sort(this.sortFn)
-    this.cats = this.data.getCategories().sort(this.sortFn)
     this.isAddMode = !this.id;
 
     if (boxID) {
@@ -76,6 +80,20 @@ export class AddEditItemComponent {
         this.form.patchValue(x);
       }
     }
+  }
+
+  openDialog(data:any) {
+    let dialogRef = this.dialog.open(CatListComponent, {
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.form.patchValue({catID:result.id});
+        this.form.markAsDirty()
+      }
+    });
   }
 
   sortFn(a: Box | Cat,b: Box | Cat) {

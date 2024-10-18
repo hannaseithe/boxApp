@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { UndoService } from '../undo.service';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cat-list',
@@ -23,16 +24,18 @@ import { UndoService } from '../undo.service';
     MatFormFieldModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatDialogModule
   ],
   templateUrl: './cat-list.component.html',
   styleUrl: './cat-list.component.css'
 })
 export class CatListComponent {
 
-  addNew = false
-  itemId: uniqueId | undefined = undefined;
+  readonly dialogRef = inject(MatDialogRef<CatListComponent>);
+  readonly dialogData = inject(MAT_DIALOG_DATA);
 
   catFC: FormControl
+  latestCat: Cat | undefined = undefined
 
   public cats: Signal<Cat[]>
 
@@ -49,8 +52,7 @@ export class CatListComponent {
   }
 
   ngOnInit() {
-    this.addNew = "true"== this.route.snapshot.queryParams['addNew'];
-    this.itemId = this.route.snapshot.queryParams['itemId'];
+
   }
 
   edit(cat: Cat) {
@@ -62,7 +64,7 @@ export class CatListComponent {
   }
 
   add() {
-    this.addNew = true
+    this.dialogData.addNew = true
     this.catFC.setValue("")
   }
 
@@ -87,7 +89,9 @@ export class CatListComponent {
     let updatedCat = this.data.updateCat(edCat)
     if (updatedCat) {
       this.catVisibility[updatedCat.id] = false;
-      this.addNew = false;
+      this.dialogData.addNew = false;
+      this.latestCat = updatedCat
+
     }
 
   }
@@ -102,6 +106,10 @@ export class CatListComponent {
 
   sortFn(a: Cat,b: Cat) {
     return a.name.toLowerCase() < b.name.toLowerCase() ? -1: a.name.toLowerCase() == b.name.toLowerCase() ? 0:1
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }
