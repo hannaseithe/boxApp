@@ -37,7 +37,7 @@ export class ItemListComponent {
         this.catName = this.route.snapshot.queryParams['name'];
         this.items = this.data.getItemsByCat(this.catID as uniqueId)
       } else if(this.route.snapshot.queryParams['search']) {
-        this.items = this.navBar.searchResult
+        this.items = this.navBar.outputData.searchResult
       } else {
         this.items = signal([])
       }

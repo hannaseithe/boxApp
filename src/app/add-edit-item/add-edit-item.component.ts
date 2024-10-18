@@ -98,8 +98,13 @@ export class AddEditItemComponent {
     const value = (event.value || '').trim();
     let tags = this.form.get("tags")?.value
     // Add our keyword
-    if (value) {
-      this.form.patchValue({ tags: [...tags, value]})
+    if (value && !!value) {
+      if (tags){
+        this.form.patchValue({ tags: [...tags, value]})
+      } else {
+        this.form.patchValue({ tags: [value]})
+      }
+      this.form.markAsDirty()
     }
 
     // Clear the input value
