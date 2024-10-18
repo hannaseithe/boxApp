@@ -136,6 +136,13 @@ export class DbService {
       } else {
         uaItemsArray.push(item)
       }
+      if (item.catID) {
+        let cat = catsArray.find(cat => item.catID == cat.id)
+        if (cat) {
+          item.catName = cat.name
+        }
+      }
+      
 
     })
     this.Boxes.set(boxesArray)

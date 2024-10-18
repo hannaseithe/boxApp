@@ -119,8 +119,13 @@ export class AddEditItemComponent {
     if (result.resetFn) {
       this.undo.push(result.resetFn)
     }
+    if (this.id) {
+      this.router.navigateByUrl('/item/'+ result.id )
+    } else {
+      this.router.navigateByUrl('/box/' + formItem.boxID)
+    }
 
-    this.router.navigateByUrl('/item/'+ result.id )
+   
   }
 
   cancel() {

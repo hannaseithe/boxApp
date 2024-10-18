@@ -1,36 +1,38 @@
-
-
 <mat-card appearance="outlined">
     <mat-card-header>
         <div mat-card-avatar><mat-icon>pages</mat-icon></div>
         <mat-card-title-group>
-            
-            <mat-card-title>{{box()?.name}}    
+
+            <mat-card-title>{{box()?.name}}
             </mat-card-title>
-            
-       
-        <mat-card-subtitle>{{box()?.description}}</mat-card-subtitle>
+
+
+            <mat-card-subtitle>{{box()?.description}}</mat-card-subtitle>
         </mat-card-title-group>
 
         <button mat-mini-fab [routerLink]=" ['/add-edit-box',this.id]">
             <mat-icon>edit</mat-icon>
         </button>
         <div class="spacer"></div>
-        
-            <button mat-icon-button (click) ="deleteBox(this.box()?.id)" >
-                <mat-icon>delete</mat-icon>
-            </button>
-        
-            
+
+        <button mat-icon-button (click)="deleteBox(this.box()?.id)">
+            <mat-icon>delete</mat-icon>
+        </button>
+
+
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item *ngFor="let item of box()?.items?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"role="listitem">
+            <mat-list-item class="spacerparent" *ngFor="let item of box()?.items?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"
+                role="listitem">
                 <mat-icon matListItemIcon>adjust</mat-icon>
-                {{ item.name }}
-            </mat-list-item>
-          </mat-list>
-    </mat-card-content>
-    
+                <div matListItemTitle>{{ item.name }} </div>
+                <button matListItemMeta mat-button [routerLink]=" ['/item-list']"
+                    [queryParams]="{id: item.catID, name: item.catName}">{{item.catName}}</button>
 
-  </mat-card>
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+
+
+</mat-card>

@@ -1,8 +1,8 @@
-.mat-toolbar {
-    position: sticky;
-    top: 0;
-    z-index:10000;
-}
+
 .spacer {
     flex: 1 1 auto;
+}
+.spacerparent {
+    display: flex;
+    align-self: center
 }
