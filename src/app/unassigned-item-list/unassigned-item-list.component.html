@@ -5,6 +5,7 @@
 </mat-toolbar>
 <mat-card *ngFor="let item of items().sort(sortFn)" appearance="outlined">
     <mat-card-header>
+        <div mat-card-avatar><mat-icon>category</mat-icon></div>
         <mat-card-title>{{item.name}} <button mat-button (click)="delete(item)">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
         </button></mat-card-title>

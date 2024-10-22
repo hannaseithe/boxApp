@@ -25,7 +25,7 @@
         <mat-list role="list">
             <mat-list-item class="spacerparent" *ngFor="let item of box()?.items?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"
                 role="listitem">
-                <mat-icon matListItemIcon>adjust</mat-icon>
+                <mat-icon matListItemIcon>category</mat-icon>
                 <div matListItemTitle>{{ item.name }} </div>
                 <button matListItemMeta mat-button [routerLink]=" ['/item-list']"
                     [queryParams]="{id: item.catID, name: item.catName}">{{item.catName}}</button>

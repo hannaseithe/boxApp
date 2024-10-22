@@ -12,6 +12,7 @@
   </mat-toolbar>
 <mat-card *ngFor="let item of items().sort(sortFn)"appearance="outlined" [routerLink]=" ['/item',item?.id]">
     <mat-card-header>
+      <div mat-card-avatar><mat-icon>category</mat-icon></div>
         <mat-card-title>{{item.name}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
