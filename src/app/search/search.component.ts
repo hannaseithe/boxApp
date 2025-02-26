@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component, ElementRef, EventEmitter, output, Output,
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DbService } from '../db.service';
 import { NavbarService } from '../navbar.service';
 import { Item } from '../app';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-search',
@@ -22,10 +22,7 @@ export class SearchComponent {
   @Output() searchFinished = new EventEmitter<void>();
   @ViewChild("searchInput") myInputField!: ElementRef;
 
-
-
-
-  constructor(private data: DbService,
+  constructor(private data: StorageService,
     private navBar: NavbarService,
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {

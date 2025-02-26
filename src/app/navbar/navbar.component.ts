@@ -6,12 +6,12 @@ import { ExcelDownloadComponent } from '../excel-download/excel-download.compone
 import { ExcelUploadComponent } from '../excel-upload/excel-upload.component';
 import { JsonExportComponent } from '../json-export/json-export.component';
 import { JsonImportComponent } from '../json-import/json-import.component';
-import { DbService } from '../db.service';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { NavbarService } from '../navbar.service';
 import { Location } from '@angular/common';
 import { SearchComponent } from "../search/search.component";
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -37,7 +37,7 @@ export class NavbarComponent {
   public pageData:Signal<any>
   public doSearch = false
 
-  constructor(private data:DbService,
+  constructor(private data:StorageService,
     private navBar:NavbarService,
     private location:Location,
     private router:Router
@@ -54,11 +54,7 @@ export class NavbarComponent {
 
 
   public clearStorage(event: Event) {
-    this.data.clearStorage()
-  }
-
-  public initStorage(event: Event) {
-    this.data.init()
+    this.data.initializeNewDB([],[],[],[]);
   }
 
   goBack() {

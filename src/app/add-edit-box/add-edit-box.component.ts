@@ -5,9 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { DbService } from '../db.service';
 import { uniqueId } from '../app';
 import { Location } from '@angular/common';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-add-edit-box',
@@ -30,7 +30,7 @@ export class AddEditBoxComponent {
   isAddMode = false;
 
   constructor(private route: ActivatedRoute,
-    private data: DbService,
+    private data: StorageService,
     private router: Router,
     private location:Location
   ) {
@@ -43,8 +43,8 @@ export class AddEditBoxComponent {
   onSubmit() {
     let formBox = this.form.value
     formBox.id = this.id ? this.id : undefined
-    let editedBox = this.data.updateBox(formBox);
-    this.router.navigateByUrl('/box/'+ editedBox?.id )
+    let editedBox = this.data.addUpdateBox(formBox);
+    this.router.navigateByUrl('/box/'+ editedBox()?.id )
   }
 
   ngOnInit(): void {
@@ -52,7 +52,7 @@ export class AddEditBoxComponent {
     this.isAddMode = !this.id;
 
     if (!this.isAddMode && this.id) {
-      let x = this.data.getBox(this.id)
+      let x = this.data.getBox(this.id)()
       if (x) {
         this.form.patchValue(x);
       }

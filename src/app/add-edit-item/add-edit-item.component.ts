@@ -1,7 +1,6 @@
 import { Component, computed, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
-import { DbService } from '../db.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +14,7 @@ import { Location } from '@angular/common';
 import { UndoService } from '../undo.service';
 import { CatListComponent } from '../cat-list/cat-list.component';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { StorageService } from '../storage.service';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class AddEditItemComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private data: DbService,
+    private data: StorageService,
     private router: Router,
     private location: Location,
     private undo: UndoService,
@@ -60,6 +60,7 @@ export class AddEditItemComponent {
       boxID: new FormControl(''),
       tags: new FormControl([]),
       catID: new FormControl(''),
+      picture: new FormControl(''),
     });
 
   }
@@ -67,7 +68,7 @@ export class AddEditItemComponent {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     let boxID = this.route.snapshot.queryParams['boxId'];
-    this.boxes = this.data.getBoxes().sort(this.sortFn)
+    this.boxes = this.data.Boxes().sort(this.sortFn)
     this.isAddMode = !this.id;
 
     if (boxID) {
@@ -75,7 +76,7 @@ export class AddEditItemComponent {
     }
 
     if (!this.isAddMode && this.id) {
-      let x = this.data.getItem(this.id)
+      let x = this.data.getItem(this.id)()
       if (x) {
         this.form.patchValue(x);
       }
@@ -133,12 +134,12 @@ export class AddEditItemComponent {
   onSubmit() {
     let formItem = this.form.value
     formItem.id = this.id ? this.id : undefined
-    let result = this.data.updateItem(formItem);
-    if (result.resetFn) {
-      this.undo.push(result.resetFn)
+    let {item, resetFn} = this.data.addUpdateItem(formItem);
+    if (resetFn) {
+      this.undo.push(resetFn)
     }
     if (this.id) {
-      this.router.navigateByUrl('/item/'+ result.id )
+      this.router.navigateByUrl('/item/'+ item()?.id )
     } else {
       this.router.navigateByUrl('/box/' + formItem.boxID)
     }
@@ -148,6 +149,27 @@ export class AddEditItemComponent {
 
   cancel() {
     this.location.back()
+  }
+
+  onFileSelect(event: any): void {
+    const file = event.target.files[0];
+    console.log('File selected')
+
+    if (file) {
+      const reader = new FileReader();
+      
+      reader.onload = () => {
+        const base64Image = reader.result as string;
+
+        //TODO: Resize Image with Canvas
+        
+        this.form.patchValue({picture:base64Image});
+        this.form.markAsDirty()
+        const a = this.form.get('picture')
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
 }

@@ -1,7 +1,6 @@
 import { Component, effect, Signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Box, Item} from '../app';
-import { DbService } from '../db.service';
 import { NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -9,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-unassigned-item-list',
@@ -31,7 +31,7 @@ export class UnassignedItemListComponent {
   boxes: Box[] = []
 
   constructor(
-    private data: DbService,
+    private data: StorageService,
     private router: Router
   ) {
     this.items = this.data.UnassignedItems
@@ -51,10 +51,10 @@ export class UnassignedItemListComponent {
 
   assign(item: Item,event: any) {
     item.boxID = event.value
-    this.data.updateItem(item);
+    this.data.addUpdateItem(item);
   }
   delete(item:Item) {
-    this.data.deleteItem(item.id)
+    this.data.removeItem(item.id)
   }
 
   sortFn(a: Item,b: Item) {

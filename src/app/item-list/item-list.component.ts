@@ -1,7 +1,6 @@
-import { Component, inject, signal, Signal } from '@angular/core';
+import { Component, effect, inject, signal, Signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Cat, Item, uniqueId } from '../app';
-import { DbService } from '../db.service';
+import { Box, Cat, Item, Room, uniqueId } from '../app';
 import { NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -9,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NavbarService } from '../navbar.service';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-item-list',
@@ -21,13 +21,20 @@ export class ItemListComponent {
   tag: string | undefined = undefined
   catID: uniqueId | undefined = undefined
   catName: string | undefined = undefined
-  items: Signal<Item[]>
-
+  items: Signal<Item[]> = signal([])
+  mappedBoxes: Map<uniqueId, Signal<Box | undefined>> = new Map();
+  mappedRooms: Map<uniqueId, Signal<Room | undefined>> = new Map();
   route: ActivatedRoute = inject(ActivatedRoute);
 
-  constructor(private data: DbService,
+  constructor(private data: StorageService,
     private navBar: NavbarService
   ) {
+    effect(() => {
+      this.mapFKItems()
+    });
+  }
+
+  ngOnInit(): void {
     if (this.route.snapshot.params['tag']) {
       this.tag = this.route.snapshot.params['tag'];
       this.items = this.data.getItemsByTag(this.tag as string)
@@ -35,20 +42,22 @@ export class ItemListComponent {
       if(this.route.snapshot.queryParams['id']) {
         this.catID = this.route.snapshot.queryParams['id'];
         this.catName = this.route.snapshot.queryParams['name'];
-        this.items = this.data.getItemsByCat(this.catID as uniqueId)
+        if(this.catID) {
+          this.items = this.data.getItemsByCat(this.catID as uniqueId)
+        }
       } else if(this.route.snapshot.queryParams['search']) {
         this.items = this.navBar.outputData.searchResult
-      } else {
-        this.items = signal([])
-      }
-    } else {
-      this.items = signal([])
-    }
-
+      } 
+    } 
   }
-  ngOnInit(): void {
 
-
+  private mapFKItems(): void {
+    this.mappedBoxes.clear();
+    this.mappedRooms.clear();
+    for (const item of this.items()) {
+      if (item.boxID) this.mappedBoxes.set(item.id, this.data.getBox(item.boxID));
+      if (item.roomID) this.mappedRooms.set(item.id, this.data.getBox(item.roomID));
+    }
   }
   sortFn(a: Item,b: Item) {
     return a.name.toLowerCase() < b.name.toLowerCase() ? -1: a.name.toLowerCase() == b.name.toLowerCase() ? 0:1

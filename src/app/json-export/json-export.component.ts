@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { DbService } from '../db.service';
+import { ExportImportService } from '../exportimport.service';
 
 @Component({
   selector: 'app-json-export',
@@ -13,10 +13,10 @@ import { DbService } from '../db.service';
 })
 export class JsonExportComponent {
 
-  constructor(private data: DbService) {}
+  constructor(private exim: ExportImportService) {}
 
   exportJson() {
-    this.data.exportToJson()
+    this.exim.exportToJson()
   }
 
 }

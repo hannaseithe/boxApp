@@ -1,5 +1,4 @@
 import { Component, inject, Signal } from '@angular/core';
-import { DbService } from '../db.service';
 import { Cat, uniqueId } from '../app';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
@@ -11,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { UndoService } from '../undo.service';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-cat-list',
@@ -43,7 +43,7 @@ export class CatListComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
 
   constructor(
-    private data: DbService,
+    private data: StorageService,
   private undo: UndoService
   ) {
     this.cats = this.data.Cats
@@ -86,7 +86,7 @@ export class CatListComponent {
       }
     }
 
-    let updatedCat = this.data.updateCat(edCat)
+    let updatedCat = this.data.addUpdateCat(edCat)()
     if (updatedCat) {
       this.catVisibility[updatedCat.id] = false;
       this.dialogData.addNew = false;
@@ -97,7 +97,7 @@ export class CatListComponent {
   }
 
   delete(cat:Cat) {
-    let resetFn = this.data.deleteCat(cat.id)
+    let resetFn = this.data.removeCat(cat.id)
     if (resetFn) {
         this.undo.push(resetFn)
     }

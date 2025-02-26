@@ -23,13 +23,18 @@
     </mat-card-header>
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item class="spacerparent" *ngFor="let item of box()?.items?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"
+            <mat-list-item class="spacerparent" *ngFor="let item of items()?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"
                 role="listitem">
-                <mat-icon matListItemIcon>category</mat-icon>
-                <div matListItemTitle>{{ item.name }} </div>
-                <button matListItemMeta mat-button [routerLink]=" ['/item-list']"
-                    [queryParams]="{id: item.catID, name: item.catName}">{{item.catName}}</button>
-
+                
+                    
+                        <mat-icon matListItemIcon>category</mat-icon>
+                    <div matListItemTitle>{{ item.name }} </div>
+                    @if (item.catID) {
+                        <button matListItemMeta mat-button [routerLink]=" ['/item-list']"
+                        [queryParams]="{id: item.catID, name: mappedCats.get(item.id)?.()?.name}">{{mappedCats.get(item.id)?.()?.name}}</button>
+                    }
+                    
+                
             </mat-list-item>
         </mat-list>
     </mat-card-content>

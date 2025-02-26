@@ -8,21 +8,12 @@
             You have items that are unassigned to any box. Please delete or assign those
             items
             <button mat-fab [routerLink]=" ['/unassigned-item-list']" class="warning">Here</button>
-
-
-
         </mat-card-subtitle>
-
-
     </mat-card-header>
-
-
 </mat-card>
-
 }
 
 <div>
-
     <mat-card *ngFor="let box of boxes().sort(sortFn)" appearance="outlined" [routerLink]=" ['/box',box?.id]">
         <mat-card-header>
             <div mat-card-avatar><mat-icon>pages</mat-icon></div>
@@ -32,12 +23,9 @@
             }
         </mat-card-header>
         <mat-card-content>
-
-            <p> <span *ngFor="let item of box?.items?.sort(sortFn), let islast=last">{{ item.name }}<span
+            <p> <span *ngFor="let item of groupedItems.get(box.id)?.()?.sort(sortFn), let islast=last">{{ item.name }}<span
                         *ngIf="!islast">, </span></span>
             </p>
         </mat-card-content>
-
-
     </mat-card>
 </div>

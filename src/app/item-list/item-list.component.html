@@ -10,14 +10,22 @@
   }
     
   </mat-toolbar>
-<mat-card *ngFor="let item of items().sort(sortFn)"appearance="outlined" [routerLink]=" ['/item',item?.id]">
+<mat-card *ngFor="let item of items()?.sort(sortFn)"appearance="outlined" [routerLink]=" ['/item',item?.id]">
     <mat-card-header>
       <div mat-card-avatar><mat-icon>category</mat-icon></div>
         <mat-card-title>{{item.name}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         
-          <p> Box #{{item.boxName}}</p>
+          @if (mappedBoxes.get(item.id)) {
+            <p> Box: {{mappedBoxes.get(item.id)?.()?.name}}</p>
+          } 
+          @else if (mappedRooms.get(item.id)) {
+            <p> Room: {{mappedRooms.get(item.id)?.()?.name}}</p>
+          }
+          @else {
+            <p> Unassigned Item !</p>
+          }
     </mat-card-content>
     
 

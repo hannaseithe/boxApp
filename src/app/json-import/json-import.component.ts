@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { DbService } from '../db.service';
-import { Box, Cat, Item } from '../app';
+import { Box, Cat, Item, Room } from '../app';
 import { MatButtonModule } from '@angular/material/button';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-json-import',
@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class JsonImportComponent {
 
-  constructor(private data:DbService) {
+  constructor(private data:StorageService) {
 
   }
 
@@ -22,9 +22,9 @@ export class JsonImportComponent {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      let json:[Box[],Cat[],Item[]] = JSON.parse(e.target.result)
-      this.data.initializeNewDBfromExcel(...json);
-      console.log('Imported Json:', json);
+      let {rooms, boxes, cats, items} = JSON.parse(e.target.result)
+      this.data.initializeNewDB(boxes, cats,items,rooms);
+      console.log('Imported Json:', [items, boxes, rooms,cats]);
     };
     reader.readAsText(file);
   }

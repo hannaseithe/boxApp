@@ -14,10 +14,6 @@
     }
     <span class="spacer"></span>
 
-
-
-
-
     @if(dynButs().boxAdd) {
     <button mat-mini-fab [routerLink]=" ['/add-edit-box']" type="button">
         <mat-icon>add</mat-icon>
@@ -30,11 +26,6 @@
         <mat-icon>add</mat-icon>
     </button>
     }
- 
-
- 
-    
-
 
     <button mat-icon-button [matMenuTriggerFor]="devMenu"  type="button">
         <mat-icon>data_object</mat-icon>
@@ -42,7 +33,6 @@
 
     <mat-menu #devMenu="matMenu">
         <button mat-button (click)="clearStorage($event)" type="button">Clear Storage</button>
-        <button mat-button (click)="initStorage($event)" type="button">Init Storage</button>
     </mat-menu>
     <button mat-icon-button [matMenuTriggerFor]="fileMenu" type="button"><mat-icon>sync_alt</mat-icon></button>
     <mat-menu #fileMenu="matMenu">

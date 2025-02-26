@@ -16,7 +16,7 @@ export class BottomSheetComponent {
   resetFn;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: { reset: any },
-private ref: MatBottomSheetRef<BottomSheetComponent>) {
+    private ref: MatBottomSheetRef<BottomSheetComponent>) {
     this.message = data.reset.message
     this.resetFn = data.reset
     effect(() => {

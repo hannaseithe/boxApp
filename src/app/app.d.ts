@@ -12,18 +12,26 @@ export type Item = {
   id: uniqueId,
   name: string,
   catID: uniqueId,
-  catName?: string,
   description: string,
   tags: string[],
-  boxID: uniqueId,
-  boxName?: string
-}
+  picture?: string,
+}& (
+  | { boxID?: uniqueId; roomID?: never }
+  | { roomID?: uniqueId; boxID?: never } 
+)
 
 export type Box = {
   id: uniqueId,
   name: string,
   description?: string,
-  items?: item[]
+  boxID?: uniqueId,
+  roomID?: uniqueId,
+}
+
+export type Room = {
+  id: uniqueId,
+  name: string,
+  description?: string,
 }
 
 export type Cat = {

@@ -4,7 +4,7 @@
         <mat-card-title-group>
             <mat-card-title>{{item()?.name}}</mat-card-title>
             @if (item()?.catID){
-                <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item()?.catID, name: catName()}">{{catName()}}</button></mat-card-subtitle>
+                <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item()?.catID, name: cat()?.name}">{{cat()?.name}}</button></mat-card-subtitle>
             }
            
         </mat-card-title-group>
@@ -18,9 +18,12 @@
         <mat-list role="list">
             <mat-list-item *ngIf="item()?.description" role="listitem">{{ item()?.description }}</mat-list-item>
             <mat-list-item role="listitem" [routerLink]=" ['/box', box()?.id]"><mat-icon matListItemIcon>pages</mat-icon>Box {{ box()?.name }}</mat-list-item>
-            <mat-list-item *ngIf="item()?.tags?.length" role="listitem"><mat-chip-set aria-label="Fish selection">
-                <mat-chip *ngFor="let tag of item()?.tags" [routerLink]=" ['/item-list', tag]">{{tag}}</mat-chip>
-              </mat-chip-set></mat-list-item>
+            <mat-list-item *ngIf="item()?.tags?.length" role="listitem">
+                <mat-chip-set aria-label="Fish selection">
+                    <mat-chip *ngFor="let tag of item()?.tags" [routerLink]=" ['/item-list', tag]">{{tag}}</mat-chip>
+                </mat-chip-set>
+            </mat-list-item>
+            <mat-list-item><img *ngIf="item()?.picture" [src]="item()?.picture" alt="Stored Image" /></mat-list-item>
           </mat-list>
     </mat-card-content>
   </mat-card>

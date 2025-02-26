@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DbService } from '../db.service';
 import { MatButtonModule } from '@angular/material/button';
+import { ExportImportService } from '../exportimport.service';
 
 
 @Component({
@@ -13,10 +13,10 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './excel-download.component.css'
 })
 export class ExcelDownloadComponent {
-  constructor(private data: DbService){}
+  constructor(private exim: ExportImportService){}
 
   exportExcel() {
-    this.data.exportToExcel()
+    this.exim.exportToExcel()
   }
 
 }
