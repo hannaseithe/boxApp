@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
-import { BoxListComponent } from './box-list/box-list.component';
-import { BoxComponent } from './box/box.component';
-import { ItemComponent } from './item/item.component';
-import { ItemListComponent } from './item-list/item-list.component';
-import { AddEditItemComponent } from './add-edit-item/add-edit-item.component';
-import { CatListComponent } from './cat-list/cat-list.component';
-import { AddEditBoxComponent } from './add-edit-box/add-edit-box.component';
-import { UnassignedItemListComponent } from './unassigned-item-list/unassigned-item-list.component';
+import { BoxListComponent } from './components/box-list/box-list.component';
+import { BoxComponent } from './components/box/box.component';
+import { ItemComponent } from './components/item/item.component';
+import { ItemListComponent } from './components/item-list/item-list.component';
+import { AddEditItemComponent } from './components/add-edit-item/add-edit-item.component';
+import { CatListComponent } from './components/cat-list/cat-list.component';
+import { AddEditBoxComponent } from './components/add-edit-box/add-edit-box.component';
+import { UnassignedItemListComponent } from './components/unassigned-item-list/unassigned-item-list.component';
+import { NasLoginComponent } from './components/nas-login/nas-login.component';
 
 export const routes: Routes = [
     {
@@ -63,5 +64,10 @@ export const routes: Routes = [
         path: 'unassigned-item-list',
         component: UnassignedItemListComponent,
         title: 'List of Unassigned Items',
+      },
+      {
+        path: 'nas-login',
+        component: NasLoginComponent,
+        title: 'Login to NAS',
       },
 ];

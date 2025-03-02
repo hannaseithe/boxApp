@@ -1,5 +1,9 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+proxy.conf.json
+src/environments/environment.ts
+src/environments/nas-config.ts
+
 # Compiled output
 /dist
 /tmp

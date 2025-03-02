@@ -1,0 +1,75 @@
+<mat-card  appearance="outlined" >
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-form-field>
+                <mat-label>Item name</mat-label>
+                <input matInput formControlName="name" required>
+            </mat-form-field>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <mat-form-field>
+                <mat-label>Item category</mat-label>
+                <mat-select formControlName="catID">
+                  <mat-option [value]="">- No Category -</mat-option>
+                    @for (cat of cats(); track cat) {
+                      <mat-option [value]="cat.id">{{cat.name}}</mat-option>
+                    }
+                  </mat-select>
+            </mat-form-field>
+            <button mat-button (click)="openDialog({addNew: true})" type="button">New Category</button>
+            <button mat-button (click)="openDialog({addNew: false})" type="button">Edit Category</button>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div id="container">
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="description">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Box</mat-label>
+                <mat-select formControlName="boxID" required>
+                    @for (box of boxes; track box) {
+                      <mat-option [value]="box.id">#{{box.name}}</mat-option>
+                    }
+                  </mat-select>
+            </mat-form-field>
+
+              <mat-form-field class="example-form-field">
+                <mat-label>Tags</mat-label>
+                <mat-chip-grid #reactiveChipGrid aria-label="Enter Tags" formControlName="tags">
+                @for (tag of form.get('tags')?.value; track tag) {
+                  <mat-chip-row (removed)="remove(tag)">
+                    {{tag}}
+                  <button matChipRemove aria-label="'remove ' + tag">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                  </mat-chip-row>
+                }
+                </mat-chip-grid>
+                <input
+                  placeholder="New Tag..."
+                  [matChipInputFor]="reactiveChipGrid"
+                  (matChipInputTokenEnd)="add($event)"
+                />
+              </mat-form-field>
+              @if (!nas.loggedIn) {
+                <button type="button" mat-button (click)="loginToNAS()">Login to NAS</button>
+              } @else {
+                 <button type="button" mat-button (click)="fileInput.click()">Choose File</button>
+                <input hidden (change)="onFileSelect($event)" #fileInput type="file" id="file"> 
+              }
+              
+                
+                @if (picture()) {
+                  <img [src]="picture()" alt="Image Thumbnail" height="100" />
+                }
+                
+        </div>
+        <button mat-button type="submit" [disabled]="!form.valid || !form.dirty">Save</button>
+        <button mat-button (click)="cancel()" type="button">Cancel</button>
+    </mat-card-content>
+  </form>
+</mat-card>

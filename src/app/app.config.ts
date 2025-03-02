@@ -5,8 +5,9 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { APP_INITIALIZER, isDevMode } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
-import { StorageService } from './storage.service';
-import { LocalStorageService, StorageFactoryService } from './localstorage.service';
+import { StorageService } from './services/storage.service';
+import { LocalStorageService, StorageFactoryService } from './services/localstorage.service';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
         },
       deps: [StorageFactoryService],
     },
+    provideHttpClient()
   ],
 };

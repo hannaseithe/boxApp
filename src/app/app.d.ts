@@ -9,34 +9,32 @@ export type resetFn = {
 
 
 export type Item = {
-  id: uniqueId,
+  id: string,
   name: string,
-  catID: uniqueId,
+  catID: string,
   description: string,
   tags: string[],
   picture?: string,
 }& (
-  | { boxID?: uniqueId; roomID?: never }
-  | { roomID?: uniqueId; boxID?: never } 
+  | { boxID?: string; roomID?: never }
+  | { roomID?: string; boxID?: never } 
 )
 
 export type Box = {
-  id: uniqueId,
+  id: string,
   name: string,
   description?: string,
-  boxID?: uniqueId,
-  roomID?: uniqueId,
+  boxID?: string,
+  roomID?: string,
 }
 
 export type Room = {
-  id: uniqueId,
+  id: string,
   name: string,
   description?: string,
 }
 
 export type Cat = {
-  id: uniqueId,
+  id: string,
   name: string,
 }
-
-export type uniqueId = `${string}-${string}-${string}-${string}-${string}`
