@@ -14,6 +14,11 @@
     }
     <span class="spacer"></span>
 
+    @if(nas.ready) {
+        <app-nas-slider></app-nas-slider> 
+    }
+  
+
     @if(dynButs().boxAdd) {
     <button mat-mini-fab [routerLink]=" ['/add-edit-box']" type="button">
         <mat-icon>add</mat-icon>

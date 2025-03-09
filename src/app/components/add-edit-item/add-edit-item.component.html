@@ -55,17 +55,18 @@
                   (matChipInputTokenEnd)="add($event)"
                 />
               </mat-form-field>
-              @if (!nas.loggedIn) {
-                <button type="button" mat-button (click)="loginToNAS()">Login to NAS</button>
+              @if (!nas.loggedIn()) {
+
               } @else {
                  <button type="button" mat-button (click)="fileInput.click()">Choose File</button>
                 <input hidden (change)="onFileSelect($event)" #fileInput type="file" id="file"> 
+                @if (picture()) {
+                  <img [src]="picture()" alt="Image"/>
+                }
               }
               
                 
-                @if (picture()) {
-                  <img [src]="picture()" alt="Image Thumbnail" height="100" />
-                }
+                
                 
         </div>
         <button mat-button type="submit" [disabled]="!form.valid || !form.dirty">Save</button>

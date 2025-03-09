@@ -7,11 +7,18 @@ import {
 } from '@angular/forms';
 import { NasService } from '../../services/nas.service';
 import { Location } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-nas-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule
+  ],
   templateUrl: './nas-login.component.html',
   styleUrls: ['./nas-login.component.css'],
 })

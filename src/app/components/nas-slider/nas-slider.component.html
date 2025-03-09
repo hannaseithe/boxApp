@@ -1,0 +1,11 @@
+@if(wait) {
+<mat-spinner [diameter]="30"></mat-spinner>
+}@else {
+<mat-slide-toggle [checked]='nas.loggedIn()' (toggleChange)="toggleNasLogin()">NAS</mat-slide-toggle>
+}
+@if(errorMessage) {
+    <p class="error-message">
+      {{ errorMessage }}
+    </p>
+  }
+

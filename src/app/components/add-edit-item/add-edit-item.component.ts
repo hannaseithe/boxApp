@@ -1,4 +1,13 @@
-import { Component, computed, ElementRef, Signal, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  Signal,
+  signal,
+  ViewChild,
+  WritableSignal,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ActivatedRoute,
@@ -48,8 +57,8 @@ export class AddEditItemComponent {
   form: FormGroup;
   boxes: Box[] = [];
   cats: Signal<Cat[]>;
-  picture = signal<string | undefined>(undefined);
-  private item: Signal<Item | undefined> | undefined = undefined;
+  picture: WritableSignal<string | undefined> = signal(undefined);
+  private item: Signal<Item | undefined> = signal(undefined);
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +67,7 @@ export class AddEditItemComponent {
     private location: Location,
     private undo: UndoService,
     private dialog: MatDialog,
-    public nas: NasService,
+    public nas: NasService
   ) {
     this.form = new FormGroup({
       name: new FormControl(''),
@@ -71,15 +80,16 @@ export class AddEditItemComponent {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
+    effect(() => {
+      const item = this.item()
+      if (this.nas.loggedIn() && item?.picture) {
+        this.fetchThumbnail(item.picture);
+      }
+    });
+
     if (!this.isAddMode && this.id) {
       this.item = this.data.getItem(this.id);
       let x = this.item();
-      computed(() => {
-        const picturePath = this.item?.()?.picture;
-        if (picturePath) {
-          //this.loadImage(picturePath);
-        }
-      });
     }
 
     this.cats = computed(() => this.data.Cats().sort(this.sortFn));
@@ -89,26 +99,38 @@ export class AddEditItemComponent {
 
   ngOnInit(): void {
     if (this.item) {
-      let item = this.item()
+      let item = this.item();
       if (item) {
         this.form.patchValue(item);
       }
     }
-    
+
     let boxID = this.route.snapshot.queryParams['boxId'];
     if (boxID) {
       this.form.patchValue({ boxID: boxID });
     }
   }
 
-  /*private async loadImage(picturePath: string) {
-    try {
-      const imageUrl = await this.fs.loadImageFromFolder(picturePath);
-      this.picture.set(imageUrl); // Das Bild-URL im Signal setzen
-    } catch (error) {
-      console.error('Error loading image:', error);
-    }
-  }*/
+  private fetchThumbnail(fileName:string){
+    this.nas.fetchThumbnail(fileName,100).subscribe({
+      next: (blob) => {
+        this.convertBlobToBase64(blob).then(base64 => {
+          this.picture.set(base64); 
+        });
+      },
+      error: (error) => console.error(error)
+      
+    });
+  }
+
+  private convertBlobToBase64(blob:Blob):Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => resolve(reader.result as string); 
+      reader.onerror = error => reject(error);
+    });
+  }
 
   openDialog(data: any) {
     let dialogRef = this.dialog.open(CatListComponent, {
@@ -178,27 +200,24 @@ export class AddEditItemComponent {
     this.location.back();
   }
 
-  loginToNAS() {
-    this.router.navigate(['/nas-login']);
-  }
-
   async onFileSelect(event: any): Promise<void> {
     const file = event.target.files[0];
     console.log('File selected');
 
     if (file) {
-      const fileName = this.nas.uploadFile(file,true).subscribe({next: (response: any) => {
-        if (response.authPassed === '1') {
-          console.log('upload successful')
-          this.form.patchValue({ picture: fileName });
-        } else {
-          console.error('Upload Failed')
-        }
-      },
-      error: (error) => {
-        console.error(error);
-      },});
-      
+      const fileName = this.nas.uploadFile(file, true).subscribe({
+        next: (response: any) => {
+          if (response.status === 1) {
+            console.log('upload successful');
+            this.form.patchValue({ picture: response.name });
+          } else {
+            console.error('Upload Failed');
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
     }
   }
 }

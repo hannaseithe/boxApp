@@ -12,6 +12,9 @@ import { NavbarService } from '../../services/navbar.service';
 import { Location } from '@angular/common';
 import { SearchComponent } from "../search/search.component";
 import { StorageService } from '../../services/storage.service';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { NasService } from '../../services/nas.service';
+import { NasSliderComponent } from "../nas-slider/nas-slider.component";
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +29,8 @@ import { StorageService } from '../../services/storage.service';
     JsonImportComponent,
     MatIconModule,
     RouterModule,
-    SearchComponent
+    SearchComponent,
+    NasSliderComponent
 ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
@@ -40,7 +44,8 @@ export class NavbarComponent {
   constructor(private data:StorageService,
     private navBar:NavbarService,
     private location:Location,
-    private router:Router
+    private router:Router,
+    public nas:NasService
   ) {
     this.dynButs = this.navBar.inputData.buttons
     this.pageData = this.navBar.inputData.pageData

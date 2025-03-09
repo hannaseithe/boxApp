@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -229,16 +229,40 @@ function ezEncode(str: string) {
   return out;
 }
 
-
 @Injectable({
   providedIn: 'root',
 })
 export class NasService {
   private apiUrl = environment.apiUrl;
   private sid = '';
-  public loggedIn = false
+  public loggedIn = signal(false);
+  public ready = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    if (nasConfig) {
+      this.checkNasStatus().subscribe({
+        next: (response: any) => {
+          if (response.status == 200) {
+            this.ready = true;
+          }
+        },
+        error: (error: any) => {
+          console.error(error);
+        },
+      });
+    } else {
+      console.error(
+        'nas-config.ts not implemented. Create file based on nas-config.example.ts'
+      );
+    }
+  }
+
+  checkNasStatus(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/cgi-bin/filemanager/authLogin.cgi`, {
+      observe: 'response',
+      responseType: 'text',
+    });
+  }
 
   login(user: string, pwd: string) {
     const baseUrl = `${this.apiUrl}/cgi-bin/filemanager/authLogin.cgi`;
@@ -249,28 +273,58 @@ export class NasService {
     const url = `${baseUrl}?user=${user}&pwd=${encodedPassword}`;
 
     const headers = new HttpHeaders({
-      'Accept': 'application/json',  // Accept XML response from the server
+      Accept: 'application/json', // Accept XML response from the server
     });
 
     const get = this.http.get(url, { headers, responseType: 'text' }).pipe(
-      map(response => this.parseXML(response)), // Parse the XML response
-      catchError(error => {
+      map((response) => this.parseXML(response)), // Parse the XML response
+      catchError((error) => {
         console.error('Error during login:', error);
         throw error; // Handle the error accordingly
       })
-    )
-    get.subscribe({next: (response: any) => {
-      if (response.QDocRoot.authPassed['#cdata-section'] === '1') {
-        this.sid = response.QDocRoot.authSid['#cdata-section']
-        this.loggedIn = true
-      }
-  }})
-    return get
+    );
+    get.subscribe({
+      next: (response: any) => {
+        if (response.QDocRoot.authPassed['#cdata-section'] === '1') {
+          this.sid = response.QDocRoot.authSid['#cdata-section'];
+          this.loggedIn.set(true);
+        }
+      },
+    });
+    return get;
+  }
+
+  selfLogin(): Observable<any> {
+    return this.login(nasConfig.nasUserName, nasConfig.nasPassword);
+  }
+
+  logout(): Observable<any> {
+    const baseUrl = `${this.apiUrl}/cgi-bin/filemanager/authLogin.cgi`;
+    const url = `${baseUrl}?logout=1&sid=${this.sid}`;
+    const headers = new HttpHeaders({
+      Accept: 'application/json', // Accept XML response from the server
+    });
+
+    const get = this.http.get(url, { headers, responseType: 'text' }).pipe(
+      map((response) => this.parseXML(response)), // Parse the XML response
+      catchError((error) => {
+        console.error('Error during login:', error);
+        throw error; // Handle the error accordingly
+      })
+    );
+    get.subscribe({
+      next: (response: any) => {
+        if (response.QDocRoot.authPassed['#cdata-section'] === '1') {
+          this.loggedIn.set(false);
+        }
+      },
+    });
+    return get;
   }
 
   parseXML(xmlText: string): any {
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+    const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
 
     // If the XML response contains errors, we should handle it gracefully
     const errorNode = xmlDoc.querySelector('parsererror');
@@ -285,7 +339,7 @@ export class NasService {
   // Convert the XML document to a JSON object
   xmlToJson(xml: any): any {
     let obj: any = {};
-  
+
     // If the node is an element (nodeType === 1)
     if (xml.nodeType === 1) {
       // Process attributes (if any)
@@ -300,13 +354,13 @@ export class NasService {
     else if (xml.nodeType === 3) {
       obj = xml.nodeValue;
     }
-  
+
     // If it has child nodes
     if (xml.hasChildNodes()) {
       for (let i = 0; i < xml.childNodes.length; i++) {
         const item = xml.childNodes.item(i);
         const nodeName = item.nodeName;
-  
+
         // Handling CDATA: Check if the node is a CDATA section
         if (nodeName === '#cdata-section') {
           obj[nodeName] = item.textContent || item.nodeValue;
@@ -324,17 +378,16 @@ export class NasService {
         }
       }
     }
-  
+
     return obj;
   }
-  
 
   uploadFile(file: File, overwrite: boolean): Observable<any> {
-    if (this.loggedIn) {
+    if (this.loggedIn()) {
       const uploadUrl = `${this.apiUrl}/cgi-bin/filemanager/utilRequest.cgi`;
       const destPath = nasConfig.nasFolderPath;
       const progressPath = `${destPath.replace(/\//g, '-')}-${file.name}`;
-    
+
       // Construct query parameters
       const params = new HttpParams()
         .set('func', 'upload')
@@ -343,16 +396,39 @@ export class NasService {
         .set('dest_path', destPath)
         .set('overwrite', overwrite ? '1' : '0')
         .set('progress', progressPath);
-    
+
       // Create FormData and append only the file
       const formData = new FormData();
       formData.append('file', file, file.name);
-    
+
       const headers = new HttpHeaders({
         Accept: 'application/json',
       });
-    
-      return this.http.post<any>(`${uploadUrl}?${params.toString()}`, formData, { headers });
+
+      return this.http.post<any>(
+        `${uploadUrl}?${params.toString()}`,
+        formData,
+        { headers }
+      );
+    }
+    return throwError(() => new Error('User is not logged in'));
+  }
+  fetchThumbnail(fileName: string, size: 100 | 400 | 800): Observable<any> {
+    if (this.loggedIn()) {
+      const uploadUrl = `${this.apiUrl}/cgi-bin/filemanager/utilRequest.cgi`;
+      const path = nasConfig.nasFolderPath;
+
+      const params = new HttpParams()
+        .set('func', 'get_thumb')
+        .set('sid', this.sid)
+        .set('path', path)
+        .set('name', fileName)
+        .set('size', size)
+        .set('option', 1);
+
+      return this.http.get(`${uploadUrl}?${params.toString()}`, {
+        responseType: 'blob' as 'blob',
+      });
     }
     return throwError(() => new Error('User is not logged in'));
   }
