@@ -60,7 +60,9 @@
               } @else {
                  <button type="button" mat-button (click)="fileInput.click()">Choose File</button>
                 <input hidden (change)="onFileSelect($event)" #fileInput type="file" id="file"> 
-                @if (picture()) {
+                @if (pictureFile) {
+                  <mat-chip disabled>File to upload: {{pictureFile.name}}</mat-chip>
+                } @else if (picture()) {
                   <img [src]="picture()" alt="Image"/>
                 }
               }
