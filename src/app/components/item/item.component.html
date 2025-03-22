@@ -1,6 +1,6 @@
+<app-trail [trail]="trail"></app-trail>
 <mat-card appearance="outlined">
   <mat-card-header>
-    <app-trail [trail]="trail"></app-trail>
     <div mat-card-avatar>
       <app-icon>{{ icon.item }}</app-icon>
     </div>
@@ -31,10 +31,6 @@
       <mat-list-item *ngIf="item?.description" role="listitem">{{
         item?.description
       }}</mat-list-item>
-      <mat-list-item role="listitem" [routerLink]="['/box', box?.id]"
-        ><app-icon matListItemIcon>{{ icon.box }}</app-icon
-        >Box {{ box?.name }}</mat-list-item
-      >
       <mat-list-item *ngIf="item?.tags?.length" role="listitem">
         <mat-chip-set aria-label="Fish selection">
           <mat-chip

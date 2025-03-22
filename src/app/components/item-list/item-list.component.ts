@@ -67,7 +67,7 @@ export class ItemListComponent {
       if (item.boxID)
         this.mappedBoxes.set(item.id, this.data.getBox(item.boxID));
       if (item.roomID)
-        this.mappedRooms.set(item.id, this.data.getBox(item.roomID));
+        this.mappedRooms.set(item.id, this.data.getRoom(item.roomID));
     }
   }
   sortFn(a: Item, b: Item) {

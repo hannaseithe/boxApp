@@ -1,0 +1,4 @@
+:host([matChipTrailingIcon]) mat-icon {
+    font-size: inherit;
+    padding-top:4px;
+  }

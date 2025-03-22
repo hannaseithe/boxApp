@@ -24,12 +24,14 @@ export type Box = {
   description?: string;
   boxID?: string;
   roomID?: string;
+  type?: 'box';
 };
 
 export type Room = {
   id: string;
   name: string;
   description?: string;
+  type?: 'room';
 };
 
 export type Cat = {

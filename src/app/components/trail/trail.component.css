@@ -1,0 +1,9 @@
+.chip-wrapper {
+    display: inline-flex;
+    align-items: center;
+    color: #999999
+  }
+
+  .trail-chip {
+    padding-top:3px
+  }

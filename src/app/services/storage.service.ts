@@ -5,7 +5,7 @@ export abstract class StorageService {
   public abstract Boxes: WritableSignal<Box[]>;
   public abstract Cats: WritableSignal<Cat[]>;
   public abstract Items: WritableSignal<Item[]>;
-  public abstract Rooms: WritableSignal<Box[]>;
+  public abstract Rooms: WritableSignal<Room[]>;
   public abstract UnassignedItems: Signal<Item[]>;
   public abstract UnassignedBoxes: Signal<Box[]>;
 

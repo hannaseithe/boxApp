@@ -44,7 +44,7 @@ export class LocalStorageService extends StorageService {
   public Boxes: WritableSignal<Box[]>;
   public Cats: WritableSignal<Cat[]>;
   public Items: WritableSignal<Item[]>;
-  public Rooms: WritableSignal<Box[]>;
+  public Rooms: WritableSignal<Room[]>;
   public UnassignedItems: Signal<Item[]>;
   public UnassignedBoxes: Signal<Box[]>;
   private itemLookup: Record<string, Item> = {};
@@ -525,7 +525,7 @@ export class LocalStorageService extends StorageService {
       if (object.roomID) {
         const room = this.roomLookup[object.roomID];
         if (room) {
-          trail.push(room);
+          trail.push({ ...room, type: 'room' });
           break;
         }
       }
@@ -533,7 +533,7 @@ export class LocalStorageService extends StorageService {
       if (object.boxID) {
         const box = this.boxLookup[object.boxID];
         if (box) {
-          trail.push(box);
+          trail.push({ ...box, type: 'box' });
           currentId = box.id;
         } else {
           break;

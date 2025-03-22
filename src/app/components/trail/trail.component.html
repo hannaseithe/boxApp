@@ -1,3 +1,7 @@
-@for (thing of trail; track thing.id) { {{ thing.name
-}}<app-icon>chevron_right</app-icon>
-}
+<div class="chip-wrapper">
+  @for (thing of trail.slice().reverse(); track thing.id) {
+  <mat-chip [routerLink]="['/', thing.type, thing.id]"
+    ><app-icon matChipTrailingIcon>{{ icon[thing.type!] }}</app-icon
+    >{{ thing.name }}</mat-chip
+  ><app-icon class="trail-chip">chevron_right</app-icon> }
+</div>
