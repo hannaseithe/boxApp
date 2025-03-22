@@ -1,0 +1,17 @@
+<mat-form-field>
+  <mat-label>New Room</mat-label>
+  <input
+    matInput
+    [formControl]="roomNameControl"
+    (keydown.enter)="onEnter()"
+    placeholder="Enter new Room"
+  />
+</mat-form-field>
+<mat-list>
+  @for (room of rooms(); track room.name) {
+  <mat-list-item [routerLink]="['/room', room?.id]">
+    <app-icon matListItemIcon>{{ icon.room }}</app-icon>
+    {{ room.name }}
+  </mat-list-item>
+  }
+</mat-list>

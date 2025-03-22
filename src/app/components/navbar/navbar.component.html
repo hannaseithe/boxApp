@@ -1,50 +1,53 @@
 <mat-toolbar>
-    <button mat-icon-button [routerLink]=" ['/']" type="button">
-        <mat-icon>home</mat-icon>
+  <button mat-icon-button [routerLink]="['/']" type="button">
+    <app-icon>home</app-icon>
+  </button>
+  <button mat-icon-button [routerLink]="['/']" type="button">
+    <app-icon (click)="goBack()">arrow_back</app-icon>
+  </button>
+  @if (!doSearch) {
+  <button mat-icon-button (click)="activateSearch()" type="button">
+    <app-icon>search</app-icon>
+  </button>
+  } @else {
+  <app-search (searchFinished)="deactivateSearch()"></app-search>
+  }
+  <span class="spacer"></span>
+
+  @if(nas.ready) {
+  <app-nas-slider></app-nas-slider>
+  } @if(dynButs().boxAdd) {
+  <button mat-mini-fab [routerLink]="['/add-edit-box']" type="button">
+    <app-icon>add</app-icon>
+  </button>
+  } @if(dynButs().itemAdd) {
+
+  <button
+    mat-mini-fab
+    [routerLink]="['/add-edit-item']"
+    [queryParams]="{ boxId: pageData().boxId }"
+    type="button"
+  >
+    <app-icon>add</app-icon>
+  </button>
+  }
+
+  <button mat-icon-button [matMenuTriggerFor]="devMenu" type="button">
+    <app-icon>data_object</app-icon>
+  </button>
+
+  <mat-menu #devMenu="matMenu">
+    <button mat-button (click)="clearStorage($event)" type="button">
+      Clear Storage
     </button>
-    <button mat-icon-button [routerLink]=" ['/']"  type="button">
-        <mat-icon (click)="goBack()">arrow_back</mat-icon>
-    </button>
-    @if (!doSearch) {
-        <button mat-icon-button (click)="activateSearch()" type="button">
-            <mat-icon >search</mat-icon>
-        </button>
-    } @else {
-        <app-search (searchFinished)="deactivateSearch()"></app-search>
-    }
-    <span class="spacer"></span>
-
-    @if(nas.ready) {
-        <app-nas-slider></app-nas-slider> 
-    }
-  
-
-    @if(dynButs().boxAdd) {
-    <button mat-mini-fab [routerLink]=" ['/add-edit-box']" type="button">
-        <mat-icon>add</mat-icon>
-    </button>
-    }
-
-    @if(dynButs().itemAdd) {
-
-    <button mat-mini-fab [routerLink]=" ['/add-edit-item']" [queryParams]="{boxId: pageData().boxId}"  type="button">
-        <mat-icon>add</mat-icon>
-    </button>
-    }
-
-    <button mat-icon-button [matMenuTriggerFor]="devMenu"  type="button">
-        <mat-icon>data_object</mat-icon>
-    </button>
-
-    <mat-menu #devMenu="matMenu">
-        <button mat-button (click)="clearStorage($event)" type="button">Clear Storage</button>
-    </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="fileMenu" type="button"><mat-icon>sync_alt</mat-icon></button>
-    <mat-menu #fileMenu="matMenu">
-        <app-excel-upload></app-excel-upload>
-        <app-excel-download></app-excel-download>
-        <app-json-export></app-json-export>
-        <app-json-import></app-json-import>
-    </mat-menu>
-
+  </mat-menu>
+  <button mat-icon-button [matMenuTriggerFor]="fileMenu" type="button">
+    <app-icon>sync_alt</app-icon>
+  </button>
+  <mat-menu #fileMenu="matMenu">
+    <app-excel-upload></app-excel-upload>
+    <app-excel-download></app-excel-download>
+    <app-json-export></app-json-export>
+    <app-json-import></app-json-import>
+  </mat-menu>
 </mat-toolbar>

@@ -1,13 +1,18 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { APP_INITIALIZER, isDevMode } from '@angular/core';
+import { isDevMode } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
 import { StorageService } from './services/storage.service';
-import { LocalStorageService, StorageFactoryService } from './services/localstorage.service';
+import { StorageFactoryService } from './services/localstorage.service';
 import { provideHttpClient } from '@angular/common/http';
+import { MatIconRegistry } from '@angular/material/icon';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,14 +25,21 @@ export const appConfig: ApplicationConfig = {
     }),
     {
       provide: StorageService,
-      useFactory: (storageFactory: StorageFactoryService) =>
-        {
-          const service = storageFactory.getStorageService();
-          console.log('StorageService from Factory:', service);
-          return service;
-        },
+      useFactory: (storageFactory: StorageFactoryService) => {
+        const service = storageFactory.getStorageService();
+        console.log('StorageService from Factory:', service);
+        return service;
+      },
       deps: [StorageFactoryService],
     },
-    provideHttpClient()
+    provideHttpClient(),
+    {
+      provide: 'icon-setup',
+      useFactory: () => {
+        const iconRegistry = inject(MatIconRegistry);
+        iconRegistry.registerFontClassAlias('material-symbols-outlined');
+        return true;
+      },
+    },
   ],
 };

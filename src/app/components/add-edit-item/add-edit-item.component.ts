@@ -35,6 +35,7 @@ import { CatListComponent } from '../cat-list/cat-list.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { StorageService } from '../../services/storage.service';
 import { NasService } from '../../services/nas.service';
+import { AppIconComponent } from '../app-icon/app-icon.component';
 
 @Component({
   selector: 'app-add-edit-item',
@@ -47,7 +48,7 @@ import { NasService } from '../../services/nas.service';
     MatListModule,
     MatSelectModule,
     MatChipsModule,
-    MatIconModule,
+    AppIconComponent,
     MatButtonModule,
     RouterModule,
     MatDialogModule,
@@ -71,7 +72,7 @@ export class AddEditItemComponent {
   boxes: Box[] = [];
   cats: Signal<Cat[]>;
   picture: WritableSignal<string | undefined> = signal(undefined);
-  private item: Signal<Item | undefined> = signal(undefined);
+  private item: Item | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -95,7 +96,7 @@ export class AddEditItemComponent {
     this.isAddMode = !this.id;
 
     effect(() => {
-      const item = this.item();
+      const item = this.item;
       if (this.nas.loggedIn() && item?.picture) {
         this.fetchThumbnail(item.picture);
       }
@@ -103,7 +104,6 @@ export class AddEditItemComponent {
 
     if (!this.isAddMode && this.id) {
       this.item = this.data.getItem(this.id);
-      let x = this.item();
     }
 
     this.cats = computed(() => this.data.Cats().sort(this.sortFn));
@@ -113,7 +113,7 @@ export class AddEditItemComponent {
 
   ngOnInit(): void {
     if (this.item) {
-      let item = this.item();
+      let item = this.item;
       if (item) {
         this.form.patchValue(item);
         if (item.picture && this.nas.loggedIn()) {
@@ -236,9 +236,9 @@ export class AddEditItemComponent {
       this.undo.push(resetFn);
     }
     if (this.id) {
-      this.router.navigateByUrl('/item/' + item()?.id);
+      this.router.navigateByUrl('/item/' + item?.id);
     } else {
-      this.router.navigateByUrl('/box/' + item()?.boxID);
+      this.router.navigateByUrl('/box/' + item?.boxID);
     }
   }
 

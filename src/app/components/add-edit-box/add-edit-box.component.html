@@ -1,22 +1,43 @@
-<mat-card  appearance="outlined" >
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-card-header>
-          <mat-card-title>
-              <mat-form-field>
-                  <mat-label>Box name</mat-label>
-                  <input matInput formControlName="name" required>
-              </mat-form-field>
-          </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-          <div id="container">
-              <mat-form-field>
-                  <mat-label>Description</mat-label>
-                  <input matInput formControlName="description">
-              </mat-form-field>
-          </div>
-          <button mat-button type="submit" [disabled]="!form.valid || !form.dirty">Save</button>
-          <button mat-button (click)="cancel()" type="button">Cancel</button>
-      </mat-card-content>
-    </form>
-  </mat-card>
+<mat-card appearance="outlined">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-form-field>
+          <mat-label>Box name</mat-label>
+          <input matInput formControlName="name" required />
+        </mat-form-field>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div id="container">
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Box</mat-label>
+          <mat-select formControlName="boxID" (selectionChange)="select('box')">
+            @for (b of boxes(); track b.id) {
+            <mat-option [value]="b.id">#{{ b.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Room</mat-label>
+          <mat-select
+            formControlName="roomID"
+            (selectionChange)="select('room')"
+          >
+            @for (room of rooms(); track room.id) {
+            <mat-option [value]="room.id">#{{ room.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button mat-button type="submit" [disabled]="!form.valid || !form.dirty">
+        Save
+      </button>
+      <button mat-button (click)="cancel()" type="button">Cancel</button>
+    </mat-card-content>
+  </form>
+</mat-card>

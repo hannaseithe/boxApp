@@ -1,0 +1,60 @@
+<mat-toolbar>
+  <span>List of Unassigned Boxes</span>
+</mat-toolbar>
+@if (formGroup.dirty) {
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Delete selected Boxes
+      <button mat-button (click)="deleteSelected()">
+        <app-icon aria-hidden="false" aria-label="Example home icon">
+          {{ icon.delete }}</app-icon
+        >
+      </button>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Assign selected Boxes to a Room</mat-label>
+      <mat-select
+        (selectionChange)="assignSelected($event, selectControl)"
+        #selectControl
+      >
+        @for (room of rooms; track room) {
+        <mat-option [value]="room.id">#{{ room.name }}</mat-option>
+
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+}
+<form [formGroup]="formGroup">
+  <mat-list>
+    @for (box of boxes().sort(sortFn); track box.name){
+    <mat-list-item>
+      <app-icon>{{ icon.box }}</app-icon>
+      <mat-chip-option
+        [selected]="getControl(box.id).value"
+        (selectionChange)="onChipChange($event, box.id)"
+      >
+        {{ box.name }}
+      </mat-chip-option>
+      <button mat-button (click)="delete(box)">
+        <app-icon aria-hidden="false" aria-label="Example home icon">
+          {{ icon.delete }}</app-icon
+        >
+      </button>
+      <mat-form-field>
+        <mat-label>Assign a Room</mat-label>
+        <mat-select (selectionChange)="assign(box, $event)">
+          @for (room of rooms; track room) {
+          <mat-option [value]="room.id">#{{ room.name }}</mat-option>
+
+          }
+        </mat-select>
+      </mat-form-field>
+    </mat-list-item>
+    }
+  </mat-list>
+</form>

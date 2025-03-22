@@ -1,31 +1,52 @@
 <mat-card appearance="outlined">
-    <mat-card-header>
-        <div mat-card-avatar><mat-icon>category</mat-icon></div>
-        <mat-card-title-group>
-            <mat-card-title>{{item()?.name}}</mat-card-title>
-            @if (item()?.catID){
-                <mat-card-subtitle><button mat-button [routerLink]=" ['/item-list']" [queryParams]="{id: item()?.catID, name: cat()?.name}">{{cat()?.name}}</button></mat-card-subtitle>
-            }
-           
-        </mat-card-title-group>
-        <div class="spacer"></div>
-        <button  mat-mini-fab [routerLink]=" ['/add-edit-item', this.id]">
-            <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button (click)="deleteItem()"><mat-icon>delete</mat-icon></button>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-list role="list">
-            <mat-list-item *ngIf="item()?.description" role="listitem">{{ item()?.description }}</mat-list-item>
-            <mat-list-item role="listitem" [routerLink]=" ['/box', box()?.id]"><mat-icon matListItemIcon>pages</mat-icon>Box {{ box()?.name }}</mat-list-item>
-            <mat-list-item *ngIf="item()?.tags?.length" role="listitem">
-                <mat-chip-set aria-label="Fish selection">
-                    <mat-chip *ngFor="let tag of item()?.tags" [routerLink]=" ['/item-list', tag]">{{tag}}</mat-chip>
-                </mat-chip-set>
-            </mat-list-item>
-            @if (nas.loggedIn() && picture()) {
-                <img [src]="picture()" alt="Image" (click)="openImageDialog()"/>
-            }
-          </mat-list>
-    </mat-card-content>
-  </mat-card>
+  <mat-card-header>
+    <app-trail [trail]="trail"></app-trail>
+    <div mat-card-avatar>
+      <app-icon>{{ icon.item }}</app-icon>
+    </div>
+    <mat-card-title-group>
+      <mat-card-title>{{ item?.name }}</mat-card-title>
+      @if (item?.catID){
+      <mat-card-subtitle
+        ><button
+          mat-button
+          [routerLink]="['/item-list']"
+          [queryParams]="{ id: item?.catID, name: cat?.name }"
+        >
+          {{ cat?.name }}
+        </button></mat-card-subtitle
+      >
+      }
+    </mat-card-title-group>
+    <div class="spacer"></div>
+    <button mat-mini-fab [routerLink]="['/add-edit-item', this.id]">
+      <app-icon>{{ icon.edit }}</app-icon>
+    </button>
+    <button mat-icon-button (click)="deleteItem()">
+      <app-icon>{{ icon.delete }}</app-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-list-item *ngIf="item?.description" role="listitem">{{
+        item?.description
+      }}</mat-list-item>
+      <mat-list-item role="listitem" [routerLink]="['/box', box?.id]"
+        ><app-icon matListItemIcon>{{ icon.box }}</app-icon
+        >Box {{ box?.name }}</mat-list-item
+      >
+      <mat-list-item *ngIf="item?.tags?.length" role="listitem">
+        <mat-chip-set aria-label="Fish selection">
+          <mat-chip
+            *ngFor="let tag of item?.tags"
+            [routerLink]="['/item-list', tag]"
+            >{{ tag }}</mat-chip
+          >
+        </mat-chip-set>
+      </mat-list-item>
+      @if (nas.loggedIn() && picture()) {
+      <img [src]="picture()" alt="Image" (click)="openImageDialog()" />
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>

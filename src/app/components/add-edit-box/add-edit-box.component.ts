@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, Signal } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Location } from '@angular/common';
 import { StorageService } from '../../services/storage.service';
+import { Box, Room } from '../../app';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-add-edit-box',
@@ -18,32 +26,41 @@ import { StorageService } from '../../services/storage.service';
     MatInputModule,
     MatButtonModule,
     RouterModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   templateUrl: './add-edit-box.component.html',
-  styleUrl: './add-edit-box.component.css'
+  styleUrl: './add-edit-box.component.css',
 })
 export class AddEditBoxComponent {
-
   form: FormGroup;
-  id:  string | undefined = undefined;
+  id: string | undefined = undefined;
   isAddMode = false;
+  rooms: Signal<Room[]>;
+  boxes: Signal<Box[]>;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private data: StorageService,
     private router: Router,
-    private location:Location
+    private location: Location,
+    private fb: NonNullableFormBuilder
   ) {
-    this.form = new FormGroup({
-      name: new FormControl(''),
-      description: new FormControl('')
+    this.form = this.fb.group({
+      name: '',
+      description: '',
+      boxID: '',
+      roomID: '',
     });
+    this.boxes = this.data.Boxes;
+    this.rooms = this.data.Rooms;
   }
 
   onSubmit() {
-    let formBox = this.form.value
-    formBox.id = this.id ? this.id : undefined
+    let formBox = this.form.value;
+    formBox.id = this.id ? this.id : undefined;
     let editedBox = this.data.addUpdateBox(formBox);
-    this.router.navigateByUrl('/box/'+ editedBox()?.id )
+    this.router.navigateByUrl('/box/' + editedBox?.id);
   }
 
   ngOnInit(): void {
@@ -51,15 +68,27 @@ export class AddEditBoxComponent {
     this.isAddMode = !this.id;
 
     if (!this.isAddMode && this.id) {
-      let x = this.data.getBox(this.id)()
+      let x = this.data.getBox(this.id);
       if (x) {
         this.form.patchValue(x);
       }
     }
   }
 
-  cancel() {
-    this.location.back()
+  select(selected: string) {
+    switch (selected) {
+      case 'room':
+        this.form.get('boxID')?.reset();
+        break;
+      case 'box':
+        this.form.get('roomID')?.reset();
+        break;
+      default:
+        break;
+    }
   }
 
+  cancel() {
+    this.location.back();
+  }
 }

@@ -1,31 +1,59 @@
 @if (uaItems().length > 0) {
 <mat-card class="warning">
-    <mat-card-header>
-        <div mat-card-avatar>
-            <mat-icon class="warning">error_outline</mat-icon>
-        </div>
-        <mat-card-subtitle>
-            You have items that are unassigned to any box. Please delete or assign those
-            items
-            <button mat-fab [routerLink]=" ['/unassigned-item-list']" class="warning">Here</button>
-        </mat-card-subtitle>
-    </mat-card-header>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <app-icon class="warning">{{ icon.warning }}</app-icon>
+    </div>
+    <mat-card-subtitle>
+      You have items that are unassigned to any box. Please delete or assign
+      those items
+      <button mat-fab [routerLink]="['/unassigned-item-list']" class="warning">
+        Here
+      </button>
+    </mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
+} @if (uaBoxes().length > 0) {
+<mat-card class="warning">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <app-icon class="warning">{{ icon.warning }}</app-icon>
+    </div>
+    <mat-card-subtitle>
+      You have containers that are unassigned to any other container or room.
+      Please delete or assign those containers
+      <button mat-fab [routerLink]="['/unassigned-box-list']" class="warning">
+        Here
+      </button>
+    </mat-card-subtitle>
+  </mat-card-header>
 </mat-card>
 }
 
 <div>
-    <mat-card *ngFor="let box of boxes().sort(sortFn)" appearance="outlined" [routerLink]=" ['/box',box?.id]">
-        <mat-card-header>
-            <div mat-card-avatar><mat-icon>pages</mat-icon></div>
-            <mat-card-title><span>{{box?.name}}</span></mat-card-title>
-            @if (box?.description) {
-            <mat-card-subtitle>{{box?.description}}</mat-card-subtitle>
-            }
-        </mat-card-header>
-        <mat-card-content>
-            <p> <span *ngFor="let item of groupedItems.get(box.id)?.()?.sort(sortFn), let islast=last">{{ item.name }}<span
-                        *ngIf="!islast">, </span></span>
-            </p>
-        </mat-card-content>
-    </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <app-icon>{{ icon.room }}</app-icon>
+      </div>
+      <mat-card-title
+        ><span>{{ room?.name }}</span></mat-card-title
+      >
+      @if (room?.description) {
+      <mat-card-subtitle>{{ room?.description }}</mat-card-subtitle>
+      }
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        @for (box of boxes().sort(sortFn); track box.name){
+        <mat-list-item [routerLink]="['/box', box?.id]">
+          <app-icon matListItemIcon fontSet="material-symbols-outlined">{{
+            icon.box
+          }}</app-icon
+          >{{ box?.name }}
+        </mat-list-item>
+        }
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 </div>

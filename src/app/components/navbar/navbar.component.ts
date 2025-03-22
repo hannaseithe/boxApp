@@ -10,11 +10,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
 import { Location } from '@angular/common';
-import { SearchComponent } from "../search/search.component";
+import { SearchComponent } from '../search/search.component';
 import { StorageService } from '../../services/storage.service';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NasService } from '../../services/nas.service';
-import { NasSliderComponent } from "../nas-slider/nas-slider.component";
+import { NasSliderComponent } from '../nas-slider/nas-slider.component';
+import { AppIconComponent } from '../app-icon/app-icon.component';
 
 @Component({
   selector: 'app-navbar',
@@ -27,53 +28,49 @@ import { NasSliderComponent } from "../nas-slider/nas-slider.component";
     ExcelUploadComponent,
     JsonExportComponent,
     JsonImportComponent,
-    MatIconModule,
+    AppIconComponent,
     RouterModule,
     SearchComponent,
-    NasSliderComponent
-],
+    NasSliderComponent,
+  ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+  public dynButs: Signal<any>;
+  public pageData: Signal<any>;
+  public doSearch = false;
 
-  public dynButs:Signal<any>
-  public pageData:Signal<any>
-  public doSearch = false
-
-  constructor(private data:StorageService,
-    private navBar:NavbarService,
-    private location:Location,
-    private router:Router,
-    public nas:NasService
+  constructor(
+    private data: StorageService,
+    private navBar: NavbarService,
+    private location: Location,
+    private router: Router,
+    public nas: NasService
   ) {
-    this.dynButs = this.navBar.inputData.buttons
-    this.pageData = this.navBar.inputData.pageData
+    this.dynButs = this.navBar.inputData.buttons;
+    this.pageData = this.navBar.inputData.pageData;
     this.router.events.subscribe((ev) => {
-      if (ev instanceof NavigationStart) { 
-        this.navBar.update([],{})
+      if (ev instanceof NavigationStart) {
+        this.navBar.update([], {});
       }
     });
   }
 
-
-
   public clearStorage(event: Event) {
-    this.data.initializeNewDB([],[],[],[]);
+    this.data.initializeNewDB([], [], [], []);
   }
 
   goBack() {
-    this.location.back()
+    this.location.back();
   }
 
-  activateSearch(){
-    this.doSearch = true
-    this.router.navigate(['/item-list'], {queryParams: {search:true}});
+  activateSearch() {
+    this.doSearch = true;
+    this.router.navigate(['/item-list'], { queryParams: { search: true } });
   }
 
   deactivateSearch() {
-   this.doSearch = false
-    
+    this.doSearch = false;
   }
-
 }

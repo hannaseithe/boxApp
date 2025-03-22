@@ -9,8 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { UndoService } from '../../services/undo.service';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { StorageService } from '../../services/storage.service';
+import { AppIconComponent } from '../app-icon/app-icon.component';
 
 @Component({
   selector: 'app-cat-list',
@@ -22,50 +27,42 @@ import { StorageService } from '../../services/storage.service';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    MatIconModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   templateUrl: './cat-list.component.html',
-  styleUrl: './cat-list.component.css'
+  styleUrl: './cat-list.component.css',
 })
 export class CatListComponent {
-
   readonly dialogRef = inject(MatDialogRef<CatListComponent>);
   readonly dialogData = inject(MAT_DIALOG_DATA);
 
-  catFC: FormControl
-  latestCat: Cat | undefined = undefined
+  catFC: FormControl;
+  latestCat: Cat | undefined = undefined;
 
-  public cats: Signal<Cat[]>
+  public cats: Signal<Cat[]>;
 
   catVisibility: { [id: string]: boolean } = {};
   route: ActivatedRoute = inject(ActivatedRoute);
 
-  constructor(
-    private data: StorageService,
-  private undo: UndoService
-  ) {
-    this.cats = this.data.Cats
-    this.catFC = new FormControl("")
-
+  constructor(private data: StorageService, private undo: UndoService) {
+    this.cats = this.data.Cats;
+    this.catFC = new FormControl('');
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   edit(cat: Cat) {
     for (let key in this.catVisibility) {
-      this.catVisibility[key] = false
+      this.catVisibility[key] = false;
     }
     this.catVisibility[cat.id] = true;
-    this.catFC.setValue(cat.name)
+    this.catFC.setValue(cat.name);
   }
 
   add() {
-    this.dialogData.addNew = true
-    this.catFC.setValue("")
+    this.dialogData.addNew = true;
+    this.catFC.setValue('');
   }
 
   isCatEdited(catId: string): boolean {
@@ -74,42 +71,42 @@ export class CatListComponent {
   }
 
   updateCat(cat?: Cat) {
-    let edCat: any
+    let edCat: any;
     if (cat) {
       edCat = {
         id: cat.id,
-        name: this.catFC.value
-      }
+        name: this.catFC.value,
+      };
     } else {
       edCat = {
-        name: this.catFC.value
-      }
+        name: this.catFC.value,
+      };
     }
 
-    let updatedCat = this.data.addUpdateCat(edCat)()
+    let updatedCat = this.data.addUpdateCat(edCat);
     if (updatedCat) {
       this.catVisibility[updatedCat.id] = false;
       this.dialogData.addNew = false;
-      this.latestCat = updatedCat
-
+      this.latestCat = updatedCat;
     }
-
   }
 
-  delete(cat:Cat) {
-    let resetFn = this.data.removeCat(cat.id)
+  delete(cat: Cat) {
+    let resetFn = this.data.removeCat(cat.id);
     if (resetFn) {
-        this.undo.push(resetFn)
+      this.undo.push(resetFn);
     }
-
   }
 
-  sortFn(a: Cat,b: Cat) {
-    return a.name.toLowerCase() < b.name.toLowerCase() ? -1: a.name.toLowerCase() == b.name.toLowerCase() ? 0:1
+  sortFn(a: Cat, b: Cat) {
+    return a.name.toLowerCase() < b.name.toLowerCase()
+      ? -1
+      : a.name.toLowerCase() == b.name.toLowerCase()
+      ? 0
+      : 1;
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }

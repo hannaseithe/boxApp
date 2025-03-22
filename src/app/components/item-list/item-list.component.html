@@ -1,32 +1,35 @@
 <mat-toolbar>
   @if (tag) {
-    <mat-chip><mat-icon matChipAvatar aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon> {{ tag }}</mat-chip>
+  <mat-chip
+    ><app-icon matChipAvatar aria-hidden="false" aria-label="Example home icon"
+      >home</app-icon
+    >
+    {{ tag }}</mat-chip
+  >
+  } @else if (catID) {
+  <span>{{ catName }}</span>
+  } @else {
+  <span>Search Results</span>
   }
-  @else if (catID) {
-    <span>{{catName}}</span>
-  }
-  @else {
-    <span>Search Results</span>
-  }
-    
-  </mat-toolbar>
-<mat-card *ngFor="let item of items()?.sort(sortFn)"appearance="outlined" [routerLink]=" ['/item',item?.id]">
-    <mat-card-header>
-      <div mat-card-avatar><mat-icon>category</mat-icon></div>
-        <mat-card-title>{{item.name}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        
-          @if (mappedBoxes.get(item.id)) {
-            <p> Box: {{mappedBoxes.get(item.id)?.()?.name}}</p>
-          } 
-          @else if (mappedRooms.get(item.id)) {
-            <p> Room: {{mappedRooms.get(item.id)?.()?.name}}</p>
-          }
-          @else {
-            <p> Unassigned Item !</p>
-          }
-    </mat-card-content>
-    
-
-  </mat-card>
+</mat-toolbar>
+<mat-card
+  *ngFor="let item of items()?.sort(sortFn)"
+  appearance="outlined"
+  [routerLink]="['/item', item?.id]"
+>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <app-icon>{{ icon.item }}</app-icon>
+    </div>
+    <mat-card-title>{{ item.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (mappedBoxes.get(item.id)) {
+    <p>Box: {{ mappedBoxes.get(item.id)?.name }}</p>
+    } @else if (mappedRooms.get(item.id)) {
+    <p>Room: {{ mappedRooms.get(item.id)?.name }}</p>
+    } @else {
+    <p>Unassigned Item !</p>
+    }
+  </mat-card-content>
+</mat-card>

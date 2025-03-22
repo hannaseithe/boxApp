@@ -7,24 +7,25 @@ export abstract class StorageService {
   public abstract Items: WritableSignal<Item[]>;
   public abstract Rooms: WritableSignal<Box[]>;
   public abstract UnassignedItems: Signal<Item[]>;
+  public abstract UnassignedBoxes: Signal<Box[]>;
 
-  public abstract getItem(id: string): Signal<Item | undefined>;
+  public abstract getItem(id: string): Item | undefined;
   public abstract addUpdateItem(item: Item): {
-    item: Signal<Item | undefined>;
+    item: Item | undefined;
     resetFn?: resetFn;
   };
   public abstract removeItem(id: string): resetFn | void;
 
-  public abstract getBox(id: string): Signal<Box | undefined>;
-  public abstract addUpdateBox(box: Box): Signal<Box | undefined>;
+  public abstract getBox(id: string): Box | undefined;
+  public abstract addUpdateBox(box: Box): Box | undefined;
   public abstract removeBox(id: string): resetFn | void;
 
-  public abstract getRoom(id: string): Signal<Room | undefined>;
-  public abstract addUpdateRoom(room: Room): Signal<Room | undefined>;
+  public abstract getRoom(id: string): Room | undefined;
+  public abstract addUpdateRoom(room: Room): Room | undefined;
   public abstract removeRoom(id: string): resetFn | void;
 
-  public abstract getCat(id: string): Signal<Cat | undefined>;
-  public abstract addUpdateCat(item: Cat): Signal<Cat | undefined>;
+  public abstract getCat(id: string): Cat | undefined;
+  public abstract addUpdateCat(item: Cat): Cat | undefined;
   public abstract removeCat(id: string): resetFn | void;
 
   public abstract getItemsByCat(id: string): Signal<Item[]>;
@@ -41,25 +42,27 @@ export abstract class StorageService {
   public abstract getAllBoxesByBox(id: string): Signal<Box[]>;
   public abstract getAllBoxesByRoom(id: string): Signal<Box[]>;
 
+  public abstract getTrail(id: string): (Room | Box)[];
+
   public abstract assignItemToBox(
     boxId: string,
     itemId: string
-  ): Signal<Item | undefined> | undefined;
+  ): Item | undefined;
 
   public abstract assignBoxToBox(
     box1Id: string,
     box2Id: string
-  ): Signal<Box | undefined> | undefined;
+  ): Box | undefined;
 
   public abstract assignItemToRoom(
     itemId: string,
     roomId: string
-  ): Signal<Item | undefined> | undefined;
+  ): Item | undefined;
 
   public abstract assignBoxToRoom(
     boxId: string,
     roomId: string
-  ): Signal<Box | undefined> | undefined;
+  ): Box | undefined;
 
   public abstract clearStorage(): void;
   public abstract initializeNewDB(

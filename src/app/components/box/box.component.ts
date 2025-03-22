@@ -6,29 +6,29 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { Box, Cat, Item } from '../../app';
 import { Router, RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { UndoService } from '../../services/undo.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavbarService } from '../../services/navbar.service';
 import { StorageService } from '../../services/storage.service';
+import iconConfig from '../../icon.config';
+import { AppIconComponent } from '../app-icon/app-icon.component';
 
 @Component({
   selector: 'app-box',
   standalone: true,
   imports: [
     NgFor,
-    NgIf,
     MatCardModule,
     MatListModule,
     MatButtonModule,
-    MatIconModule,
+    AppIconComponent,
     MatToolbarModule,
     RouterModule,
   ],
@@ -41,9 +41,10 @@ export class BoxComponent {
 
   route: ActivatedRoute = inject(ActivatedRoute);
 
-  public box: Signal<Box | undefined> = signal(undefined);
-  public items: Signal<Item[]> = signal([])
-  public mappedCats: Map<string , Signal<Cat | undefined>> = new Map(); 
+  public box: Box | undefined;
+  public items: Signal<Item[]> = signal([]);
+  public mappedCats: Map<string, Cat | undefined> = new Map();
+  public icon = iconConfig;
 
   constructor(
     private data: StorageService,
@@ -57,7 +58,7 @@ export class BoxComponent {
     if (this.id) {
       this.box = this.data.getBox(this.id);
       this.items = this.data.getItemsByBox(this.id);
-      this.mapCats()
+      this.mapCats();
       this.navbar.update(['itemAdd'], { boxId: this.id });
     }
   }
@@ -65,7 +66,8 @@ export class BoxComponent {
   private mapCats(): void {
     this.mappedCats.clear();
     for (const item of this.items()) {
-      if (item.catID) this.mappedCats.set(item.id, this.data.getCat(item.catID));
+      if (item.catID)
+        this.mappedCats.set(item.id, this.data.getCat(item.catID));
     }
   }
 

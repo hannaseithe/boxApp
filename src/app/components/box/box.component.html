@@ -1,43 +1,47 @@
 <mat-card appearance="outlined">
-    <mat-card-header>
-        <div mat-card-avatar><mat-icon>pages</mat-icon></div>
-        <mat-card-title-group>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <app-icon>{{ icon.box }}</app-icon>
+    </div>
+    <mat-card-title-group>
+      <mat-card-title>{{ box?.name }} </mat-card-title>
 
-            <mat-card-title>{{box()?.name}}
-            </mat-card-title>
+      <mat-card-subtitle>{{ box?.description }}</mat-card-subtitle>
+    </mat-card-title-group>
 
+    <button mat-mini-fab [routerLink]="['/add-edit-box', this.id]">
+      <app-icon>{{ icon.edit }}</app-icon>
+    </button>
+    <div class="spacer"></div>
 
-            <mat-card-subtitle>{{box()?.description}}</mat-card-subtitle>
-        </mat-card-title-group>
-
-        <button mat-mini-fab [routerLink]=" ['/add-edit-box',this.id]">
-            <mat-icon>edit</mat-icon>
+    <button mat-icon-button (click)="deleteBox(this.box?.id)">
+      <app-icon>{{ icon.delete }}</app-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-list-item
+        class="spacerparent"
+        *ngFor="let item of items()?.sort(sortFn)"
+        [routerLink]="['/item', item?.id]"
+        role="listitem"
+      >
+        <app-icon matListItemIcon>{{ icon.item }}</app-icon>
+        <div matListItemTitle>{{ item.name }}</div>
+        @if (item.catID) {
+        <button
+          matListItemMeta
+          mat-button
+          [routerLink]="['/item-list']"
+          [queryParams]="{
+            id: item.catID,
+            name: mappedCats.get(item.id)?.name
+          }"
+        >
+          {{ mappedCats.get(item.id)?.name }}
         </button>
-        <div class="spacer"></div>
-
-        <button mat-icon-button (click)="deleteBox(this.box()?.id)">
-            <mat-icon>delete</mat-icon>
-        </button>
-
-
-    </mat-card-header>
-    <mat-card-content>
-        <mat-list role="list">
-            <mat-list-item class="spacerparent" *ngFor="let item of items()?.sort(sortFn)" [routerLink]=" ['/item',item?.id]"
-                role="listitem">
-                
-                    
-                        <mat-icon matListItemIcon>category</mat-icon>
-                    <div matListItemTitle>{{ item.name }} </div>
-                    @if (item.catID) {
-                        <button matListItemMeta mat-button [routerLink]=" ['/item-list']"
-                        [queryParams]="{id: item.catID, name: mappedCats.get(item.id)?.()?.name}">{{mappedCats.get(item.id)?.()?.name}}</button>
-                    }
-                    
-                
-            </mat-list-item>
-        </mat-list>
-    </mat-card-content>
-
-
+        }
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
 </mat-card>
