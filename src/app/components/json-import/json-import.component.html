@@ -1,4 +1,12 @@
 <span>
-    <button type="button" mat-button (click)="fileInput.click()">Import Backup File</button>
-    <input hidden type="file" (change)="onFileChange($event)" #fileInput accept=".json">
+  <button type="button" mat-button (click)="clearAndClick()">
+    Import Backup File
+  </button>
+  <input
+    hidden
+    type="file"
+    (change)="onFileChange($event)"
+    #fileInput
+    accept=".json"
+  />
 </span>

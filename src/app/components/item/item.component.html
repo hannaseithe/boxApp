@@ -1,17 +1,17 @@
-<app-trail [trail]="trail"></app-trail>
+@if (item) {<app-trail [trail]="trail"></app-trail>
 <mat-card appearance="outlined">
   <mat-card-header>
     <div mat-card-avatar>
       <app-icon>{{ icon.item }}</app-icon>
     </div>
     <mat-card-title-group>
-      <mat-card-title>{{ item?.name }}</mat-card-title>
-      @if (item?.catID){
+      <mat-card-title>{{ item.name }}</mat-card-title>
+      @if (item.catID){
       <mat-card-subtitle
         ><button
           mat-button
           [routerLink]="['/item-list']"
-          [queryParams]="{ id: item?.catID, name: cat?.name }"
+          [queryParams]="{ id: item.catID, name: cat?.name }"
         >
           {{ cat?.name }}
         </button></mat-card-subtitle
@@ -26,15 +26,17 @@
       <app-icon>{{ icon.delete }}</app-icon>
     </button>
   </mat-card-header>
+  @if (item.description || (item.tags && item.tags.length > 0) ||
+  (nas.loggedIn() && picture())) {
   <mat-card-content>
     <mat-list role="list">
       <mat-list-item *ngIf="item?.description" role="listitem">{{
-        item?.description
+        item.description
       }}</mat-list-item>
-      <mat-list-item *ngIf="item?.tags?.length" role="listitem">
+      <mat-list-item *ngIf="item.tags?.length" role="listitem">
         <mat-chip-set aria-label="Fish selection">
           <mat-chip
-            *ngFor="let tag of item?.tags"
+            *ngFor="let tag of item.tags"
             [routerLink]="['/item-list', tag]"
             >{{ tag }}</mat-chip
           >
@@ -45,4 +47,5 @@
       }
     </mat-list>
   </mat-card-content>
-</mat-card>
+  } </mat-card
+>}
