@@ -1,6 +1,17 @@
-<app-trail [trail]="trail"></app-trail>
-<mat-card appearance="outlined">
-  <mat-card-header>
+<app-trail [trail]="trail" [droplist]="'boxList'"></app-trail>
+<mat-card
+  appearance="outlined"
+  cdkDropList
+  [id]="'boxList'"
+  [cdkDropListConnectedTo]="drag.dropLists()"
+  [cdkDropListData]="box"
+>
+  <mat-card-header class="draggable" cdkDrag (cdkDragStarted)="onDragStarted()">
+    <mat-chip *cdkDragPreview>
+      <app-icon matChipAvatar>{{ icon.box }}</app-icon
+      >{{ box?.name }}
+    </mat-chip>
+    <div *cdkDragPlaceholder class="custom-placeholder"></div>
     <div mat-card-avatar>
       <app-icon>{{ icon.box }}</app-icon>
     </div>
@@ -22,9 +33,18 @@
   @if(items() && items().length > 0) {
   <mat-card-content>
     <mat-list role="list">
+      @for (box_ of boxes().sort(sortFn); track box_.id) {
       <mat-list-item
         class="spacerparent"
-        *ngFor="let item of items()?.sort(sortFn)"
+        [routerLink]="['/box', box_.id]"
+        role="listitem"
+      >
+        <app-icon matListItemIcon>{{ icon.box }}</app-icon>
+        <div matListItemTitle>{{ box_.name }}</div>
+      </mat-list-item>
+      } @for (item of items().sort(sortFn); track item.id) {
+      <mat-list-item
+        class="spacerparent"
         [routerLink]="['/item', item?.id]"
         role="listitem"
       >
@@ -44,6 +64,7 @@
         </button>
         }
       </mat-list-item>
+      }
     </mat-list>
   </mat-card-content>
   }

@@ -1,4 +1,4 @@
-@if (item) {<app-trail [trail]="trail"></app-trail>
+@if (item) {<app-trail [trail]="trail" [droplist]="'itemList'"></app-trail>
 
 <mat-card
   appearance="outlined"
@@ -8,13 +8,12 @@
   [cdkDropListData]="item"
 >
   <mat-card-header class="draggable" cdkDrag (cdkDragStarted)="onDragStarted()">
+    <mat-chip *cdkDragPreview>
+      <app-icon matChipAvatar>{{ icon.item }}</app-icon
+      >{{ item.name }}
+    </mat-chip>
+    <div *cdkDragPlaceholder class="custom-placeholder"></div>
     <div mat-card-avatar>
-      <mat-chip *cdkDragPreview>
-        <app-icon matChipAvatar>{{ icon.item }}</app-icon
-        >{{ item.name }}
-      </mat-chip>
-      <div *cdkDragPlaceholder class="custom-placeholder"></div>
-
       <app-icon>{{ icon.item }}</app-icon>
     </div>
     <mat-card-title-group>

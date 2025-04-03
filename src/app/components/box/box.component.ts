@@ -20,6 +20,9 @@ import { StorageService } from '../../services/storage.service';
 import iconConfig from '../../icon.config';
 import { AppIconComponent } from '../app-icon/app-icon.component';
 import { TrailComponent } from '../trail/trail.component';
+import { DragStateService } from '../../services/dragState.service';
+import { MatChipsModule } from '@angular/material/chips';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-box',
@@ -33,18 +36,21 @@ import { TrailComponent } from '../trail/trail.component';
     MatToolbarModule,
     RouterModule,
     TrailComponent,
+    MatChipsModule,
+    DragDropModule,
   ],
   templateUrl: './box.component.html',
   styleUrl: './box.component.css',
 })
 export class BoxComponent {
-  @Input() id: string | undefined = undefined;
+  @Input() id: string | null = null;
   @Input() simple: boolean = false;
 
   route: ActivatedRoute = inject(ActivatedRoute);
 
   public box: Box | undefined;
   public items: Signal<Item[]> = signal([]);
+  public boxes: Signal<Box[]> = signal([]);
   public mappedCats: Map<string, Cat | undefined> = new Map();
   public icon = iconConfig;
   public trail: (Room | Box)[] = [];
@@ -53,16 +59,31 @@ export class BoxComponent {
     private data: StorageService,
     private router: Router,
     private undo: UndoService,
-    private navbar: NavbarService
+    private navbar: NavbarService,
+    public drag: DragStateService
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params['id'];
+    this.route.paramMap.subscribe((params) => {
+      this.id = params.get('id');
+
+      this.getBox();
+      if (this.id) {
+        this.items = this.data.getItemsByBox(this.id);
+        this.boxes = this.data.getBoxesByBox(this.id);
+        this.mapCats();
+        this.navbar.update(['itemAdd'], { boxId: this.id });
+      }
+    });
+  }
+
+  private getBox() {
     if (this.id) {
       this.box = this.data.getBox(this.id);
-      this.items = this.data.getItemsByBox(this.id);
-      this.mapCats();
-      this.navbar.update(['itemAdd'], { boxId: this.id });
+      if (this.box) {
+        this.box.type = 'box';
+      }
+
       this.trail = this.data.getTrail(this.id);
     }
   }
@@ -83,11 +104,14 @@ export class BoxComponent {
     }
   }
 
-  sortFn(a: Item, b: Item) {
+  sortFn(a: Item | Box, b: Item | Box) {
     return a.name.toLowerCase() < b.name.toLowerCase()
       ? -1
       : a.name.toLowerCase() == b.name.toLowerCase()
       ? 0
       : 1;
+  }
+  onDragStarted() {
+    this.drag.registerDragged(() => this.getBox());
   }
 }

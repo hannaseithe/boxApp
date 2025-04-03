@@ -36,6 +36,7 @@ import { DragStateService } from '../../services/dragState.service';
 })
 export class TrailComponent {
   @Input() trail: (Room | Box)[] = [];
+  @Input() droplist: string = '';
   icon = iconConfig;
   things: WritableSignal<(Room | Box)[]> = signal([]);
   dragging = false;
@@ -103,17 +104,28 @@ export class TrailComponent {
   drop(event: CdkDragDrop<Room | Box>) {
     const droppedThing = event.item.dropContainer.data;
     const containerThing = event.container.data;
-    const actions: Record<
+    const actionsItem: Record<
       string,
       (containerId: string, droppedId: string) => void
     > = {
       box: this.data.assignItemToBox.bind(this.data),
       room: this.data.assignItemToRoom.bind(this.data),
     };
+    const actionsBox: Record<
+      string,
+      (containerId: string, droppedId: string) => void
+    > = {
+      box: this.data.assignBoxToBox.bind(this.data),
+      room: this.data.assignBoxToRoom.bind(this.data),
+    };
 
-    if (droppedThing.type === 'item' && actions[containerThing.type!]) {
-      actions[containerThing.type!](containerThing.id, droppedThing.id);
+    if (droppedThing.type === 'item' && actionsItem[containerThing.type!]) {
+      actionsItem[containerThing.type!](containerThing.id, droppedThing.id);
     }
+    if (droppedThing.type === 'box' && actionsBox[containerThing.type!]) {
+      actionsBox[containerThing.type!](containerThing.id, droppedThing.id);
+    }
+
     this.dragging = false;
     this.drag.onDropped();
     this.drag.registerDropLists(this.trailDropLists);

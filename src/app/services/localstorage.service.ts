@@ -468,7 +468,7 @@ export class LocalStorageService extends StorageService {
     return;
   }
 
-  public assignBoxToRoom(boxId: string, roomId: string): Box | undefined {
+  public assignBoxToRoom(roomId: string, boxId: string): Box | undefined {
     let box = this.boxLookup[boxId];
     let result;
     if (this.roomLookup[roomId] && box) {
