@@ -1,7 +1,42 @@
 <div class="chip-wrapper">
-  @for (thing of trail.slice().reverse(); track thing.id) {
-  <mat-chip [routerLink]="['/', thing.type, thing.id]"
+  <mat-chip
+    [routerLink]="['']"
+    cdkDropList
+    (cdkDropListEntered)="onDragEnter('home')"
+    [id]="'homeList'"
+    [cdkDropListConnectedTo]="'itemList'"
+    ><app-icon>home</app-icon></mat-chip
+  >
+  <app-icon class="trail-chip">chevron_right</app-icon>
+  @for (thing of trail.slice().reverse(); track thing.id; let i = $index, last =
+  $last) {<mat-chip
+    [routerLink]="['/', thing.type, thing.id]"
+    cdkDropList
+    (cdkDropListEntered)="onDragEnter(thing.type!, thing.id!)"
+    [id]="'trailList-' + thing.id"
+    [cdkDropListConnectedTo]="'itemList'"
     ><app-icon matChipTrailingIcon>{{ icon[thing.type!] }}</app-icon
     >{{ thing.name }}</mat-chip
-  ><app-icon class="trail-chip">chevron_right</app-icon> }
+  ><app-icon class="trail-chip">chevron_right</app-icon>
+  }
+</div>
+<div>
+  @if (dragging) {
+  <mat-list class="flex-container">
+    @for (thing of things(); track thing.id) {
+    <mat-list-item class="flex-item">
+      <mat-chip
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListConnectedTo]="'itemList'"
+        [cdkDropListData]="thing"
+        [id]="'thingList-' + thing.id"
+        ><app-icon>{{ icon[thing.type!] }}</app-icon
+        >{{ thing.name }}</mat-chip
+      >
+    </mat-list-item>
+    }
+  </mat-list>
+
+  }
 </div>

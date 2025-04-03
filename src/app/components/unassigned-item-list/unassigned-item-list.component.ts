@@ -1,9 +1,12 @@
 import { Component, effect, Signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Box, Item } from '../../app';
+import { Box, Item, Room } from '../../app';
 import { NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
+import {
+  MatChipSelectionChange,
+  MatChipsModule,
+} from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,6 +44,7 @@ import { AppIconComponent } from '../app-icon/app-icon.component';
 export class UnassignedItemListComponent {
   items: Signal<Item[]>;
   boxes: Box[] = [];
+  rooms: Room[] = [];
   formGroup: FormGroup;
   icon = iconConfig;
 
@@ -51,6 +55,7 @@ export class UnassignedItemListComponent {
   ) {
     this.items = this.data.UnassignedItems;
     this.boxes = this.data.Boxes();
+    this.rooms = this.data.Rooms();
     this.formGroup = this.fb.group({});
 
     effect(() => {
@@ -74,12 +79,16 @@ export class UnassignedItemListComponent {
     this.data.removeItem(item.id);
   }
 
+  getControl(itemId: string): FormControl {
+    return this.formGroup.get(itemId) as FormControl;
+  }
+
   private getSelectedItems() {
     const formValues = this.formGroup.value;
     return Object.keys(formValues).filter((key) => formValues[key]);
   }
 
-  assignSelected(event: any) {
+  assignSelectedToBox(event: any) {
     const boxID = event.value;
     this.getSelectedItems().forEach((id) => {
       const item = this.items().find((item) => item.id == id);
@@ -89,9 +98,26 @@ export class UnassignedItemListComponent {
     });
   }
 
+  assignSelectedToRoom(event: any) {
+    const roomID = event.value;
+    this.getSelectedItems().forEach((id) => {
+      const item = this.items().find((item) => item.id == id);
+      if (item) {
+        this.data.addUpdateItem({ ...item, roomID: roomID });
+      }
+    });
+  }
+
   deleteSelected() {
     const selectedItems = this.getSelectedItems();
     selectedItems.forEach((id) => this.data.removeItem(id));
+  }
+
+  onChipChange(event: MatChipSelectionChange, itemId: string) {
+    const control = this.getControl(itemId);
+    control.setValue(event.selected);
+    control.markAsDirty();
+    this.formGroup.updateValueAndValidity();
   }
 
   sortFn(a: Item, b: Item) {

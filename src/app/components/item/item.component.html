@@ -1,7 +1,20 @@
 @if (item) {<app-trail [trail]="trail"></app-trail>
-<mat-card appearance="outlined">
-  <mat-card-header>
+
+<mat-card
+  appearance="outlined"
+  cdkDropList
+  [id]="'itemList'"
+  [cdkDropListConnectedTo]="drag.dropLists()"
+  [cdkDropListData]="item"
+>
+  <mat-card-header class="draggable" cdkDrag (cdkDragStarted)="onDragStarted()">
     <div mat-card-avatar>
+      <mat-chip *cdkDragPreview>
+        <app-icon matChipAvatar>{{ icon.item }}</app-icon
+        >{{ item.name }}
+      </mat-chip>
+      <div *cdkDragPlaceholder class="custom-placeholder"></div>
+
       <app-icon>{{ icon.item }}</app-icon>
     </div>
     <mat-card-title-group>
@@ -26,6 +39,7 @@
       <app-icon>{{ icon.delete }}</app-icon>
     </button>
   </mat-card-header>
+
   @if (item.description || (item.tags && item.tags.length > 0) ||
   (nas.loggedIn() && picture())) {
   <mat-card-content>
@@ -47,5 +61,6 @@
       }
     </mat-list>
   </mat-card-content>
-  } </mat-card
->}
+  }
+</mat-card>
+}

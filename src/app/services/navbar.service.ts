@@ -2,10 +2,9 @@ import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Item } from '../app';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NavbarService {
-
   inputData = {
     buttons: signal({
       itemAdd: false,
@@ -15,42 +14,37 @@ export class NavbarService {
       boxEdit: false,
       boxDelete: false,
     }),
-    pageData:signal({})
-  }
+    pageData: signal({}),
+  };
 
-  outputData:{searchResult:WritableSignal<Item[]>} = {
-    searchResult: signal([])
-  }
+  outputData: { searchResult: WritableSignal<Item[]> } = {
+    searchResult: signal([]),
+  };
 
-
-
-  constructor() { }
+  constructor() {}
 
   reset() {
-    this.inputData.pageData.set({})
-    this.inputData.buttons.update(x => {
-      let result:any = {}
+    this.inputData.pageData.set({});
+    this.inputData.buttons.update((x) => {
+      let result: any = {};
       for (const key in x) {
-        result[key] = false
+        result[key] = false;
       }
-      return result
-    })
+      return result;
+    });
   }
 
   update(keys: string[], data?: any) {
-    this.reset()
-    keys.forEach(key => {
-      this.inputData.buttons.update(x => ({...x, [key]: true}))
-    })
+    this.reset();
+    keys.forEach((key) => {
+      this.inputData.buttons.update((x) => ({ ...x, [key]: true }));
+    });
     if (data) {
-      this.inputData.pageData.set(data)
+      this.inputData.pageData.set(data);
     }
-
   }
 
-  updateSearchResult(result:Item[]) {
-    this.outputData.searchResult.set(result)
+  updateSearchResult(result: Item[]) {
+    this.outputData.searchResult.set(result);
   }
-
-
 }

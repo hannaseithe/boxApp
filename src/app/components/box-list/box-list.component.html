@@ -53,6 +53,15 @@
           >{{ box?.name }}
         </mat-list-item>
         }
+        <h3 matSubheader>Freestanding Items</h3>
+        @for (item of items().sort(sortFn); track item.id) {
+        <mat-list-item [routerLink]="['/item', item?.id]">
+          <app-icon matListItemIcon fontSet="material-symbols-outlined">{{
+            icon.item
+          }}</app-icon
+          >{{ item?.name }}
+        </mat-list-item>
+        }
       </mat-list>
     </mat-card-content>
   </mat-card>

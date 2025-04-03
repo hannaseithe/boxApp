@@ -24,6 +24,8 @@ import { MatDialog } from '@angular/material/dialog';
 import iconConfig from '../../icon.config';
 import { AppIconComponent } from '../app-icon/app-icon.component';
 import { TrailComponent } from '../trail/trail.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DragStateService } from '../../services/dragState.service';
 
 @Component({
   selector: 'app-item',
@@ -39,12 +41,12 @@ import { TrailComponent } from '../trail/trail.component';
     AppIconComponent,
     RouterModule,
     TrailComponent,
+    DragDropModule,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.css',
 })
 export class ItemComponent {
-  items: Signal<Item[]> = signal([]);
   id: string | undefined = undefined;
   boxId: number | undefined = undefined;
   item: Item | undefined;
@@ -64,7 +66,8 @@ export class ItemComponent {
     private location: Location,
     private undo: UndoService,
     public nas: NasService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public drag: DragStateService
   ) {
     effect(() => {
       if (this.nas.loggedIn() && this.item?.picture) {
@@ -73,10 +76,16 @@ export class ItemComponent {
     });
   }
   ngOnInit(): void {
-    this.items = this.data.Items;
     this.id = this.route.snapshot.params['id'];
+    this.getItem();
+  }
+
+  private getItem() {
     if (this.id) {
       this.item = this.data.getItem(this.id);
+      if (this.item) {
+        this.item.type = 'item';
+      }
       if (this.item && this.item.boxID) {
         this.box = this.data.getBox(this.item.boxID);
       }
@@ -86,7 +95,6 @@ export class ItemComponent {
       this.trail = this.data.getTrail(this.id);
     }
   }
-
   private fetchThumbnail(fileName: string) {
     this.nas.fetchThumbnail(fileName, 100).subscribe({
       next: (blob) => {
@@ -120,4 +128,8 @@ export class ItemComponent {
     this.undo.push(this.reset);
     this.location.back();
   }
+  onDragStarted() {
+    this.drag.registerDragged(() => this.getItem());
+  }
+  onDragDropped() {}
 }

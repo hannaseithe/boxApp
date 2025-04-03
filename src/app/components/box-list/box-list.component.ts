@@ -53,8 +53,8 @@ export class BoxListComponent {
     this.id = this.route.snapshot.params['id'];
     if (this.id) {
       this.room = this.data.getRoom(this.id);
-      this.boxes = this.data.getAllBoxesByRoom(this.id);
-      this.items = this.data.getAllItemsByRoom(this.id);
+      this.boxes = this.data.getBoxesByRoom(this.id);
+      this.items = this.data.getItemsByRoom(this.id);
     }
     this.groupItemsByBoxes();
   }

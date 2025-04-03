@@ -15,10 +15,19 @@
   </mat-card-header>
   <mat-card-content>
     <mat-form-field>
-      <mat-label>Assign selected Items to a Box</mat-label>
-      <mat-select (selectionChange)="assignSelected($event)">
+      <mat-label>Assign to Box</mat-label>
+      <mat-select (selectionChange)="assignSelectedToBox($event)">
         @for (box of boxes; track box) {
         <mat-option [value]="box.id">#{{ box.name }}</mat-option>
+
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Assign to Room</mat-label>
+      <mat-select (selectionChange)="assignSelectedToRoom($event)">
+        @for (room of rooms; track room.id) {
+        <mat-option [value]="room.id">#{{ room.name }}</mat-option>
 
         }
       </mat-select>
@@ -26,27 +35,32 @@
   </mat-card-content>
 </mat-card>
 }
-<mat-list>
-  @for (item of items().sort(sortFn); track item.name){
-  <mat-list-item>
-    <app-icon>{{ icon.item }}</app-icon>
-    <mat-chip-option [formControlName]="item.id">
-      {{ item.name }}
-    </mat-chip-option>
-    <button mat-button (click)="delete(item)">
-      <app-icon aria-hidden="false" aria-label="Example home icon">{{
-        icon.delete
-      }}</app-icon>
-    </button>
-    <mat-form-field>
-      <mat-label>Assign a Box</mat-label>
-      <mat-select (selectionChange)="assign(item, $event)">
-        @for (box of boxes; track box) {
-        <mat-option [value]="box.id">#{{ box.name }}</mat-option>
+<form [formGroup]="formGroup">
+  <mat-list>
+    @for (item of items().sort(sortFn); track item.name){
+    <mat-list-item>
+      <app-icon>{{ icon.item }}</app-icon>
+      <mat-chip-option
+        [selected]="getControl(item.id).value"
+        (selectionChange)="onChipChange($event, item.id)"
+      >
+        {{ item.name }}
+      </mat-chip-option>
+      <button mat-button (click)="delete(item)">
+        <app-icon aria-hidden="false" aria-label="Example home icon">{{
+          icon.delete
+        }}</app-icon>
+      </button>
+      <mat-form-field>
+        <mat-label>Assign a Box</mat-label>
+        <mat-select (selectionChange)="assign(item, $event)">
+          @for (box of boxes; track box) {
+          <mat-option [value]="box.id">#{{ box.name }}</mat-option>
 
-        }
-      </mat-select>
-    </mat-form-field>
-  </mat-list-item>
-  }
-</mat-list>
+          }
+        </mat-select>
+      </mat-form-field>
+    </mat-list-item>
+    }
+  </mat-list>
+</form>

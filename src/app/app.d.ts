@@ -16,6 +16,7 @@ export type Item = {
   picture?: string;
   boxID?: string;
   roomID?: string;
+  type?: 'item';
 };
 
 export type Box = {
@@ -37,4 +38,10 @@ export type Room = {
 export type Cat = {
   id: string;
   name: string;
+};
+
+export type DraggedItem = {
+  type: 'Box' | 'Item';
+  name: string;
+  data: Box | Item;
 };
