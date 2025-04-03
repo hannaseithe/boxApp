@@ -55,13 +55,13 @@ export abstract class StorageService {
   ): Box | undefined;
 
   public abstract assignItemToRoom(
-    itemId: string,
-    roomId: string
+    roomId: string,
+    itemId: string
   ): Item | undefined;
 
   public abstract assignBoxToRoom(
-    boxId: string,
-    roomId: string
+    roomId: string,
+    boxId: string
   ): Box | undefined;
 
   public abstract clearStorage(): void;

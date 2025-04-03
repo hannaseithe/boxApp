@@ -76,14 +76,14 @@ export class TrailComponent {
         case 'room':
           this.things.set(
             this.data
-              .getAllBoxesByRoom(id!)()
+              .getBoxesByRoom(id!)()
               .map((box) => ({ ...box, type: 'box' }))
           );
           break;
         case 'box':
           this.things.set(
             this.data
-              .getAllBoxesByBox(id!)()
+              .getBoxesByBox(id!)()
               .map((box) => ({ ...box, type: 'box' }))
           );
           break;
@@ -104,26 +104,28 @@ export class TrailComponent {
   drop(event: CdkDragDrop<Room | Box>) {
     const droppedThing = event.item.dropContainer.data;
     const containerThing = event.container.data;
-    const actionsItem: Record<
-      string,
-      (containerId: string, droppedId: string) => void
-    > = {
-      box: this.data.assignItemToBox.bind(this.data),
-      room: this.data.assignItemToRoom.bind(this.data),
-    };
-    const actionsBox: Record<
-      string,
-      (containerId: string, droppedId: string) => void
-    > = {
-      box: this.data.assignBoxToBox.bind(this.data),
-      room: this.data.assignBoxToRoom.bind(this.data),
-    };
+    if (droppedThing.id !== containerThing.id) {
+      const actionsItem: Record<
+        string,
+        (containerId: string, droppedId: string) => void
+      > = {
+        box: this.data.assignItemToBox.bind(this.data),
+        room: this.data.assignItemToRoom.bind(this.data),
+      };
+      const actionsBox: Record<
+        string,
+        (containerId: string, droppedId: string) => void
+      > = {
+        box: this.data.assignBoxToBox.bind(this.data),
+        room: this.data.assignBoxToRoom.bind(this.data),
+      };
 
-    if (droppedThing.type === 'item' && actionsItem[containerThing.type!]) {
-      actionsItem[containerThing.type!](containerThing.id, droppedThing.id);
-    }
-    if (droppedThing.type === 'box' && actionsBox[containerThing.type!]) {
-      actionsBox[containerThing.type!](containerThing.id, droppedThing.id);
+      if (droppedThing.type === 'item' && actionsItem[containerThing.type!]) {
+        actionsItem[containerThing.type!](containerThing.id, droppedThing.id);
+      }
+      if (droppedThing.type === 'box' && actionsBox[containerThing.type!]) {
+        actionsBox[containerThing.type!](containerThing.id, droppedThing.id);
+      }
     }
 
     this.dragging = false;

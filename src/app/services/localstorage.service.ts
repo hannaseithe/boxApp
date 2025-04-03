@@ -442,14 +442,23 @@ export class LocalStorageService extends StorageService {
     return;
   }
 
+  private hasCycle(box1Id: string, box2Id: string): boolean {
+    const box = this.boxLookup[box1Id];
+    if (!box || !box.boxID) return false;
+    if (box.boxID === box2Id) return true;
+    return this.hasCycle(box.boxID, box2Id);
+  }
+
   public assignBoxToBox(box1Id: string, box2Id: string): Box | undefined {
-    let box = this.boxLookup[box2Id];
-    let result;
-    if (this.boxLookup[box1Id] && box) {
-      box.roomID = undefined;
-      box.boxID = box1Id;
-      result = this.addUpdateBox(box);
-      return result;
+    if (box1Id !== box2Id || !this.hasCycle(box1Id, box2Id)) {
+      let box = this.boxLookup[box2Id];
+      let result;
+      if (this.boxLookup[box1Id] && box) {
+        box.roomID = undefined;
+        box.boxID = box1Id;
+        result = this.addUpdateBox(box);
+        return result;
+      }
     }
     return;
   }
