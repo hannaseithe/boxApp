@@ -10,6 +10,7 @@ import { UnassignedItemListComponent } from './components/unassigned-item-list/u
 import { NasLoginComponent } from './components/nas-login/nas-login.component';
 import { RoomListComponent } from './components/room-list/room-list.component';
 import { UnassignedBoxListComponent } from './components/unassigned-box-list/unassigned-box-list.component';
+import { AddEditRoomComponent } from './components/add-edit-room/add-edit-room.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,16 @@ export const routes: Routes = [
     path: 'add-edit-box',
     component: AddEditBoxComponent,
     title: 'Add Box',
+  },
+  {
+    path: 'add-edit-room/:id',
+    component: AddEditRoomComponent,
+    title: 'Edit Room',
+  },
+  {
+    path: 'add-edit-box',
+    component: AddEditRoomComponent,
+    title: 'Add Room',
   },
   {
     path: 'cat-list',

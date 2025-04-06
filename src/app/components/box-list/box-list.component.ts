@@ -12,6 +12,7 @@ import { StorageService } from '../../services/storage.service';
 import { MatListModule } from '@angular/material/list';
 import iconConfig from '../../icon.config';
 import { AppIconComponent } from '../app-icon/app-icon.component';
+import { UndoService } from '../../services/undo.service';
 
 function isStringLikeNumber(value: string): boolean {
   return /^[+-]?\d+(\.\d+)?$/.test(value.trim());
@@ -42,7 +43,12 @@ export class BoxListComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   public icon = iconConfig;
 
-  constructor(private data: StorageService, private navBar: NavbarService) {
+  constructor(
+    private data: StorageService,
+    private navBar: NavbarService,
+    private undo: UndoService,
+    private router: Router
+  ) {
     this.uaItems = this.data.UnassignedItems;
     this.uaBoxes = this.data.UnassignedBoxes;
   }
@@ -79,5 +85,12 @@ export class BoxListComponent {
       : a.name.toLowerCase() == b.name.toLowerCase()
       ? 0
       : 1;
+  }
+  deleteRoom(id: string | undefined) {
+    if (id) {
+      let resetFn = this.data.removeRoom(id);
+      this.undo.push(resetFn as any);
+      this.router.navigateByUrl('/');
+    }
   }
 }

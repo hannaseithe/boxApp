@@ -36,12 +36,23 @@
       <div mat-card-avatar>
         <app-icon>{{ icon.room }}</app-icon>
       </div>
-      <mat-card-title
-        ><span>{{ room?.name }}</span></mat-card-title
-      >
-      @if (room?.description) {
-      <mat-card-subtitle>{{ room?.description }}</mat-card-subtitle>
-      }
+      <mat-card-title-group>
+        <mat-card-title
+          ><span>{{ room?.name }}</span></mat-card-title
+        >
+        @if (room?.description) {
+        <mat-card-subtitle>{{ room?.description }}</mat-card-subtitle>
+        }
+      </mat-card-title-group>
+
+      <button mat-mini-fab [routerLink]="['/add-edit-room', this.id]">
+        <app-icon>{{ icon.edit }}</app-icon>
+      </button>
+      <div class="spacer"></div>
+
+      <button mat-icon-button (click)="deleteRoom(this.room?.id)">
+        <app-icon>{{ icon.delete }}</app-icon>
+      </button>
     </mat-card-header>
     <mat-card-content>
       <mat-list>

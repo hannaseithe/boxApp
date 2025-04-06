@@ -8,3 +8,11 @@
     height: auto;
     padding: 3px 0;
   }
+
+  .spacer {
+    flex: 1 1 auto;
+}
+.spacerparent {
+    display: flex;
+    align-self: center
+}
