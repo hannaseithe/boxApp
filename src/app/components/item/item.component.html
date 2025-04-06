@@ -6,6 +6,7 @@
   [id]="'itemList'"
   [cdkDropListConnectedTo]="drag.dropLists()"
   [cdkDropListData]="item"
+  (cdkDropListDropped)="onDrop($event)"
 >
   <mat-card-header class="draggable" cdkDrag (cdkDragStarted)="onDragStarted()">
     <mat-chip *cdkDragPreview>

@@ -1,5 +1,6 @@
 import {
   Component,
+  effect,
   Input,
   Signal,
   signal,
@@ -39,66 +40,83 @@ export class TrailComponent {
   @Input() droplist: string = '';
   icon = iconConfig;
   things: WritableSignal<(Room | Box)[]> = signal([]);
-  dragging = false;
-  trailDropLists = ['homeList'];
-  thingsDropLists: string[] = [];
-  navigationTimeout: ReturnType<typeof setTimeout> | null = null;
+  dragging: WritableSignal<boolean>;
+  readyToDrop: boolean = false;
+  dropLists = ['homeList'];
+
+  fullTrail: Map<string, { show: boolean; data: Room[] | Box[] }> = new Map();
+
+  navigationTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
 
   constructor(
     private router: Router,
     private data: StorageService,
     private drag: DragStateService
-  ) {}
+  ) {
+    this.dragging = this.drag.dragging;
+    effect(() => {
+      if (!this.drag.dragging()) this.readyToDrop = false;
+    });
+  }
 
   ngOnInit() {
-    this.trail.forEach((thing) =>
-      this.trailDropLists.push(`trailList-${thing.id}`)
-    );
-    this.drag.registerDropLists(this.trailDropLists);
+    this.initTrail();
   }
-  ngOnChanges(changes: SimpleChanges) {
-    this.trailDropLists = ['homeList'];
-    this.trail.forEach((thing) =>
-      this.trailDropLists.push(`trailList-${thing.id}`)
-    );
-    this.drag.registerDropLists(this.trailDropLists);
+  ngOnChanges() {
+    this.initTrail();
   }
 
-  onDragEnter(type: string, id?: string) {
-    this.navigationTimeout = setTimeout(() => {
-      this.dragging = true;
-      switch (type) {
-        case 'home':
-          this.things.set(
-            this.data.Rooms().map((room) => ({ ...room, type: 'room' }))
-          );
-          break;
+  private initTrail() {
+    this.dropLists = ['homeList'];
+    this.fullTrail.clear();
+    this.fullTrail.set('homeList', {
+      show: false,
+      data: this.data.Rooms().map((room) => ({ ...room, type: 'room' })),
+    });
+    this.dropLists.push(
+      ...this.fullTrail
+        .get('homeList')!
+        .data.map((room) => `thingList-${room.id}`)
+    );
+    this.trail.forEach((thing) => {
+      this.dropLists.push(`trailList-${thing.id}`);
+      switch (thing.type) {
         case 'room':
-          this.things.set(
-            this.data
-              .getBoxesByRoom(id!)()
-              .map((box) => ({ ...box, type: 'box' }))
-          );
+          this.fullTrail.set(`trailList-${thing.id}`, {
+            show: false,
+            data: this.data
+              .getBoxesByRoom(thing.id!)()
+              .map((box) => ({ ...box, type: 'box' })),
+          });
           break;
         case 'box':
-          this.things.set(
-            this.data
-              .getBoxesByBox(id!)()
-              .map((box) => ({ ...box, type: 'box' }))
-          );
+          this.fullTrail.set(`trailList-${thing.id}`, {
+            show: false,
+            data: this.data
+              .getBoxesByBox(thing.id!)()
+              .map((box) => ({ ...box, type: 'box' })),
+          });
           break;
       }
-      this.thingsDropLists = [];
-      this.things().forEach((thing) =>
-        this.thingsDropLists.push(`thingList-${thing.id}`)
+      this.dropLists.push(
+        ...this.fullTrail
+          .get(`trailList-${thing.id}`)!
+          .data.map((box) => `thingList-${box.id}`)
       );
-      setTimeout(() => {
-        this.drag.registerDropLists([
-          ...this.trailDropLists,
-          ...this.thingsDropLists,
-        ]);
-      }, 0);
-    }, 500);
+    });
+    this.drag.registerDropLists(this.dropLists);
+  }
+
+  isShow(key: string) {
+    return this.fullTrail.get(key)!.show;
+  }
+
+  onDragEnter(key: string) {
+    this.fullTrail.forEach((Item) => (Item.show = false));
+    let item = this.fullTrail.get(key);
+    if (item) {
+      this.fullTrail.set(key, { ...item, show: true });
+    }
   }
 
   drop(event: CdkDragDrop<Room | Box>) {
@@ -128,8 +146,7 @@ export class TrailComponent {
       }
     }
 
-    this.dragging = false;
+    this.readyToDrop = false;
     this.drag.onDropped();
-    this.drag.registerDropLists(this.trailDropLists);
   }
 }

@@ -6,11 +6,17 @@ import { Box, DraggedItem, Item } from '../app';
 })
 export class DragStateService {
   dropLists: WritableSignal<string[]> = signal([]);
+  dragging: WritableSignal<boolean> = signal(false);
   private draggedCallback: Function = () => {};
 
   onDropped() {
+    this.dragging.set(false);
     this.draggedCallback();
     this.clearDragged();
+  }
+
+  startDragging() {
+    this.dragging.set(true);
   }
 
   clearDragged() {

@@ -2,7 +2,7 @@
   <mat-chip
     [routerLink]="['']"
     cdkDropList
-    (cdkDropListEntered)="onDragEnter('home')"
+    (cdkDropListEntered)="onDragEnter('homeList')"
     [id]="'homeList'"
     [cdkDropListConnectedTo]="droplist"
     ><app-icon>home</app-icon></mat-chip
@@ -12,31 +12,33 @@
   $last) {<mat-chip
     [routerLink]="['/', thing.type, thing.id]"
     cdkDropList
-    (cdkDropListEntered)="onDragEnter(thing.type!, thing.id!)"
+    (cdkDropListEntered)="onDragEnter('trailList-' + thing.id!)"
     [id]="'trailList-' + thing.id"
-    [cdkDropListConnectedTo]="'itemList'"
+    [cdkDropListConnectedTo]="droplist"
     ><app-icon matChipTrailingIcon>{{ icon[thing.type!] }}</app-icon
     >{{ thing.name }}</mat-chip
   ><app-icon class="trail-chip">chevron_right</app-icon>
   }
 </div>
 <div>
-  @if (dragging) {
-  <mat-list class="flex-container">
-    @for (thing of things(); track thing.id) {
-    <mat-list-item class="flex-item">
-      <mat-chip
-        cdkDropList
-        (cdkDropListDropped)="drop($event)"
-        [cdkDropListConnectedTo]="'itemList'"
-        [cdkDropListData]="thing"
-        [id]="'thingList-' + thing.id"
-        ><app-icon>{{ icon[thing.type!] }}</app-icon
-        >{{ thing.name }}</mat-chip
-      >
-    </mat-list-item>
-    }
-  </mat-list>
+  @for (trailItem of fullTrail.entries(); track trailItem[0]) {
+  <div [hidden]="!trailItem[1].show">
+    <mat-list class="flex-container">
+      @for (thing of trailItem[1].data; track thing.id) {
+      <mat-list-item class="flex-item">
+        <mat-chip
+          cdkDropList
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListConnectedTo]="droplist"
+          [cdkDropListData]="thing"
+          [id]="'thingList-' + thing.id"
+          ><app-icon>{{ icon[thing.type!] }}</app-icon
+          >{{ thing.name }}</mat-chip
+        >
+      </mat-list-item>
+      }
+    </mat-list>
+  </div>
 
   }
 </div>

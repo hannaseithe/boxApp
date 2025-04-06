@@ -24,7 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
 import iconConfig from '../../icon.config';
 import { AppIconComponent } from '../app-icon/app-icon.component';
 import { TrailComponent } from '../trail/trail.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { DragStateService } from '../../services/dragState.service';
 
 @Component({
@@ -130,6 +130,11 @@ export class ItemComponent {
   }
   onDragStarted() {
     this.drag.registerDragged(() => this.getItem());
+    this.drag.startDragging();
   }
-  onDragDropped() {}
+  onDrop(event: CdkDragDrop<any>) {
+    if (event.previousContainer === event.container) {
+      this.drag.onDropped();
+    }
+  }
 }
