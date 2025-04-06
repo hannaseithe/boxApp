@@ -13,6 +13,7 @@ export class NavbarService {
       boxAdd: false,
       boxEdit: false,
       boxDelete: false,
+      roomAdd: false,
     }),
     pageData: signal({}),
   };

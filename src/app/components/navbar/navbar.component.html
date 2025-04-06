@@ -17,7 +17,12 @@
   @if(nas.ready) {
   <app-nas-slider></app-nas-slider>
   } @if(dynButs().boxAdd) {
-  <button mat-mini-fab [routerLink]="['/add-edit-box']" type="button">
+  <button
+    mat-mini-fab
+    [routerLink]="['/add-edit-box']"
+    [queryParams]="{ roomId: pageData().roomId }"
+    type="button"
+  >
     <app-icon>add</app-icon>
   </button>
   } @if(dynButs().itemAdd) {
@@ -28,6 +33,10 @@
     [queryParams]="{ boxId: pageData().boxId }"
     type="button"
   >
+    <app-icon>add</app-icon>
+  </button>
+  } @if (dynButs().roomAdd) {
+  <button mat-mini-fab [routerLink]="['/add-edit-room']" type="button">
     <app-icon>add</app-icon>
   </button>
   }

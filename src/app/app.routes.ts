@@ -44,7 +44,7 @@ export const routes: Routes = [
     title: 'Edit Room',
   },
   {
-    path: 'add-edit-box',
+    path: 'add-edit-room',
     component: AddEditRoomComponent,
     title: 'Add Room',
   },

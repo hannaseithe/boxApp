@@ -54,9 +54,9 @@ export class BoxListComponent {
   }
 
   ngOnInit(): void {
-    this.navBar.update(['boxAdd']);
-
     this.id = this.route.snapshot.params['id'];
+    this.navBar.update(['boxAdd'], { roomId: this.id });
+
     if (this.id) {
       this.room = this.data.getRoom(this.id);
       this.boxes = this.data.getBoxesByRoom(this.id);

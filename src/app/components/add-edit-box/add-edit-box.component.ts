@@ -73,6 +73,10 @@ export class AddEditBoxComponent {
         this.form.patchValue(x);
       }
     }
+    let roomID = this.route.snapshot.queryParams['roomId'];
+    if (roomID) {
+      this.form.patchValue({ roomID: roomID });
+    }
   }
 
   select(selected: string) {
