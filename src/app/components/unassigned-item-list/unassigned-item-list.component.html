@@ -38,28 +38,40 @@
 <form [formGroup]="formGroup">
   <mat-list>
     @for (item of items().sort(sortFn); track item.name){
-    <mat-list-item>
-      <app-icon>{{ icon.item }}</app-icon>
-      <mat-chip-option
-        [selected]="getControl(item.id).value"
-        (selectionChange)="onChipChange($event, item.id)"
-      >
-        {{ item.name }}
-      </mat-chip-option>
-      <button mat-button (click)="delete(item)">
-        <app-icon aria-hidden="false" aria-label="Example home icon">{{
-          icon.delete
-        }}</app-icon>
-      </button>
-      <mat-form-field>
-        <mat-label>Assign a Box</mat-label>
-        <mat-select (selectionChange)="assign(item, $event)">
-          @for (box of boxes; track box) {
-          <mat-option [value]="box.id">#{{ box.name }}</mat-option>
+    <mat-list-item class="list-item">
+      <div class="list-item-grid">
+        <div class="column">
+          <app-icon>{{ icon.item }}</app-icon>
+        </div>
 
-          }
-        </mat-select>
-      </mat-form-field>
+        <div class="column">
+          <mat-chip-option
+            [selected]="getControl(item.id).value"
+            (selectionChange)="onChipChange($event, item.id)"
+          >
+            {{ item.name }}
+          </mat-chip-option>
+        </div>
+
+        <div class="column">
+          <button mat-button (click)="delete(item)">
+            <app-icon aria-hidden="false" aria-label="Example home icon">
+              {{ icon.delete }}
+            </app-icon>
+          </button>
+        </div>
+
+        <div class="column">
+          <mat-form-field>
+            <mat-label>Assign to box</mat-label>
+            <mat-select (selectionChange)="assign(item, $event)">
+              @for (box of boxes; track box) {
+              <mat-option [value]="box.id">#{{ box.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </mat-list-item>
     }
   </mat-list>
