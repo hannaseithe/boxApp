@@ -1,6 +1,6 @@
 import { Component, effect, Signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Box, Item, Room } from '../../app';
+import { Box, Item, Room, RoomWithBoxes } from '../../app';
 import { MatCardModule } from '@angular/material/card';
 import {
   MatChipSelectionChange,
@@ -43,6 +43,7 @@ import { AppIconComponent } from '../app-icon/app-icon.component';
 export class UnassignedBoxListComponent {
   boxes: Signal<Box[]>;
   rooms: Room[] = [];
+  groupedBoxes: RoomWithBoxes[];
   formGroup: FormGroup;
   icon = iconConfig;
 
@@ -53,6 +54,7 @@ export class UnassignedBoxListComponent {
   ) {
     this.boxes = this.data.UnassignedBoxes;
     this.rooms = this.data.Rooms();
+    this.groupedBoxes = this.data.getAllRoomsWithBoxes();
     this.formGroup = this.fb.group({});
 
     effect(() => {
@@ -72,8 +74,12 @@ export class UnassignedBoxListComponent {
     return this.formGroup.get(boxId) as FormControl;
   }
 
-  assign(box: Box, event: any) {
+  assignToRoom(box: Box, event: any) {
     this.data.addUpdateBox({ ...box, roomID: event.value });
+  }
+
+  assignToBox(box: Box, event: any) {
+    this.data.addUpdateBox({ ...box, boxID: event.value });
   }
   delete(box: Box) {
     this.data.removeBox(box.id);
@@ -84,12 +90,24 @@ export class UnassignedBoxListComponent {
     return Object.keys(formValues).filter((key) => formValues[key]);
   }
 
-  assignSelected(event: any, selectControl: MatSelect) {
+  assignSelectedToRoom(event: any, selectControl: MatSelect) {
     const roomID = event.value;
     this.getSelectedBoxes().forEach((id) => {
       const box = this.boxes().find((box) => box.id == id);
       if (box) {
         this.data.addUpdateBox({ ...box, roomID: roomID });
+      }
+    });
+    selectControl.value = null;
+    selectControl.writeValue(null);
+  }
+
+  assignSelectedToBox(event: any, selectControl: MatSelect) {
+    const boxID = event.value;
+    this.getSelectedBoxes().forEach((id) => {
+      const box = this.boxes().find((box) => box.id == id);
+      if (box) {
+        this.data.addUpdateBox({ ...box, boxID: boxID });
       }
     });
     selectControl.value = null;
