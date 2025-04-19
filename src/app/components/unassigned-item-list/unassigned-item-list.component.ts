@@ -10,7 +10,7 @@ import {
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { StorageService } from '../../services/storage.service';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -93,7 +93,7 @@ export class UnassignedItemListComponent {
     return Object.keys(formValues).filter((key) => formValues[key]);
   }
 
-  assignSelectedToBox(event: any) {
+  assignSelectedToBox(event: any, selectControl: MatSelect) {
     const boxID = event.value;
     this.getSelectedItems().forEach((id) => {
       const item = this.items().find((item) => item.id == id);
@@ -101,9 +101,11 @@ export class UnassignedItemListComponent {
         this.data.addUpdateItem({ ...item, boxID: boxID });
       }
     });
+    selectControl.value = null;
+    selectControl.writeValue(null);
   }
 
-  assignSelectedToRoom(event: any) {
+  assignSelectedToRoom(event: any, selectControl: MatSelect) {
     const roomID = event.value;
     this.getSelectedItems().forEach((id) => {
       const item = this.items().find((item) => item.id == id);
@@ -111,6 +113,8 @@ export class UnassignedItemListComponent {
         this.data.addUpdateItem({ ...item, roomID: roomID });
       }
     });
+    selectControl.value = null;
+    selectControl.writeValue(null);
   }
 
   deleteSelected() {

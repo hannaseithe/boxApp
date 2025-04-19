@@ -16,7 +16,10 @@
   <mat-card-content>
     <mat-form-field>
       <mat-label>Assign to Box</mat-label>
-      <mat-select (selectionChange)="assignSelectedToBox($event)">
+      <mat-select
+        (selectionChange)="assignSelectedToBox($event, selectControl1)"
+        #selectControl1
+      >
         @for (room of groupedBoxes; track room.id) {
         <mat-optgroup [label]="room.name">
           @for (box of room.boxes; track box.id) {
@@ -28,7 +31,10 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Assign to Room</mat-label>
-      <mat-select (selectionChange)="assignSelectedToRoom($event)">
+      <mat-select
+        (selectionChange)="assignSelectedToRoom($event, selectControl2)"
+        #selectControl2
+      >
         @for (room of rooms; track room.id) {
         <mat-option [value]="room.id">{{ room.name }}</mat-option>
 
