@@ -1,5 +1,5 @@
 import { Injectable, Signal, WritableSignal } from '@angular/core';
-import { Box, Cat, Item, resetFn, Room } from '../app';
+import { Box, Cat, Item, resetFn, Room, RoomWithBoxes } from '../app';
 
 export abstract class StorageService {
   public abstract Boxes: WritableSignal<Box[]>;
@@ -41,6 +41,7 @@ export abstract class StorageService {
 
   public abstract getAllBoxesByBox(id: string): Signal<Box[]>;
   public abstract getAllBoxesByRoom(id: string): Signal<Box[]>;
+  public abstract getAllRoomsWithBoxes(): RoomWithBoxes[];
 
   public abstract getTrail(id: string): (Room | Box)[];
 

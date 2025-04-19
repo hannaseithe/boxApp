@@ -1,6 +1,6 @@
 import { Component, effect, Signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Box, Item, Room } from '../../app';
+import { Box, Item, Room, RoomWithBoxes } from '../../app';
 import { NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -43,7 +43,7 @@ import { AppIconComponent } from '../app-icon/app-icon.component';
 })
 export class UnassignedItemListComponent {
   items: Signal<Item[]>;
-  boxes: Box[] = [];
+  groupedBoxes: RoomWithBoxes[];
   rooms: Room[] = [];
   formGroup: FormGroup;
   icon = iconConfig;
@@ -54,7 +54,7 @@ export class UnassignedItemListComponent {
     private fb: FormBuilder
   ) {
     this.items = this.data.UnassignedItems;
-    this.boxes = this.data.Boxes();
+    this.groupedBoxes = this.data.getAllRoomsWithBoxes();
     this.rooms = this.data.Rooms();
     this.formGroup = this.fb.group({});
 
@@ -71,10 +71,15 @@ export class UnassignedItemListComponent {
     });
   }
 
-  assign(item: Item, event: any) {
+  assignToBox(item: Item, event: any) {
     item.boxID = event.value;
     this.data.addUpdateItem(item);
   }
+  assignToRoom(item: Item, event: any) {
+    item.roomID = event.value;
+    this.data.addUpdateItem(item);
+  }
+
   delete(item: Item) {
     this.data.removeItem(item.id);
   }

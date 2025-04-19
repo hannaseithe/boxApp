@@ -6,7 +6,7 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { StorageService } from './storage.service';
-import { Box, Cat, Item, Room, resetFn } from '../app';
+import { Box, Cat, Item, Room, RoomWithBoxes, resetFn } from '../app';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({ providedIn: 'root' })
@@ -426,6 +426,13 @@ export class LocalStorageService extends StorageService {
     return computed(() =>
       this.Boxes().filter((box) => allBoxIDs.includes(box.id))
     );
+  }
+
+  getAllRoomsWithBoxes(): RoomWithBoxes[] {
+    return this.Rooms().map((room) => ({
+      ...room,
+      boxes: this.getAllBoxesByRoom(room.id)() || [],
+    }));
   }
 
   public assignItemToBox(boxId: string, itemId: string): Item | undefined {

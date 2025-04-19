@@ -45,3 +45,7 @@ export type DraggedItem = {
   name: string;
   data: Box | Item;
 };
+
+export interface RoomWithBoxes extends Room {
+  boxes: Box[];
+}
