@@ -1,62 +1,107 @@
 <mat-toolbar>
-  <button mat-icon-button [routerLink]="['/']" type="button">
-    <app-icon>home</app-icon>
-  </button>
-  <button mat-icon-button [routerLink]="['/']" type="button">
-    <app-icon (click)="goBack()">arrow_back</app-icon>
-  </button>
-  @if (!doSearch) {
-  <button mat-icon-button (click)="activateSearch()" type="button">
-    <app-icon>search</app-icon>
-  </button>
-  } @else {
-  <app-search (searchFinished)="deactivateSearch()"></app-search>
-  }
-  <span class="spacer"></span>
-
-  @if(nas.ready) {
-  <app-nas-slider></app-nas-slider>
-  } @if(dynButs().boxAdd) {
-  <button
-    mat-mini-fab
-    [routerLink]="['/add-edit-box']"
-    [queryParams]="{ roomId: pageData().roomId }"
-    type="button"
-  >
-    <app-icon>add</app-icon>
-  </button>
-  } @if(dynButs().itemAdd) {
-
-  <button
-    mat-mini-fab
-    [routerLink]="['/add-edit-item']"
-    [queryParams]="{ boxId: pageData().boxId }"
-    type="button"
-  >
-    <app-icon>add</app-icon>
-  </button>
-  } @if (dynButs().roomAdd) {
-  <button mat-mini-fab [routerLink]="['/add-edit-room']" type="button">
-    <app-icon>add</app-icon>
-  </button>
-  }
-
-  <button mat-icon-button [matMenuTriggerFor]="devMenu" type="button">
-    <app-icon>data_object</app-icon>
-  </button>
-
-  <mat-menu #devMenu="matMenu">
-    <button mat-button (click)="clearStorage($event)" type="button">
-      Clear Storage
+  <mat-toolbar-row>
+    <button mat-icon-button [routerLink]="['/']" type="button">
+      <app-icon>home</app-icon>
     </button>
-  </mat-menu>
-  <button mat-icon-button [matMenuTriggerFor]="fileMenu" type="button">
-    <app-icon>sync_alt</app-icon>
-  </button>
-  <mat-menu #fileMenu="matMenu">
-    <app-excel-upload></app-excel-upload>
-    <app-excel-download></app-excel-download>
-    <app-json-export></app-json-export>
-    <app-json-import></app-json-import>
-  </mat-menu>
+    <button mat-icon-button [routerLink]="['/']" type="button">
+      <app-icon (click)="goBack()">arrow_back</app-icon>
+    </button>
+    @if (!doSearch) {
+    <button mat-icon-button (click)="activateSearch()" type="button">
+      <app-icon>search</app-icon>
+    </button>
+    } @else {
+    <app-search (searchFinished)="deactivateSearch()"></app-search>
+    }
+    <span class="spacer"></span>
+
+    @if(nas.ready) {
+    <app-nas-slider></app-nas-slider>
+    } @if(dynButs().boxAdd) {
+    <button
+      mat-mini-fab
+      [routerLink]="['/add-edit-box']"
+      [queryParams]="{ roomId: pageData().roomId }"
+      type="button"
+    >
+      <app-icon>add</app-icon>
+    </button>
+    } @if(dynButs().itemAdd) {
+
+    <button
+      mat-mini-fab
+      [routerLink]="['/add-edit-item']"
+      [queryParams]="{ boxId: pageData().boxId }"
+      type="button"
+    >
+      <app-icon>add</app-icon>
+    </button>
+    } @if (dynButs().roomAdd) {
+    <button mat-mini-fab [routerLink]="['/add-edit-room']" type="button">
+      <app-icon>add</app-icon>
+    </button>
+    }
+
+    <button mat-icon-button [matMenuTriggerFor]="devMenu" type="button">
+      <app-icon>data_object</app-icon>
+    </button>
+
+    <mat-menu #devMenu="matMenu">
+      <button mat-button (click)="clearStorage($event)" type="button">
+        Clear Storage
+      </button>
+    </mat-menu>
+    <button mat-icon-button [matMenuTriggerFor]="fileMenu" type="button">
+      <app-icon>sync_alt</app-icon>
+    </button>
+    <mat-menu #fileMenu="matMenu">
+      <app-excel-upload></app-excel-upload>
+      <app-excel-download></app-excel-download>
+      <app-json-export></app-json-export>
+      <app-json-import></app-json-import>
+    </mat-menu>
+  </mat-toolbar-row>
+
+  @if (uaItems().length > 0) {
+  <mat-toolbar-row>
+    <div class="flex-grid">
+      <div mat-card-avatar>
+        <app-icon class="warning">{{ icon.warning }}</app-icon>
+      </div>
+      <span class="warning">
+        You have items that are unassigned to any box. Please delete or assign
+        those items
+      </span>
+
+      <button
+        mat-stroked-button
+        [routerLink]="['/unassigned-item-list']"
+        class="warning"
+      >
+        Here
+      </button>
+    </div>
+  </mat-toolbar-row>
+
+  } @if (uaBoxes().length > 0) {
+  <mat-toolbar-row>
+    <div class="flex-grid">
+      <div mat-card-avatar>
+        <app-icon class="warning">{{ icon.warning }}</app-icon>
+      </div>
+      <span class="warning">
+        You have containers that are unassigned to any other container or room.
+        Please delete or assign those containers
+      </span>
+
+      <button
+        mat-stroked-button
+        [routerLink]="['/unassigned-box-list']"
+        class="warning"
+      >
+        Here
+      </button>
+    </div>
+  </mat-toolbar-row>
+  }
 </mat-toolbar>

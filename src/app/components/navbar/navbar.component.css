@@ -6,3 +6,10 @@
     top: 0;
     z-index:2;
 }
+.flex-grid {
+  display: flex;
+  gap:20px;
+}
+.mat-mdc-outlined-button {
+    top: -6px;
+}

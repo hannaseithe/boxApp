@@ -16,6 +16,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NasService } from '../../services/nas.service';
 import { NasSliderComponent } from '../nas-slider/nas-slider.component';
 import { AppIconComponent } from '../app-icon/app-icon.component';
+import { Box, Item } from '../../app';
+import iconConfig from '../../icon.config';
 
 @Component({
   selector: 'app-navbar',
@@ -40,6 +42,9 @@ export class NavbarComponent {
   public dynButs: Signal<any>;
   public pageData: Signal<any>;
   public doSearch = false;
+  public uaItems: Signal<Item[]>;
+  public uaBoxes: Signal<Box[]>;
+  public icon = iconConfig;
 
   constructor(
     private data: StorageService,
@@ -55,6 +60,8 @@ export class NavbarComponent {
         this.navBar.update([], {});
       }
     });
+    this.uaItems = this.data.UnassignedItems;
+    this.uaBoxes = this.data.UnassignedBoxes;
   }
 
   public clearStorage(event: Event) {

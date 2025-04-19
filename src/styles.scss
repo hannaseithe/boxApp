@@ -13,7 +13,7 @@ body {
 
 .warning {
     color: mat.get-theme-color($theme, error, 40)!important;
-    background-color: mat.get-theme-color($theme,error,90)!important
+    
 }
 .warning button {
     background-color: mat.get-theme-color($theme,error,20)!important;
