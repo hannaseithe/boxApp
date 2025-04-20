@@ -1,35 +1,3 @@
-@if (uaItems().length > 0) {
-<mat-card class="warning">
-  <mat-card-header>
-    <div mat-card-avatar>
-      <app-icon class="warning">{{ icon.warning }}</app-icon>
-    </div>
-    <mat-card-subtitle>
-      You have items that are unassigned to any box. Please delete or assign
-      those items
-      <button mat-fab [routerLink]="['/unassigned-item-list']" class="warning">
-        Here
-      </button>
-    </mat-card-subtitle>
-  </mat-card-header>
-</mat-card>
-} @if (uaBoxes().length > 0) {
-<mat-card class="warning">
-  <mat-card-header>
-    <div mat-card-avatar>
-      <app-icon class="warning">{{ icon.warning }}</app-icon>
-    </div>
-    <mat-card-subtitle>
-      You have containers that are unassigned to any other container or room.
-      Please delete or assign those containers
-      <button mat-fab [routerLink]="['/unassigned-box-list']" class="warning">
-        Here
-      </button>
-    </mat-card-subtitle>
-  </mat-card-header>
-</mat-card>
-}
-
 <div>
   <mat-card>
     <mat-card-header>
