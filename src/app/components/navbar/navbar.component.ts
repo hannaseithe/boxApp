@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -57,7 +57,9 @@ export class NavbarComponent {
     this.pageData = this.navBar.inputData.pageData;
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationStart) {
-        this.navBar.update([], {});
+        queueMicrotask(() => {
+          this.navBar.update([], {});
+        });
       }
     });
     this.uaItems = this.data.UnassignedItems;

@@ -47,10 +47,10 @@ export class LocalStorageService extends StorageService {
   public Rooms: WritableSignal<Room[]>;
   public UnassignedItems: Signal<Item[]>;
   public UnassignedBoxes: Signal<Box[]>;
-  private itemLookup: Record<string, Item> = {};
-  private roomLookup: Record<string, Room> = {};
-  private boxLookup: Record<string, Box> = {};
-  private catLookup: Record<string, Cat> = {};
+  private itemLookup: WritableSignal<Record<string, Item>> = signal({});
+  private roomLookup: WritableSignal<Record<string, Room>> = signal({});
+  private boxLookup: WritableSignal<Record<string, Box>> = signal({});
+  private catLookup: WritableSignal<Record<string, Cat>> = signal({});
 
   constructor() {
     super();
@@ -60,15 +60,15 @@ export class LocalStorageService extends StorageService {
     this.Rooms = signal([]);
     this.UnassignedItems = computed(() =>
       this.Items().filter((Item) => {
-        const box = Item.boxID ? this.boxLookup[Item.boxID] : undefined;
-        const room = Item.roomID ? this.roomLookup[Item.roomID] : undefined;
+        const box = Item.boxID ? this.boxLookup()[Item.boxID] : undefined;
+        const room = Item.roomID ? this.roomLookup()[Item.roomID] : undefined;
         return !box && !room;
       })
     );
     this.UnassignedBoxes = computed(() =>
       this.Boxes().filter((Box) => {
-        const box = Box.boxID ? this.boxLookup[Box.boxID] : undefined;
-        const room = Box.roomID ? this.roomLookup[Box.roomID] : undefined;
+        const box = Box.boxID ? this.boxLookup()[Box.boxID] : undefined;
+        const room = Box.roomID ? this.roomLookup()[Box.roomID] : undefined;
         return !box && !room;
       })
     );
@@ -125,14 +125,16 @@ export class LocalStorageService extends StorageService {
 
   private initializeLookup(
     values: Item[] | Room[] | Box[],
-    lookup: Record<string, Item> | Record<string, Room> | Record<string, Box>
+    lookup: WritableSignal<
+      Record<string, Item> | Record<string, Room> | Record<string, Box>
+    >
   ) {
-    for (const key in lookup) {
-      delete lookup[key];
-    }
+    lookup.update(() => ({}));
 
-    values.forEach((value) => {
-      lookup[value.id] = value;
+    lookup.update((current) => {
+      const updated = { ...current };
+      values.forEach((value) => (updated[value.id] = value));
+      return updated;
     });
   }
 
@@ -194,24 +196,24 @@ export class LocalStorageService extends StorageService {
   }
 
   public getItem(id: string): Item | undefined {
-    return this.itemLookup[id];
+    return this.itemLookup()[id];
   }
 
   public addUpdateItem(item: Item): {
     item: Item | undefined;
     resetFn?: resetFn;
   } {
-    let oldItems, oldItemName;
-    oldItems = this.Items();
+    const oldItems = this.Items();
+    let i = -1;
     let items = oldItems;
     if (!item.id) {
       item.id = uuidv4();
+    } else {
+      i = items.findIndex((it) => it.id == item.id);
     }
-    let i = items.findIndex((it) => it.id == item.id);
 
     if (i > -1) {
       items.splice(i, 1, item);
-      oldItemName = items[i].name;
     } else {
       items.push(item);
     }
@@ -222,13 +224,13 @@ export class LocalStorageService extends StorageService {
         resetFn: this.resetOption(
           oldItems,
           'items',
-          'The item >' + oldItemName + '< has been edited.'
+          'The item >' + items[i].name + '< has been edited.'
         ),
-        item: this.itemLookup[item.id],
+        item: this.itemLookup()[item.id],
       };
     } else {
       return {
-        item: this.itemLookup[item.id],
+        item: this.itemLookup()[item.id],
       };
     }
   }
@@ -252,7 +254,7 @@ export class LocalStorageService extends StorageService {
   }
 
   public getBox(id: string): Box | undefined {
-    return this.boxLookup[id];
+    return this.boxLookup()[id];
   }
 
   public addUpdateBox(box: Box): Box | undefined {
@@ -267,7 +269,7 @@ export class LocalStorageService extends StorageService {
       }
     }
     this.save('boxes', boxes);
-    return this.boxLookup[box.id];
+    return this.boxLookup()[box.id];
   }
 
   public removeBox(id: string): resetFn | void {
@@ -290,7 +292,7 @@ export class LocalStorageService extends StorageService {
   }
 
   public getRoom(id: string): Room | undefined {
-    return this.roomLookup[id];
+    return this.roomLookup()[id];
   }
 
   public addUpdateRoom(room: Room): Room | undefined {
@@ -305,7 +307,7 @@ export class LocalStorageService extends StorageService {
       }
     }
     this.save('rooms', rooms);
-    return this.roomLookup[room.id];
+    return this.roomLookup()[room.id];
   }
 
   public removeRoom(id: string): resetFn | void {
@@ -328,7 +330,7 @@ export class LocalStorageService extends StorageService {
   }
 
   public getCat(id: string): Cat | undefined {
-    return this.catLookup[id];
+    return this.catLookup()[id];
   }
 
   public addUpdateCat(cat: Cat): Cat | undefined {
@@ -343,7 +345,7 @@ export class LocalStorageService extends StorageService {
       }
     }
     this.save('cats', cats);
-    return this.catLookup[cat.id];
+    return this.catLookup()[cat.id];
   }
   public removeCat(id: string): resetFn | void {
     const oldCats = this.Cats();
@@ -436,9 +438,9 @@ export class LocalStorageService extends StorageService {
   }
 
   public assignItemToBox(boxId: string, itemId: string): Item | undefined {
-    let item = this.itemLookup[itemId];
+    let item = this.itemLookup()[itemId];
     let result;
-    if (this.boxLookup[boxId] && item) {
+    if (this.boxLookup()[boxId] && item) {
       item.roomID = undefined;
       item.boxID = boxId;
       result = this.addUpdateItem(item);
@@ -450,7 +452,7 @@ export class LocalStorageService extends StorageService {
   }
 
   private hasCycle(box1Id: string, box2Id: string): boolean {
-    const box = this.boxLookup[box1Id];
+    const box = this.boxLookup()[box1Id];
     if (!box || !box.boxID) return false;
     if (box.boxID === box2Id) return true;
     return this.hasCycle(box.boxID, box2Id);
@@ -458,9 +460,9 @@ export class LocalStorageService extends StorageService {
 
   public assignBoxToBox(box1Id: string, box2Id: string): Box | undefined {
     if (box1Id !== box2Id || !this.hasCycle(box1Id, box2Id)) {
-      let box = this.boxLookup[box2Id];
+      let box = this.boxLookup()[box2Id];
       let result;
-      if (this.boxLookup[box1Id] && box) {
+      if (this.boxLookup()[box1Id] && box) {
         box.roomID = undefined;
         box.boxID = box1Id;
         result = this.addUpdateBox(box);
@@ -471,9 +473,9 @@ export class LocalStorageService extends StorageService {
   }
 
   public assignItemToRoom(roomId: string, itemId: string): Item | undefined {
-    let item = this.itemLookup[itemId];
+    let item = this.itemLookup()[itemId];
     let result;
-    if (this.roomLookup[roomId] && item) {
+    if (this.roomLookup()[roomId] && item) {
       item.boxID = undefined;
       item.roomID = roomId;
       result = this.addUpdateItem(item);
@@ -485,9 +487,9 @@ export class LocalStorageService extends StorageService {
   }
 
   public assignBoxToRoom(roomId: string, boxId: string): Box | undefined {
-    let box = this.boxLookup[boxId];
+    let box = this.boxLookup()[boxId];
     let result;
-    if (this.roomLookup[roomId] && box) {
+    if (this.roomLookup()[roomId] && box) {
       box.boxID = undefined;
       box.roomID = roomId;
       result = this.addUpdateBox(box);
@@ -534,12 +536,13 @@ export class LocalStorageService extends StorageService {
     let currentId = id;
 
     while (currentId) {
-      const object = this.itemLookup[currentId] || this.boxLookup[currentId];
+      const object =
+        this.itemLookup()[currentId] || this.boxLookup()[currentId];
 
       if (!object) break;
 
       if (object.roomID) {
-        const room = this.roomLookup[object.roomID];
+        const room = this.roomLookup()[object.roomID];
         if (room) {
           trail.push({ ...room, type: 'room' });
           break;
@@ -547,7 +550,7 @@ export class LocalStorageService extends StorageService {
       }
 
       if (object.boxID) {
-        const box = this.boxLookup[object.boxID];
+        const box = this.boxLookup()[object.boxID];
         if (box) {
           trail.push({ ...box, type: 'box' });
           currentId = box.id;
