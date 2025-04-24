@@ -23,6 +23,8 @@ import { TrailComponent } from '../trail/trail.component';
 import { DragStateService } from '../../services/dragState.service';
 import { MatChipsModule } from '@angular/material/chips';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatInputModule } from '@angular/material/input';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-box',
@@ -38,6 +40,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     TrailComponent,
     MatChipsModule,
     DragDropModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './box.component.html',
   styleUrl: './box.component.css',
@@ -54,6 +58,8 @@ export class BoxComponent {
   public mappedCats: Map<string, Cat | undefined> = new Map();
   public icon = iconConfig;
   public trail: (Room | Box)[] = [];
+  public itemNameControl = new FormControl('');
+  public boxNameControl = new FormControl('');
 
   constructor(
     private data: StorageService,
@@ -113,5 +119,24 @@ export class BoxComponent {
   }
   onDragStarted() {
     this.drag.registerDragged(() => this.getBox());
+  }
+  addItem() {
+    const value = this.itemNameControl.value;
+    if (value) {
+      this.data.addUpdateItem({
+        name: value,
+        id: '',
+        tags: [],
+        boxID: this.box!.id,
+      });
+      this.itemNameControl.reset();
+    }
+  }
+  addBox() {
+    const value = this.boxNameControl.value;
+    if (value) {
+      this.data.addUpdateBox({ name: value, id: '', boxID: this.box!.id });
+      this.boxNameControl.reset();
+    }
   }
 }
