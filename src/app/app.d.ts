@@ -10,8 +10,8 @@ export type resetFn = {
 export type Item = {
   id: string;
   name: string;
-  catID: string;
-  description: string;
+  catID?: string;
+  description?: string;
   tags: string[];
   picture?: string;
   boxID?: string;

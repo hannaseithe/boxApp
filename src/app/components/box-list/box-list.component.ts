@@ -13,6 +13,9 @@ import { MatListModule } from '@angular/material/list';
 import iconConfig from '../../icon.config';
 import { AppIconComponent } from '../app-icon/app-icon.component';
 import { UndoService } from '../../services/undo.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 function isStringLikeNumber(value: string): boolean {
   return /^[+-]?\d+(\.\d+)?$/.test(value.trim());
@@ -28,6 +31,8 @@ function isStringLikeNumber(value: string): boolean {
     RouterModule,
     MatToolbarModule,
     MatListModule,
+    ReactiveFormsModule,
+    MatInputModule,
   ],
   templateUrl: './box-list.component.html',
   styleUrl: './box-list.component.css',
@@ -42,6 +47,8 @@ export class BoxListComponent {
   public groupedItems: Map<string, Signal<Item[]>> = new Map();
   route: ActivatedRoute = inject(ActivatedRoute);
   public icon = iconConfig;
+  boxNameControl = new FormControl('');
+  itemNameControl = new FormControl('');
 
   constructor(
     private data: StorageService,
@@ -91,6 +98,25 @@ export class BoxListComponent {
       let resetFn = this.data.removeRoom(id);
       this.undo.push(resetFn as any);
       this.router.navigateByUrl('/');
+    }
+  }
+  addBox() {
+    const value = this.boxNameControl.value;
+    if (value) {
+      this.data.addUpdateBox({ name: value, id: '', roomID: this.room!.id });
+      this.boxNameControl.reset();
+    }
+  }
+  addItem() {
+    const value = this.itemNameControl.value;
+    if (value) {
+      this.data.addUpdateItem({
+        name: value,
+        id: '',
+        tags: [],
+        roomID: this.room!.id,
+      });
+      this.itemNameControl.reset();
     }
   }
 }

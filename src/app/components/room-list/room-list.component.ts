@@ -5,13 +5,12 @@ import { MatListModule } from '@angular/material/list';
 import { NavbarService } from '../../services/navbar.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import iconConfig from '../../icon.config';
 import { AppIconComponent } from '../app-icon/app-icon.component';
 import { DragStateService } from '../../services/dragState.service';
 import { MatChipsModule } from '@angular/material/chips';
-import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-room-list',
