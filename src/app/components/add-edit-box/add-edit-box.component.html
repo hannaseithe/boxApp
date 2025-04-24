@@ -16,7 +16,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Box</mat-label>
-          <mat-select formControlName="boxID">
+          <mat-select formControlName="boxID" (selectionChange)="select('box')">
             @for (room of groupedBoxes; track room.id) {
             <mat-optgroup [label]="room.name">
               @for (box of room.boxes; track box.id) {

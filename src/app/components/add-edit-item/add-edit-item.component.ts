@@ -14,20 +14,14 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
-import {
-  ActivatedRoute,
-  NavigationStart,
-  Router,
-  RouterModule,
-} from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { Box, Cat, Item, RoomWithBoxes } from '../../app';
+import { Box, Cat, Item, Room, RoomWithBoxes } from '../../app';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Location } from '@angular/common';
 import { UndoService } from '../../services/undo.service';
@@ -64,6 +58,7 @@ export class AddEditItemComponent {
     name: FormControl<string>;
     description: FormControl<string>;
     boxID: FormControl<string>;
+    roomID: FormControl<string>;
     tags: FormControl<Array<string>>;
     catID: FormControl<string>;
     picture: FormControl<string>;
@@ -71,6 +66,7 @@ export class AddEditItemComponent {
   pictureFile: File | null = null;
   groupedBoxes: RoomWithBoxes[];
   cats: Signal<Cat[]>;
+  rooms: Signal<Room[]>;
   picture: WritableSignal<string | undefined> = signal(undefined);
   private item: Item | undefined;
 
@@ -88,6 +84,7 @@ export class AddEditItemComponent {
       name: '',
       description: '',
       boxID: '',
+      roomID: '',
       tags: new FormControl<string[]>([], { nonNullable: true }),
       catID: '',
       picture: '',
@@ -107,6 +104,7 @@ export class AddEditItemComponent {
     }
 
     this.cats = computed(() => this.data.Cats().sort(this.sortFn));
+    this.rooms = this.data.Rooms;
 
     this.groupedBoxes = this.data.getAllRoomsWithBoxes();
   }
@@ -249,5 +247,17 @@ export class AddEditItemComponent {
   onFileSelect(event: any): void {
     this.pictureFile = event.target.files[0];
     this.form.markAsDirty();
+  }
+  select(selected: string) {
+    switch (selected) {
+      case 'room':
+        this.form.get('boxID')?.reset();
+        break;
+      case 'box':
+        this.form.get('roomID')?.reset();
+        break;
+      default:
+        break;
+    }
   }
 }

@@ -35,19 +35,34 @@
           <mat-label>Description</mat-label>
           <input matInput formControlName="description" />
         </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Box</mat-label>
-          <mat-select formControlName="boxID" required>
-            @for (room of groupedBoxes; track room.id) {
-            <mat-optgroup [label]="room.name">
-              @for (box of room.boxes; track box.id) {
-              <mat-option [value]="box.id">{{ box.name }}</mat-option>
+        <div>
+          <mat-form-field>
+            <mat-label>Box</mat-label>
+            <mat-select
+              formControlName="boxID"
+              (selectionChange)="select('box')"
+            >
+              @for (room of groupedBoxes; track room.id) {
+              <mat-optgroup [label]="room.name">
+                @for (box of room.boxes; track box.id) {
+                <mat-option [value]="box.id">{{ box.name }}</mat-option>
+                }
+              </mat-optgroup>
               }
-            </mat-optgroup>
-            }
-          </mat-select>
-        </mat-form-field>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Room</mat-label>
+            <mat-select
+              formControlName="roomID"
+              (selectionChange)="select('room')"
+            >
+              @for (room of rooms(); track room.id) {
+              <mat-option [value]="room.id">#{{ room.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
 
         <mat-form-field class="example-form-field">
           <mat-label>Tags</mat-label>
