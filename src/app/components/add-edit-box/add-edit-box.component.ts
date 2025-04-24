@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Location } from '@angular/common';
 import { StorageService } from '../../services/storage.service';
-import { Box, Room } from '../../app';
+import { Box, Room, RoomWithBoxes } from '../../app';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -38,6 +38,7 @@ export class AddEditBoxComponent {
   isAddMode = false;
   rooms: Signal<Room[]>;
   boxes: Signal<Box[]>;
+  groupedBoxes: RoomWithBoxes[];
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +55,7 @@ export class AddEditBoxComponent {
     });
     this.boxes = this.data.Boxes;
     this.rooms = this.data.Rooms;
+    this.groupedBoxes = this.data.getAllRoomsWithBoxes();
   }
 
   onSubmit() {

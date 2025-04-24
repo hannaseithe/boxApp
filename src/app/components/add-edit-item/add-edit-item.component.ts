@@ -25,7 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { Box, Cat, Item } from '../../app';
+import { Box, Cat, Item, RoomWithBoxes } from '../../app';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -69,7 +69,7 @@ export class AddEditItemComponent {
     picture: FormControl<string>;
   }>;
   pictureFile: File | null = null;
-  boxes: Box[] = [];
+  groupedBoxes: RoomWithBoxes[];
   cats: Signal<Cat[]>;
   picture: WritableSignal<string | undefined> = signal(undefined);
   private item: Item | undefined;
@@ -108,7 +108,7 @@ export class AddEditItemComponent {
 
     this.cats = computed(() => this.data.Cats().sort(this.sortFn));
 
-    this.boxes = this.data.Boxes().sort(this.sortFn);
+    this.groupedBoxes = this.data.getAllRoomsWithBoxes();
   }
 
   ngOnInit(): void {

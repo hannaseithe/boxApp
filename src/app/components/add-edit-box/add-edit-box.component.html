@@ -16,9 +16,13 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Box</mat-label>
-          <mat-select formControlName="boxID" (selectionChange)="select('box')">
-            @for (b of boxes(); track b.id) {
-            <mat-option [value]="b.id">#{{ b.name }}</mat-option>
+          <mat-select formControlName="boxID">
+            @for (room of groupedBoxes; track room.id) {
+            <mat-optgroup [label]="room.name">
+              @for (box of room.boxes; track box.id) {
+              <mat-option [value]="box.id">{{ box.name }}</mat-option>
+              }
+            </mat-optgroup>
             }
           </mat-select>
         </mat-form-field>
