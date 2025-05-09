@@ -1,0 +1,89 @@
+{
+  "configVersion": 1,
+  "timestamp": 1746783479954,
+  "index": "https://hannaseithe.github.io/boxApp/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "https://hannaseithe.github.io/boxApp/chunk-3DS3GXG5.js",
+        "https://hannaseithe.github.io/boxApp/chunk-4IQU2XEI.js",
+        "https://hannaseithe.github.io/boxApp/chunk-EQDQRRRY.js",
+        "https://hannaseithe.github.io/boxApp/chunk-GUIZO3L3.js",
+        "https://hannaseithe.github.io/boxApp/chunk-JFFQQRH6.js",
+        "https://hannaseithe.github.io/boxApp/favicon.ico",
+        "https://hannaseithe.github.io/boxApp/index.html",
+        "https://hannaseithe.github.io/boxApp/main-CIUEK4NH.js",
+        "https://hannaseithe.github.io/boxApp/manifest.webmanifest",
+        "https://hannaseithe.github.io/boxApp/polyfills-SCHOHYNV.js",
+        "https://hannaseithe.github.io/boxApp/styles-MDHCNFXZ.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "https://hannaseithe.github.io/boxApp/icons/icon-128x128.png",
+        "https://hannaseithe.github.io/boxApp/icons/icon-144x144.png",
+        "https://hannaseithe.github.io/boxApp/icons/icon-152x152.png",
+        "https://hannaseithe.github.io/boxApp/icons/icon-192x192.png",
+        "https://hannaseithe.github.io/boxApp/icons/icon-384x384.png",
+        "https://hannaseithe.github.io/boxApp/icons/icon-512x512.png",
+        "https://hannaseithe.github.io/boxApp/icons/icon-72x72.png",
+        "https://hannaseithe.github.io/boxApp/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "https://hannaseithe.github.io/boxApp/chunk-3DS3GXG5.js": "a07ee9b6b78b1873517cd711370c2ff9199ccb69",
+    "https://hannaseithe.github.io/boxApp/chunk-4IQU2XEI.js": "a01a472eaa8cef05e6d485a576cb9899fdd52e46",
+    "https://hannaseithe.github.io/boxApp/chunk-EQDQRRRY.js": "c40057a332d0341d595cc1d005fc2ab4f2573957",
+    "https://hannaseithe.github.io/boxApp/chunk-GUIZO3L3.js": "c9d73f60b5f6ae49dc5fcd89be5d28e5d969cbe9",
+    "https://hannaseithe.github.io/boxApp/chunk-JFFQQRH6.js": "2effcf4ccd93cdc3672d3aea9a91978cccd107fc",
+    "https://hannaseithe.github.io/boxApp/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "https://hannaseithe.github.io/boxApp/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
+    "https://hannaseithe.github.io/boxApp/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
+    "https://hannaseithe.github.io/boxApp/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
+    "https://hannaseithe.github.io/boxApp/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "https://hannaseithe.github.io/boxApp/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
+    "https://hannaseithe.github.io/boxApp/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "https://hannaseithe.github.io/boxApp/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
+    "https://hannaseithe.github.io/boxApp/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "https://hannaseithe.github.io/boxApp/index.html": "d12ff98a8367a6af798fd1d201a989d3af6e1069",
+    "https://hannaseithe.github.io/boxApp/main-CIUEK4NH.js": "fdff3e751fdf3e57806c3a11df45c0c4f7abecb7",
+    "https://hannaseithe.github.io/boxApp/manifest.webmanifest": "d1a6b376d8c81c9d03ef342069c83d5749a6a0e7",
+    "https://hannaseithe.github.io/boxApp/polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
+    "https://hannaseithe.github.io/boxApp/styles-MDHCNFXZ.css": "b8e3f01ea7feb077ce78129486d8c3b6ede60e7f"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
