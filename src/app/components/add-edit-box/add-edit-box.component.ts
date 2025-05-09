@@ -58,13 +58,6 @@ export class AddEditBoxComponent {
     this.groupedBoxes = this.data.getAllRoomsWithBoxes();
   }
 
-  onSubmit() {
-    let formBox = this.form.value;
-    formBox.id = this.id ? this.id : undefined;
-    let editedBox = this.data.addUpdateBox(formBox);
-    this.router.navigateByUrl('/box/' + editedBox?.id);
-  }
-
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
@@ -75,10 +68,20 @@ export class AddEditBoxComponent {
         this.form.patchValue(x);
       }
     }
-    let roomID = this.route.snapshot.queryParams['roomId'];
-    if (roomID) {
-      this.form.patchValue({ roomID: roomID });
+    if (this.isAddMode) {
+        let roomID = this.route.snapshot.queryParams['roomId'];
+      if (roomID) {
+        this.form.patchValue({ roomID: roomID });
+      }
     }
+
+  }
+
+  onSubmit() {
+    let formBox = this.form.value;
+    formBox.id = this.id ? this.id : undefined;
+    let editedBox = this.data.addUpdateBox(formBox);
+    this.router.navigateByUrl('/box/' + editedBox?.id);
   }
 
   select(selected: string) {

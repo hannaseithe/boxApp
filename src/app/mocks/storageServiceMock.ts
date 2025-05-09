@@ -36,9 +36,10 @@ export class StorageServiceMock {
     },
   ]);
 
-  getBox = jasmine
-    .createSpy('getBox')
-    .and.callFake((id: string) => this.Boxes()[0]);
+  getBox = jasmine.createSpy('getBox').and.callFake((id: string) => {
+    console.log('getBox called with:', id);
+    return this.Boxes().find((box) => box.id == id);
+  });
 
   getAllRoomsWithBoxes = jasmine
     .createSpy('getAllRoomsWithBoxes')
@@ -50,4 +51,6 @@ export class StorageServiceMock {
         boxes: [{ id: '3', name: '3.Box', boxID: '2' }],
       },
     ]);
+
+  addUpdateBox = jasmine.createSpy('addUpdateBox');
 }
