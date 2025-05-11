@@ -32,7 +32,7 @@ fdescribe('AddEditBoxComponent', () => {
   let fixture: ComponentFixture<AddEditBoxComponent>;
   let loader: HarnessLoader;
   let instantiateComponent = async (
-    Testbed: TestBedStatic,
+    TestBed: TestBedStatic,
     activatedRouteMock: ActivatedRouteMock
   ) => {
     TestBed.overrideProvider(ActivatedRoute, { useValue: activatedRouteMock });

@@ -45,7 +45,6 @@ import { AppIconComponent } from '../app-icon/app-icon.component';
     AppIconComponent,
     MatButtonModule,
     RouterModule,
-    MatDialogModule,
   ],
   templateUrl: './add-edit-item.component.html',
   styleUrl: './add-edit-item.component.css',
@@ -121,7 +120,7 @@ export class AddEditItemComponent {
     }
 
     let boxID = this.route.snapshot.queryParams['boxId'];
-    if (boxID) {
+    if (this.isAddMode && boxID) {
       this.form.patchValue({ boxID: boxID });
     }
   }
@@ -147,13 +146,14 @@ export class AddEditItemComponent {
   }
 
   openDialog(data: any) {
+    console.log('Inside open dialog');
     let dialogRef = this.dialog.open(CatListComponent, {
       data: data,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      if (result !== undefined) {
+      if (result != null) {
         this.form.patchValue({ catID: result.id });
         this.form.markAsDirty();
       }
