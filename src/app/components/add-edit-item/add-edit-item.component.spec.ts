@@ -120,6 +120,8 @@ fdescribe('AddEditItemComponent', () => {
       new ActivatedRouteMock({ id: '1' }, { roomId: '2' })
     );
 
+    expect(storageServiceMock.getItem).toHaveBeenCalledWith('1');
+
     expect(component).toBeTruthy();
     const nameInput: HTMLInputElement = fixture.nativeElement.querySelector(
       'input[formControlName="name"]'
