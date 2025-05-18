@@ -58,7 +58,7 @@
               (selectionChange)="select('room')"
             >
               @for (room of rooms(); track room.id) {
-              <mat-option [value]="room.id">#{{ room.name }}</mat-option>
+              <mat-option [value]="room.id">{{ room.name }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
@@ -99,12 +99,12 @@
         />
         @if (pictureFile) {
         <mat-chip disabled>File to upload: {{ pictureFile.name }}</mat-chip>
-        } @else if (picture()) {
+        } @else if (picture()) { PicturePlace
         <img [src]="picture()" alt="Image" />
         } }
       </div>
       <button mat-button type="submit" [disabled]="!form.valid || !form.dirty">
-        Save
+        Save @if (pictureFile) {& Upload}
       </button>
       <button mat-button (click)="cancel()" type="button">Cancel</button>
     </mat-card-content>

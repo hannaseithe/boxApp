@@ -28,17 +28,35 @@ export class StorageServiceMock {
       name: '1. Item',
       description: 'This is an item',
       roomID: '2',
+      catID: '1',
+      picture: 'pic1.jpg',
     },
     {
       id: '2',
       name: '2. Item',
       boxID: '2',
+      picture: 'pic2.jpg',
     },
   ]);
 
-  getBox = jasmine
-    .createSpy('getBox')
-    .and.callFake((id: string) => this.Boxes()[0]);
+  Cats = signal([
+    {
+      id: '1',
+      name: '1. Category',
+    },
+  ]);
+
+  getBox = jasmine.createSpy('getBox').and.callFake((id: string) => {
+    return this.Boxes().find((box) => box.id == id);
+  });
+
+  getItem = jasmine.createSpy('getItem').and.callFake((id: string) => {
+    return this.Items().find((item) => item.id == id);
+  });
+
+  getRoom = jasmine.createSpy('getRoom').and.callFake((id: string) => {
+    return this.Rooms().find((room) => room.id == id);
+  });
 
   getAllRoomsWithBoxes = jasmine
     .createSpy('getAllRoomsWithBoxes')
@@ -50,4 +68,10 @@ export class StorageServiceMock {
         boxes: [{ id: '3', name: '3.Box', boxID: '2' }],
       },
     ]);
+
+  addUpdateBox = jasmine.createSpy('addUpdateBox');
+  addUpdateItem = jasmine
+    .createSpy('addUpdateItem')
+    .and.returnValue({ item: {} });
+  addUpdateRoom = jasmine.createSpy('addUpdateRoom');
 }

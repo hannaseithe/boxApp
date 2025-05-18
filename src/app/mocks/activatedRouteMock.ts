@@ -1,21 +1,19 @@
-import { of, BehaviorSubject } from 'rxjs';
+import { of } from 'rxjs';
 
 export class ActivatedRouteMock {
   params = of({});
   queryParams = of({});
   snapshot = { data: {}, params: {}, queryParams: {} };
 
-  setParams = jasmine.createSpy('setParams').and.callFake((params: any) => {
-    this.params = of(params);
-    this.snapshot.params = params;
-  });
+  setParams(params: any) {
+    this.params = of(params);       // Simulate params being an observable
+    this.snapshot.params = params;  // Update the snapshot
+  }
 
-  setQueryParams = jasmine
-    .createSpy('setQueryParams')
-    .and.callFake((queryParams: any) => {
-      this.queryParams = of(queryParams);
-      this.snapshot.queryParams = queryParams;
-    });
+  setQueryParams(queryParams: any) {
+    this.queryParams = of(queryParams);        // Simulate queryParams being an observable
+    this.snapshot.queryParams = queryParams;   // Update the snapshot
+  }
 
   paramMap = of({});
 

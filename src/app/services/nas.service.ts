@@ -2,8 +2,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { nasConfig } from '../../environments/nas-config';
 
 /* encode function start */
 var ezEncodeChars =
@@ -233,28 +231,61 @@ function ezEncode(str: string) {
   providedIn: 'root',
 })
 export class NasService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl: string = '';
   private sid = '';
   public loggedIn = signal(false);
   public ready = false;
+  private environment: any;
+  private nasConfig: any;
+  public envSet = false;
 
   constructor(private http: HttpClient) {
-    if (nasConfig) {
-      this.checkNasStatus().subscribe({
-        next: (response: any) => {
-          if (response.status == 200) {
-            this.ready = true;
-          }
-        },
-        error: (error: any) => {
-          console.error(error);
-        },
-      });
-    } else {
-      console.error(
-        'nas-config.ts not implemented. Create file based on nas-config.example.ts'
-      );
+  }
+
+  async ngOnInit(): Promise<void> {
+    
+      await this.loadEnvironment();
+      this.apiUrl = this.environment.apiUrl;
+      if (this.envSet) {
+        this.checkNasStatus().subscribe({
+          next: (response: any) => {
+            if (response.status == 200) {
+              this.ready = true;
+            }
+          },
+          error: (error: any) => {
+            console.error(error);
+          },
+        });
+      }
+
+  }
+
+  async loadEnvironment() {
+    try {
+      // Dynamically import environment.ts and nas-config.ts
+      const envModule = await import('@environments/environment');
+      const nasConfigModule = await import('@environments/nas-config');
+
+      this.environment = envModule.environment; // Loaded environment values
+      this.nasConfig = nasConfigModule.nasConfig; // Loaded nasConfig values
+      this.envSet = true;
+    } catch (error) {
+      // If files do not exist, fallback to default values
+      console.warn('Missing environment or nas-config file, using defaults. Create files based on examples in environments folder.');
+      this.environment = {
+        production: true,
+        apiUrl: '',
+      };
+      this.nasConfig = {
+        nasFolderPath: "",
+        nasUserName: "",
+        nasPassword: "",
+      };
     }
+
+    // Optionally use this to do some initialization (e.g., checking if ready)
+    console.log('Environment loaded:', this.environment);
   }
 
   checkNasStatus(): Observable<any> {
@@ -295,7 +326,7 @@ export class NasService {
   }
 
   selfLogin(): Observable<any> {
-    return this.login(nasConfig.nasUserName, nasConfig.nasPassword);
+    return this.login(this.nasConfig.nasUserName, this.nasConfig.nasPassword);
   }
 
   logout(): Observable<any> {
@@ -385,7 +416,7 @@ export class NasService {
   uploadFile(file: File, overwrite: boolean): Observable<any> {
     if (this.loggedIn()) {
       const uploadUrl = `${this.apiUrl}/cgi-bin/filemanager/utilRequest.cgi`;
-      const destPath = nasConfig.nasFolderPath;
+      const destPath = this.nasConfig.nasFolderPath;
       const progressPath = `${destPath.replace(/\//g, '-')}-${file.name}`;
 
       // Construct query parameters
@@ -416,7 +447,7 @@ export class NasService {
   fetchThumbnail(fileName: string, size: 100 | 400 | 800): Observable<any> {
     if (this.loggedIn()) {
       const uploadUrl = `${this.apiUrl}/cgi-bin/filemanager/utilRequest.cgi`;
-      const path = nasConfig.nasFolderPath;
+      const path = this.nasConfig.nasFolderPath;
 
       const params = new HttpParams()
         .set('func', 'get_thumb')
