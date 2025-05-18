@@ -118,6 +118,7 @@ export class BoxComponent {
       : 1;
   }
   onDragStarted() {
+    console.log('Inside OnDragStarted!!');
     this.drag.registerDragged(() => this.getBox());
   }
   addItem() {

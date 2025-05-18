@@ -17,6 +17,8 @@ export class ActivatedRouteMock {
       this.snapshot.queryParams = queryParams;
     });
 
+  paramMap = of({});
+
   constructor(initialParams: any = {}, queryParams: any = {}) {
     this.setParams(initialParams);
     this.setQueryParams(queryParams);
