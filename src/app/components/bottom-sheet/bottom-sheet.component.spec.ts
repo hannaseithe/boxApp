@@ -3,33 +3,27 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BottomSheetComponent } from './bottom-sheet.component';
 import {
   MAT_BOTTOM_SHEET_DATA,
-  MatBottomSheetModule,
   MatBottomSheetRef,
 } from '@angular/material/bottom-sheet';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('BottomSheetComponent', () => {
+class MatBottomSheetRefMock {
+  dismiss = jasmine.createSpy('dismiss');
+}
+
+fdescribe('BottomSheetComponent', () => {
   let component: BottomSheetComponent;
   let fixture: ComponentFixture<BottomSheetComponent>;
-  let bottomSheetRefSpy: jasmine.SpyObj<
-    MatBottomSheetRef<BottomSheetComponent>
-  >;
+  let bottomSheetRefMock: MatBottomSheetRefMock;
+  let matBottomSheetDataMock: any;
+
   beforeEach(async () => {
-    bottomSheetRefSpy = jasmine.createSpyObj('MatBottomSheetRef', ['dismiss']);
-    const reset = () => {};
-    reset.active = () => {};
+    matBottomSheetDataMock = { reset: () => {} }; // Mock the MAT_BOTTOM_SHEET_DATA with necessary properties
+    bottomSheetRefMock = new MatBottomSheetRefMock();
     await TestBed.configureTestingModule({
-      imports: [
-        BottomSheetComponent,
-        MatBottomSheetModule,
-        NoopAnimationsModule,
-      ],
+      imports: [BottomSheetComponent],
       providers: [
-        {
-          provide: MAT_BOTTOM_SHEET_DATA,
-          useValue: { reset },
-        },
-        { provide: MatBottomSheetRef, useValue: bottomSheetRefSpy },
+        { provide: MAT_BOTTOM_SHEET_DATA, useValue: matBottomSheetDataMock },
+        { provide: MatBottomSheetRef, useValue: bottomSheetRefMock },
       ],
     }).compileComponents();
 

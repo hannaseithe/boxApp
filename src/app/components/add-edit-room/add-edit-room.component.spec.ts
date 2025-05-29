@@ -27,7 +27,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
-fdescribe('AddEditRoomComponent', () => {
+describe('AddEditRoomComponent', () => {
   let component: AddEditRoomComponent;
   let fixture: ComponentFixture<AddEditRoomComponent>;
   let loader: HarnessLoader;

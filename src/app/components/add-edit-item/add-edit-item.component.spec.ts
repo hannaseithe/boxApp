@@ -53,7 +53,7 @@ async function waitForImage(
   throw new Error('Image not found within 3s');
 }
 
-fdescribe('AddEditItemComponent', () => {
+describe('AddEditItemComponent', () => {
   let component: AddEditItemComponent;
   let fixture: ComponentFixture<AddEditItemComponent>;
   let loader: HarnessLoader;

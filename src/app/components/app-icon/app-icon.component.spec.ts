@@ -9,7 +9,7 @@ describe('AppIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppIconComponent, MatIconModule],
+      imports: [MatIconModule, AppIconComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppIconComponent);
