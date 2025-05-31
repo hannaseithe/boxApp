@@ -82,7 +82,7 @@ Web/boxApp/
 http://<your-nas-ip>/boxApp/
 ```
 
-Hint: Depending on your Qnap Settings you might also have to change the configuration of the Webserver to disable CORS protection (see also: https://www.qnap.com/en/how-to/faq/article/how-do-i-fix-cors-errors-when-accessing-qvr-apis-from-another-server)
+Hint: Depending on your Qnap Settings you might also have to change the configuration of the Webserver to disable CORS protection (see also: https://www.qnap.com/en/how-to/faq/article/how-do-i-fix-cors-errors-when-accessing-qvr-apis-from-another-server). I have resolved the issue by setting up a reverse proxy on a new unused port e.g. `your-ip`1234`that redirects to the address and port of your QTS e.g. `localhost:8080` and then set the apiUrl in `environment.ts` to this new port. Inside this reverse proxy I then set the headers that allow cross-origin access (see link above)
 
 ## 🚀 Local Development
 Clone the repo and run:
