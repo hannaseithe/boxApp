@@ -239,26 +239,23 @@ export class NasService {
   private nasConfig: any;
   public envSet = false;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
-  async ngOnInit(): Promise<void> {
-    
-      await this.loadEnvironment();
-      this.apiUrl = this.environment.apiUrl;
-      if (this.envSet) {
-        this.checkNasStatus().subscribe({
-          next: (response: any) => {
-            if (response.status == 200) {
-              this.ready = true;
-            }
-          },
-          error: (error: any) => {
-            console.error(error);
-          },
-        });
-      }
-
+  async init(): Promise<void> {
+    await this.loadEnvironment();
+    this.apiUrl = this.environment.apiUrl;
+    if (this.envSet) {
+      this.checkNasStatus().subscribe({
+        next: (response: any) => {
+          if (response.status == 200) {
+            this.ready = true;
+          }
+        },
+        error: (error: any) => {
+          console.error(error);
+        },
+      });
+    }
   }
 
   async loadEnvironment() {
@@ -272,15 +269,17 @@ export class NasService {
       this.envSet = true;
     } catch (error) {
       // If files do not exist, fallback to default values
-      console.warn('Missing environment or nas-config file, using defaults. Create files based on examples in environments folder.');
+      console.warn(
+        'Missing environment or nas-config file, using defaults. Create files based on examples in environments folder.'
+      );
       this.environment = {
         production: true,
         apiUrl: '',
       };
       this.nasConfig = {
-        nasFolderPath: "",
-        nasUserName: "",
-        nasPassword: "",
+        nasFolderPath: '',
+        nasUserName: '',
+        nasPassword: '',
       };
     }
 

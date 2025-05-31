@@ -64,6 +64,7 @@ export class NavbarComponent {
     });
     this.uaItems = this.data.UnassignedItems;
     this.uaBoxes = this.data.UnassignedBoxes;
+    this.nas.init();
   }
 
   public clearStorage(event: Event) {
